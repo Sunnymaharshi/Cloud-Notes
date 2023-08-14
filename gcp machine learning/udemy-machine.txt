@@ -1,0 +1,407 @@
+HyperParameters
+	Algorithm specific
+		no of layers in deep learning
+		depth of decision tree
+		learning rate
+		no of clusters
+Unsupervised learning
+	Clustering
+		K Means clustering
+	Association rules
+		A Priori Algorithm
+	Dimensionality Reduction
+		Principal component analysis
+			output - set of vectors
+		Autoencoders
+Semi supervised
+	labeled and unlabeled data
+	when cost of getting labeled data is high
+	when
+		continous space
+			no big gaps in features
+		Instances cluster
+			tends to grouped together
+		Instances lie on low dimensional surface
+			even we have large no dimension if we could project them
+			to lower dimensions
+Feature engg
+	feature cross
+		cartesian product of two or more features
+		helps with non-linear relationships
+	binary features
+	decompose values to parts
+	One-Hot encoding
+		map from an attribute value to bit in a binary array
+Normalization
+	convert numeric values to a standard
+Evaluation of model
+	accuracy
+		no of correctly predicted data points
+	precision 
+		percent of positive data points correctly classified
+		TP/(TP+FP)
+	recall
+		percentage of actual positive data points identified
+		TP/(TP+FN)
+	mean square error
+Gradient Descent
+	curve in xy axis as loss and weight
+	find slope at certain weight
+	go down to get optmial weight with lowest loss
+	go down with incremental steps (Learning rate)
+	Types
+		Batch GD
+			Loss is calculated over entire training set
+			slow on large data sets
+		Stochastic GD
+			Weights are updated after each instance
+			instances are randomly sorted (Stochastic)
+		Mini-Batch GD
+			between Batch and Stochastic
+	Backpropagation
+		compute gradient of mapping function over a input-output pair
+		calculate the partial derivative of loss function relative to each weight
+		it is efficient than naive calculation
+		avoids duplication when computing gradient at a layer
+		computes gradients wrt final output(loss) rather than computing derivatives of 
+		values of hidden layers wrt changes in weights
+Underfitting
+	model performs poorly on both training data and validation data
+Overfitting
+	model performs well on training data and poorly on validation data
+	regularization
+		limits info that captured
+Bias 
+	Bias error is result of missing relationship btw features and labels
+	did not sufficiently generalise from training data
+Variance
+	it is due to sensitivity in small fluctuations in training data
+	it is difference among a set of predictions
+
+
+GCP services
+	Cloud AutoML
+	AI Platform Training
+		Tensorflow
+		Scikit Learn
+		XGBoost
+		can run custom containers		
+	Kubeflow
+		ML toolkit for kubernetes
+	Dataproc with Spark ML
+		Spark ML
+			ML library
+			ML Algos
+			Feature Engg
+			Pipelines 
+			Persistence
+			Utilities
+	BigQuery ML
+		Use SQL
+Pretrained Models
+	Vision Services
+		Vision AI
+			classify images
+			recognize objects faces and words
+			supports transfer learning
+				train a model on large data
+				use that model to build another model
+		Video AI
+			extract metadata
+			identify key objects
+			annotate video content
+	Language services
+		Natural Language
+			Identify syntactic structure
+			extract info about people places things
+			content classification
+			sentiment analysis
+		Translation
+	Conversation
+		Speech to Text API
+			process real-time or recorded
+		Text to Speech API
+			Synthesize natural language speech
+			32 voices
+		Dialog Flow
+			Development suite for conversational interfaces
+Deployment
+	ML service (API)
+	Containerization
+	Deployment & Orchestration
+
+Vertex AI
+	Datasets
+		abstracts the data
+		multiple source to single dataset
+	Featurestore
+	Workbenches
+		notebooks
+			managed
+			user-managed
+	Training
+Dataflow
+	apache beam runner
+	supports windowing 
+	stream or batch processing
+	
+			
+GPUs are higher precision than TPUs
+TPUs costs less than GPUs
+
+Edge Devices
+	limited mem and CPU
+	can optimize models for edge
+	TensorFlow Lite
+
+ML Ops of ML security
+	Data security
+		encryption at rest
+		access controls
+		data lifecycle management
+	Model Training security
+		access
+		audit logs
+		observability tools
+Attacks on Models
+	Exploratory attacks
+	Model extraction attacks
+	Backdoor attacks
+	Trojan attacks
+	Data manipulation attacks
+	Evasion attacks
+
+Protecting Sensitive Data
+	Remove sensitive data
+	Masking sensitive data
+		Substitution cipher
+		Tokenization 
+		Principal component analysis
+	Coarsening (reduce resolution)
+		Locations
+		Postal codes
+		Numeric quantities
+		IP Addresses
+Encoding
+	One-Hot
+		vector of zeros and ones
+		separate bit for each category
+		1 bit for category and all others are set to 0
+	Ordinary
+		each category is assigned a numeric value (1,2,3..)
+	Binary 
+		each category is assigned a numeric value
+		numeric then converted to binary
+	Feature Hashing
+		convert set of features to vector
+		use a hash function
+		
+Feature selection
+	reduce no of features to improve perf
+Class imbalance
+	in classification model, if we have skewed data(more of one type, less of other type)
+	decision tree or XBoost might be good for tabular data
+Feature crosses
+	synthetic features
+	multiply or cross 2 or more features to form a new feature
+	usefull with non-neural network algos
+TensorFlow transformations
+	used to prepare the data before training and predict
+
+
+Vertex AI
+	Managed Datasets
+		to train custom models
+		we use JSON format to specify metadata(labels etc) for images,videos and text
+Missing Data
+	completely remove rows
+	replace with Central Tendency value
+	Assign unique category
+		NA
+		Missing
+	predict missing values using ML
+	Last observed value carry forward
+Outliers
+	significantly different from other instances
+	Z-score, Inter-Quartile Range (IQR) to identify them
+	DBSCAN density base spatial clusters, outliers do not fall in clusters
+
+Data Leakage
+	training data contains additional info that was unintended and not available during
+	prediction
+	example: performing normalization, standardization using full data sets
+	instead of training set only
+	In features
+		proxy variables not removed (which are not available at prediction)
+Choosing models
+	Tabular data
+		Random forests
+		XGBoost
+	Unstructured data
+		Deep learning networks
+Choosing Frameworks in Vertex AI
+	Tensorflow
+		javascript, lite(mobile or edge devices) and on servers TFX
+		supports
+			Neural Networks
+			Decision Forests
+	Scikit Learn
+		python library for ML
+		algos for
+			classification
+			regression
+			clustering
+		supports
+			Dimensionality reduction
+			Model Selection
+			preprocessing
+	XGBoost
+		Extreme Gradient Boosting
+		Distributed Boosting decision tree
+		Ensemble learning
+			Collection of weak learners
+			each training round reduces error residuals
+			minimizes bias and underfitting
+interpretability of models(Explainable AI)
+	understand interprete predictions
+	feature attribution
+		how much a feature contributes to a prediction
+		attribution score
+	example base explanation
+		managed approximate nearest neibhour service
+		returns similar examples to new predictions or instances	
+	model analysis
+		What If Tool
+		Test performance in hypothetical instances
+		analyse importance of feature
+		Visualize model behavior
+Transfer Learning
+	use model trained for a task as the starting point of building model for another task
+	used in deep learning because of training costs
+	Inductive transfer learning
+		same source and target domains, but different 	tasks
+		use knowledge from prior task and apply to new task
+	Transductive transfer learning
+		same source and target not same domains but interrelated
+		source domain has labeled examples, target domain does not
+	Unsupervised transfer learning
+		similar to inductive type
+		both source and target domains have unlabeled datasets
+Data Augmentation
+	artificialy increasing no of instances in a dataset by using other instances
+	apply transformation to data
+	new data comes from real world data
+Overfiting
+	model do well on training data but poorly on test data
+	solution
+		regularization which limit info captured
+	
+Training Data File formats
+	Columnar format
+		data stored in column orientation instead of row
+	Tabular Text file formats
+		Comma separated values (CSV)
+	Nested file format
+		stores instances in hierarchial format
+		records have 1 parent 0 or more children
+		text:JSON or XML
+		binary: protocol buffers and avro
+		TFRecords: used in tensorflow, based on protobuf
+	Array based file format
+		vectorization
+		Numpy in python(binary format)
+	Hierarchial file format
+		supports heterogeneous complex datasets
+		HDF5 and NetCDF
+		HDF used when data does not map to columnar format
+			ex:medical data
+		NetCDF is popular in science and astronomy
+		
+Hyperparameters Tuning
+	Grid Search
+		specify range of values for each hyperparameter
+		build model for each possible combination of hyperparameters
+	Random Search
+		use distribution for each hyperparameter
+		randomly sample for each hyperparameter values from distribution
+	we can run both grid and random parallelly
+	Bayesian Search
+		Sequential model-based optimization
+		use results of previous iteration to improve current iteration
+		use evaluated hyperparameters to calculate posterior expectation
+Baseline models
+	simple models based on
+		hand coded heuristics
+		linear model
+	provides a basis of comparision to other models
+	if other models are not performing better than the baseline then there's a problem
+Unit Tests
+	tests that run automatically in the CI/CD
+	prevents deploying an broken model
+Distributed training
+	train a model across multiple nodes in a cluster
+	available in Vertex AI
+	need to use supported frameworks like TensorFlow
+	Role of Nodes
+		primary replica
+			to manage other nodes
+		workers
+			to do a portion of training work
+		parameter servers
+			to store model parameters and coordinate shared model state accross workers
+		Evaluators
+			evaluate models
+	Reduction servers
+		communicates gradients among workers
+		communicating gradients between nodes can increase latency
+		reduction server is all reduce algorithm
+			aggregates target arrays into a single array
+			summation usually used in deep learning
+		increases throughput
+		require use of GPUs
+Deploy
+	Pre-built containers
+		Tensorflow
+		tensorflow optimised runtime
+		Scikit learn
+		XGBoost
+	Custom
+		docker containers running HTTP server
+		http server responds to healthchecks, liveness and prediction requests
+		request and response size must be 1.5MB or smaller
+		Vertex service AI Agent is google managed service account
+		has sufficient permissions to work with custom containers
+	NVIDIA Triton
+		opensource inference serving platform
+		optimised for CPUs and GPUs
+		Vertex AI prediction runs in custom container published by NVIDIA
+		supports
+			Tensorflow
+			Pytorch
+			TensorRT
+			forest inference library
+				XGBoost
+				LightGBM
+				Scikit learn
+	Optimised Tersorflow Runtime
+		runs tensorflow models at lower cost and latency than open
+		source pre-built tensorflow containers
+		backward compatible with pre-built tensorflow containers
+		uses technologies and optimizations used internally at Google
+Vertex AI Model monitoring
+	monitors prediction input data for
+		skew
+		Drift
+			feature data distribution in production changes
+			significantly over time
+GPUs are not used with XGBoost and Scikit learn in vertex AI			
+
+		
+
+
+		
+	
+		
+			
+				
+			

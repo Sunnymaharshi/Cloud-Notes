@@ -1,0 +1,77 @@
+Workbooks from practicing for ace course:
+	Best practice is to manage role assignment by groups, not by individual
+	users.
+	
+	A billing account can handle billing for more than one project.
+	A project can only be linked to one billing account at a time.
+	Even projects using free resources need to be tied to a valid Cloud
+	Billing account.
+	
+	You can set up to 5 Cloud Monitoring channels to define email recipients
+	that will receive budget alerts.
+	
+	Cloud SQL does not support user-defined functions
+	
+	N2 is a balanced machine type, which is recommended for
+	medium-large databases.
+	
+	E2 is a cost-optimized machine type.
+	
+	App Engine
+		standard
+			apps run in a sandbox using a specific language
+			runtime.
+			good for rapid scaling
+			limited to specific languages.
+			It can scale to 0 when there is no incoming traffic.
+			It starts up in seconds.
+		flexible
+			runs in Docker containers in Compute Engine VMs.
+			Flexible supports more programming languages.
+			App Engine flexible does not scale to 0.
+			Startup is in minutes.
+			Deployment time is in minutes (longer than standard)
+			
+	Finalize event trigger when a write to Cloud Storage is complete.
+	
+	Terraform 
+		init downloads the latest version.
+		plan verifies the syntax.
+		plan outputs a preview of resources.
+		Terraform Apply sets up resources specified in the terraform
+		config file.
+		
+	internal http(s) load balancer can only use NEGs.
+	
+	GKE
+		Pods provide the executable resources your containers run in.
+		
+		Service endpoints are defined by pods with labels that match
+		those specified in the service configuration file.
+		
+		Services then specify how those pods are exposed.
+		
+		Deployments help you with availability and the health of a set of
+		pod replicas.
+		
+		pod
+			smallest deployable object in Kubernetes
+			single instance of a running process that contains one or more docker
+			containers
+			Pods provide networking and storage to containers, and contain
+			dependencies the container needs to run and communicate.
+		deployment
+			manages a set of multiple identical pods.
+			replaces unhealthy instances
+			you update the pod template in a deployment, it starts a rolling upgrade 
+			of the pods in the deployment.
+		service
+			group of pod endpoints that you can conﬁgure access for.
+			gives you a stable IP that belongs to the service.
+			can be conﬁgured to implement load balancing.
+		kubectl apply creates and updates Kubernetes objects in a
+		declarative way from manifest files.
+		you can set up dedicated service accounts for each pod
+		
+	
+	

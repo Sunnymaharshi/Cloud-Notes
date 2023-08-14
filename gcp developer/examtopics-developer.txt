@@ -1,0 +1,136 @@
+You are planning to migrate a MySQL database to the managed Cloud SQL database for Google Cloud. You have Compute Engine virtual machine instances that will connect with this Cloud SQL instance. You do not want to whitelist IPs for the Compute Engine instances to be able to access Cloud SQL.
+	Enable private IP for the Cloud SQL instance.
+
+Health checks to port 80 on the Compute Engine virtual machine instance are failing and no traffic is sent to your instances. You want to resolve the problem.
+	gcloud compute firewall-rules create allow-lb --network load-balancer --allow tcp --source-ranges
+	130.211.0.0/22,35.191.0.0/16 --direction INGRESS
+
+Your website is deployed on Compute Engine. Your marketing team wants to test conversion rates between 3 different website designs.
+	Deploy the website on App Engine and use traffic splitting. 
+
+You need to copy directory local-scripts and all of its contents from your local workstation to a Compute Engine virtual machine instance.
+	gcloud compute scp --project ג€my-gcp-projectג€ --recurse ~/local-scripts/ gcp-instance-name:~/server-scripts/ --zone
+	us-east1-b
+
+You are deploying your application to a Compute Engine virtual machine instance with the Stackdriver Monitoring Agent installed. Your application is a unix process on the instance. You want to be alerted if the unix process has not run for at least 5 minutes. You are not able to change the application to generate metrics or logs.
+Which alert condition should you configure?
+	Process health
+
+You have two tables in an ANSI-SQL compliant database with identical columns that you need to quickly combine into a single table, removing duplicate rows from the result set.
+	Use the UNION operator in SQL to combine the tables.
+	UNION removes duplicate rows.UNION ALL does not remove duplicate rows.
+	
+Your company wants to expand their users outside the United States for their popular application. The company wants to ensure 99.999% availability of the database for their application and also wants to minimize the read latency for their users across the globe.
+	Create a multi-regional Cloud Spanner instance with "nam-asia-eur1" configuration.
+	Create a cluster with at least 3 Spanner nodes.
+
+You need to migrate an internal file upload API with an enforced 500-MB file size limit to App Engine.
+	Use signed URLs to upload files.
+
+You are using Cloud Build to build and test application source code stored in Cloud Source Repositories. The build process requires a build tool not available in the Cloud Build environment.
+	Build a custom cloud builder image and reference the image in your build steps.
+
+You are building an API that will be used by Android and iOS apps. The API must:
+* Support HTTPs
+* Minimize bandwidth cost
+* Integrate easily with mobile apps
+Which API architecture should you use?
+	gRPC-based APIs
+	gRPC (gRPC Remote Procedure Calls) is a modern, high-performance, open-source remote procedure call (RPC) framework
+	that can be used to build APIs. It uses HTTP/2 as the underlying transport protocol and Protocol Buffers as the
+	encoding format. gRPC is designed to be low-bandwidth, low-latency, and easily integrable with mobile apps. It also
+	supports HTTPs out of the box.
+
+Your application takes an input from a user and publishes it to the user's contacts. This input is stored in a table in Cloud Spanner. Your application is more sensitive to latency and less sensitive to consistency.
+How should you perform reads from Cloud Spanner for this application?
+	Perform stale reads using single-read methods.
+
+Your company has deployed a new API to App Engine Standard environment. During testing, the API is not behaving as expected. You want to monitor the application over time to diagnose the problem within the application code without redeploying the application.
+	Stackdriver Debug Logpoints
+
+Your company has a BigQuery data mart that provides analytics information to hundreds of employees. One user of wants to run jobs without interrupting important workloads. This user isn't concerned about the time it takes to run these jobs. You want to fulfill this request while minimizing cost to the company and the effort required on your part
+	Ask the user to run the jobs as batch jobs
+
+You want to notify on-call engineers about a service degradation in production while minimizing development time.
+	Use Stackdriver Monitoring to monitor resources and raise alerts.
+
+You are creating a web application that runs in a Compute Engine instance and writes a file to any user's Google Drive. You need to configure the application to authenticate to the Google Drive API. What should you do?
+	Use an OAuth Client ID that uses the https://www.googleapis.com/auth/drive.file scope to obtain an access token for
+	each user
+
+You are load testing your server application. During the first 30 seconds, you observe that a previously inactive Cloud Storage bucket is now servicing 2000 write requests per second and 7500 read requests per second. Your application is now receiving intermittent 5xx and 429 HTTP responses from the Cloud Storage
+JSON API as the demand escalates. You want to decrease the failed responses from the Cloud Storage API.
+	Limit the upload rate from your application clients so that the dormant bucket's peak request rate is reached more
+	gradually. 
+
+Your application is controlled by a managed instance group. You want to share a large read-only data set between all the instances in the managed instance group. You want to ensure that each instance can start quickly and can access the data set via its filesystem with very low latency. You also want to minimize the total cost of the solution.
+	Move the data to a Compute Engine persistent disk, and attach the disk in read-only mode to multiple Compute Engine
+	virtual machine instances.
+
+You want to re-architect a monolithic application so that it follows a microservices model. You want to accomplish this efficiently while minimizing the impact of this change to the business.
+	Replace the application's features with appropriate microservices in phases
+
+Your company's development teams want to use Cloud Build in their projects to build and push Docker images to Container Registry. The operations team requires all Docker images to be published to a centralized, securely managed Docker registry that the operations team manages.
+	Create a separate project for the operations team that has Container Registry configured. Assign appropriate
+	permissions to the Cloud Build service account in each developer team's project to allow access to the operation
+	team's registry.
+
+You are using Cloud Build to build a Docker image. You need to modify the build to execute unit and run integration tests. When there is a failure, you want the build history to clearly display the stage at which the build failed.
+	Create a Cloud Build build config file with separate cloud builder steps to compile and execute unit and integration
+	tests.
+
+Your code is running on Cloud Functions in project A. It is supposed to write an object in a Cloud Storage bucket owned by project B. However, the write call is failing with the error "403 Forbidden".
+	Grant the service-PROJECTA@gcf-admin-robot.iam.gserviceaccount.com service account the roles/storage.objectCreator
+	role for the Cloud Storage bucket.
+
+You have an analytics application that runs hundreds of queries on BigQuery every few minutes using BigQuery API. You want to find out how much time these queries take to execute.
+	Use Stackdriver Monitoring to plot query execution times.
+
+You are deploying a single website on App Engine that needs to be accessible via the URL http://www.altostrat.com/.
+	Verify domain ownership with Webmaster Central. Create a DNS CNAME record to point to the App Engine canonical name
+	ghs.googlehosted.com.
+
+Your application is built as a custom machine image. You have multiple unique deployments of the machine image. Each deployment is a separate managed instance group with its own template. Each deployment requires a unique set of configuration values. You want to provide these unique values to each deployment but use the same custom machine image in all deployments. You want to use out-of-the-box features of Compute Engine.
+	Place the unique configuration values in the instance template instance metadata
+
+Your application is running on Compute Engine and is showing sustained failures for a small number of requests. You have narrowed the cause down to a single
+Compute Engine instance, but the instance is unresponsive to SSH.
+	Enable and check the serial port output.
+
+Your application requires service accounts to be authenticated to GCP products via credentials stored on its host Compute Engine virtual machine instances. You want to distribute these credentials to the host instances as securely as possible.
+	Use the instance's service account Application Default Credentials to authenticate to the required resources.
+
+Your data is stored in Cloud Storage buckets. Fellow developers have reported that data downloaded from Cloud Storage is resulting in slow API performance.
+You want to research the issue to provide details to the GCP support team.
+	gsutil perfdiag ג€"o output.json gs://my-bucket
+
+You are using Cloud Build build to promote a Docker image to Development, Test, and Production environments. You need to ensure that the same Docker image is deployed to each of these environments.
+	Use the digest of the Docker image
+	
+You are writing a Compute Engine hosted application in project A that needs to securely authenticate to a Cloud Pub/Sub topic in project B.
+	Configure the instances with a service account owned by project A. Add the service account as a publisher on the
+	topic.
+
+You are developing an ecommerce application that stores customer, order, and inventory data as relational tables inside Cloud Spanner. During a recent load test, you discover that Spanner performance is not scaling linearly as expected. Which of the following is the cause?
+	The use of Version 1 UUIDs as primary keys that increase monotonically.
+
+You are developing an application that reads credit card data from a Pub/Sub subscription. You have written code and completed unit testing. You need to test the
+Pub/Sub integration before deploying to Google Cloud. What should you do?
+	Create a service to publish messages, and deploy the Pub/Sub emulator. Publish a standard set of testing messages
+	from the publishing service to the emulator.
+
+You are designing an application that will subscribe to and receive messages from a single Pub/Sub topic and insert corresponding rows into a database. Your application runs on Linux and leverages preemptible virtual machines to reduce costs. You need to create a shutdown script that will initiate a graceful shutdown.
+	Write a shutdown script that uses inter-process signals to notify the application process to disconnect from the
+	database.
+
+
+	
+	
+	
+	
+	
+
+	
+	
+	
+

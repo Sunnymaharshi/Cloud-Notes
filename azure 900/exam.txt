@@ -1,0 +1,63 @@
+To which object or level is an Azure role-based access control (RBAC) role applied?
+    scope
+
+What can you use to ensure that a development team can only create virtual machines of a certain size?
+    Azure Policy
+
+What can you use to automatically detect performance anomalies for web apps?
+    Azure Application Insights
+
+You need to associate the costs of resources to different groups within an organization without changing the location of the resources.
+    resource tags
+
+Which two tools are accessible via Azure Cloud Shell and allows you to write Bash scripts to manage an Azure environment?
+    Azure PowerShell
+    Azure CLI
+
+Which of the following are examples of Azure Sovereign Regions?
+    Azure Australia
+    Azure US Government
+    Azure China
+
+Which of the following Azure Resources are required in order to have a virtual machine?
+    network card, storage and a virtual network.
+    
+What are the two features that Azure AD provides? Choose two.
+    Application Management
+    Authentication
+
+Which of the following elements is considered part of the <b>network</b> layer of network security?
+    Separate servers into distinct subnets by role
+
+What operating systems does Microsoft supply Azure Virtual Machine images for?
+    Windows and linux
+
+
+What affect does using a "read only" resource lock on a Azure Storage Account have?
+    storage account cannot have its properties altered but it doesn't affect data itself
+
+What type of documents does the Microsoft Service Trust Portal provide?
+    A list of standards that Microsoft follows, pen test results, security assessments, white papers, faqs, and other documents that can be used to show Microsoft's compliance efforts
+
+Which Azure AD licenses (select two) are made available through Azure?
+    office 365
+    Azure AD Free
+
+Which of the following elements is considered part of the <b>perimeter</b> layer of security?
+    Firewall
+
+An Azure Storage Account can have both a public endpoint and a private endpoint at the same time.
+    True 
+
+What benefit does Availability Sets provide when it comes to virtual machines in Azure?
+    physically and logically Separate virtual machines  so that if one goes down, other do not 
+
+What is the basic way of protecting an Azure Virtual Network subnet?
+    Network security group
+
+Approximately how many regions does Azure have around the world?
+    Was 54, now 60+
+
+What two types of DDoS protection services does Azure provide? Select two.
+    Basic and Standard
+

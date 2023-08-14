@@ -1,0 +1,393 @@
+Notes:
+	Devops Five Pillars
+		Reduce org silos
+		Accept failure as normal
+		Implement gradual change (like canary)
+		Leverage tooling & automation
+		Measure everything
+		
+	Application deployment
+		Recreate deployment pattern
+			you fully scale down the existing application version before you scale up the new application
+			version.
+		Rolling update deployment pattern
+			you update a subset of running application instances instead of simultaneously 
+			updating every application instance
+			number of instances that you update simultaneously is called the window size.
+		Blue/green deployment pattern
+			you perform two identical deployments of your application
+			Only one version is live at a time.
+			Traffic is routed to the blue deployment while the green deployment is created and tested.
+			After you're finished testing, you route traffic to the new version.
+			Environment separation
+	Testing strategies
+		Canary test pattern
+			you partially roll out a change and then evaluate its performance against a baseline deployment
+		A/B test pattern
+			you route a subset of users to new functionality based on routing rules
+			you control your target audience for the new features and monitor any 
+			statistically significant differences in user behavior
+		Shadow test pattern
+			you deploy and run a new version alongside the current version, but in such a way that 
+			the new version is hidden from the users
+			
+	
+	Data incident response process
+		After declare an incident, we designate an incident commander who coordinates incident response and
+		resolution.The incident commander delegates the responsibility for managing different aspects of the
+		incident to experts and manages the incident from the moment of declaration to closure. 
+		Incident commander
+			Coordinated incident response and resolution
+			person who declares the incident typically steps into the IC role
+		Communication lead
+			manages communication around the incident
+		Operation lead
+			Manages technical response and remidiation of the incident
+			Remidiation
+			Investigation
+		Subject matter experts
+			Provide subject matter expertise
+			Managed by incident commander
+			Security & privacy
+			Legal
+			Product
+			Support
+			Digital forensics
+			Signals detection team
+			Global investigation teams
+		
+	Incident Response workflow
+		Identification
+			Detection
+				Automated & manual processes detect potential vulnerabilities and incidents
+			Reporting
+				Automated & manual processes report the issue to Google's incident response team
+		Coordination
+			Triage
+				On-call responder evaluates the nature of the incident report
+				On-call responder assesses severity of the incident
+				On-call responder assigns incident commander
+			Engage response team
+				Incident commander completes assessment of known facts
+				Incident commander designates leads from relevant teams and forms incident response team
+				Incident response team evaluates incident and response effort
+		Resolution
+			Investigation
+				Incident response team gathers key facts about the incident
+				Additional resources are integrated as needed to allow for expedient resolution
+			Containment & recovery
+				Operations lead takes immediate steps to:
+					Limit ongoing damage
+					Fix underlying issue
+					Restore affected systems and services to normal operations
+			Communication
+				Key facts are evaluated to determine whether notification is appropriate
+				Communications lead develops a communication plan with appropriate leads
+		Closure
+			Lessons learned
+				Incident response team retrospects on incident and response effort
+				Incident commander designates owners for long-term improvements
+		Continuous improvement
+			Program development
+				Maintain the training, processes, resources, and tools
+			Prevention
+				Improve incident response program based on lessons learned
+					
+	Tools used for incident response
+		PagerDuty
+			We store all of our on-call information, service ownership, postmortems, incident metadata, 
+			and the like, in PagerDuty. 
+		Slack
+			We maintain a dedicated channel (#incident-war-room) as a gathering place for all subject-matter
+			experts and Incident Commanders.
+		Best Practices
+			Incident Response Training
+			Prepare Beforehand
+			Decide on a communication channel
+			Keep your audience informed
+			Prepare a list of contacts
+			Establish criteria for an incident
+			Drills
+	Document issue in a postmortem
+		Document root causes
+		Create and prioritize action items
+		Communicate postmortem to stakeholders
+					
+	Secrets management and key management
+		Secret Manager allows you to store, manage, and access secrets as binary blobs or text strings. 
+		With the appropriate permissions, you can view the contents of the secret.
+		
+	Binary Authorization
+		With Binary Authorization you can configure a policy that defines which attestations must be 
+		present on your image before it can be deployed across your clusters	
+		
+	Cloud Build
+		Cloud Build is a service that executes your builds on Google Cloud.
+	
+	Anthos
+		Anthos is a modern application management platform that provides a consistent development and operations
+		experience for cloud and on-premises environments. 
+		
+	
+	GKE autoscaling
+		Horizontal Pod Autoscaler (HPA), for adding and removing Pods based on utilization metrics.
+		Vertical Pod Autoscaler (VPA), for sizing your Pods.
+		Cluster Autoscaler, for adding and removing Nodes based on the scheduled workload.
+		Node auto-provisioning, for dynamically creating new node pools with nodes that match the needs of 
+		users' Pods.
+	
+	
+	SLO
+		This is a target value or range of values for a service level that is measured by an SLI.
+	SLI
+		This is a carefully defined quantitative measure of some aspect of the level of service
+		that is provided.
+	SLA
+		This is an explicit or implicit contract with your users that includes consequences of meeting
+		(or missing) the SLOs they contain
+		Should be less strict than SLO’s
+	Error budget
+		Provides a clear, objective metric that determines how unreliable the service is allowed to be within a
+		single quarter.
+	Toil
+		Toil is the kind of work tied to running a production service that tends to be manual, repetitive,
+		automatable, tactical, devoid of enduring value, and that scales linearly as a service grows
+	Toil Budgets
+		Google aims to ensure that at least 50% of each SRE's time is spent doing engineering projects
+	
+	DevOps
+		Organizational and cultural movement that aims to increase software delivery velocity, service
+		reliability, and shared ownership among stakeholders.
+		No Silos, Accidents are normal, Gradual change, Tooling, measurement is crucial.
+	Alerting
+		While there may be many alerts ultimately, your goal is to be notified for a significant event: an event
+		that consumes a large fraction of the error budget.
+		Target Error rate
+			alert if the error rate over that window exceeds the SLO.
+		Increased alert window
+			By increasing the window size, you spend a higher budget amount before triggering an alert.
+		Incrementing duration
+			Add a duration parameter to the alert criteria so the alert won’t fire unless the value remains
+			above the threshold for some time.
+		Burn rate
+			Burn rate is how fast, relative to the SLO, the service consumes the error budget
+		Multiple burn rate
+			Use multiple burn rates and time windows, and fire alerts when burn rates surpass a specified
+			threshold. This option retains the benefits of alerting on burn rates and ensures that you don’t
+			overlook lower (but still significant) error rates.
+		Multiwindow, multi- burn-rate alerts
+			We can enhance the multi-burn-rate alerts in iteration 5 to notify us only when we’re still
+			actively burning through the budget—thereby reducing the number of false positives. 
+			To do this, we need to add another parameter: a shorter window to check if the error budget is
+			still being consumed as we trigger the alert.
+	
+	Monitoring
+		Collecting, processing, aggregating, and displaying real-time quantitative data about a system,
+		such as query counts and types, error counts etc.
+	Managing Risk
+		Item or risk that may cause you to not meet the SLO
+	Post-mortems
+		These are conducted after and incident and a great form of learning for everyone.
+		No blame, root causes, action items
+	Handling Incidents
+		Things break so it is important to understand how and what to do when that happens.
+	API lifecycle
+		What is the process for your new deployment and life cycle of your API.	
+		Stages to replace an API
+	Dashboards
+		This is a product within Stackdriver for managing and responding to incidents.
+	Response Structure
+		Communication and structure is a key part of handling incident.
+		Operation lead,Communication lead,Incident commander
+		
+		
+	Cloud Monitoring
+		Cloud Monitoring (formerly Stackdriver) discovers and monitors your cloud resources
+		automatically, whether you are running on Google Cloud Platform or AWS
+		1- Metrics
+		2- Custom metrics
+		3- Alerting policies
+		4- Monitoring
+	Sharing charts
+		If you want, you can share a chart with others by sending them a parameterized URL.
+		1- Sharing various chars is possible
+		2- Understand how to customise the parameter
+		3- Know the tag used	
+	Workspaces
+		A Workspace is a tool for monitoring resources contained in one or more Google Cloud projects
+	Stackdriver agent / Fluentd
+		The Logging agent, an application based on Fluentd that runs on your virtual machine (VM) instances.
+		Ops Agent
+			agent combines logging and metrics into a single agent, providing YAML-based configurations 
+			for collecting your logs and metrics, and features high-throughput logging.
+		Legacy Logging agent
+			Streams logs from common third-party applications and system software to Cloud Logging.
+			You can configure the agent to stream additional logs.
+	Protect sensitive Data
+		Fluentd filter plugin mutates/transforms incoming event streams in a versatile manner
+		Filter record transformer
+			1- Remove sensitive or unwanted data
+			2- Add new fields
+			3- Update field in log entries
+			4- Delete fields in log entries
+		Fluent plugin record reformer
+			it also allows you to modify log tags.
+		Fluent plugin detect exceptions
+			output plugin scans a log stream, either unstructured (text) or JSON-format log records,
+			for multi-line exception stack traces.
+			If a consecutive sequence of log entries forms an exception stack trace, 
+			the log entries are forwarded as a single, combined log message. Otherwise, the log entry is
+			forwarded as it was.
+	Pub/Sub is used for log sinks to third-party platforms
+	
+	Best practices for speeding up builds
+		Building leaner containers
+			separate the building of the application, along with the tools used to build it, 
+			from the assembly of the runtime container.
+		Using Kaniko cache
+			Kaniko cache is a Cloud Build feature that caches container build artifacts by storing and
+			indexing intermediate layers within a container image registry, such as Google's own Container
+			Registry, where they are available for use by subsequent builds.
+		Using a cached Docker image
+			Specify a cached image that can be used for subsequent builds. You can specify the cached image
+			by adding the --cache-from argument in your build config file, which will instruct Docker to
+			build using that image as a cache source.
+		Caching directories with Google Cloud Storage
+			You can copy the results of a previous build to a Google Cloud Storage bucket, use the results for
+			faster calculation, and then copy the new results back to the bucket.
+		Avoiding the upload of unnecessary files
+	
+	
+	Ensure healthy communication and collaboration for operations
+		Prevent burnout (e.g., set up automation processes to prevent burnout)
+		Foster a learning culture
+		Foster a culture of blamelessness
+	Artifact Registry
+		Regional and multi-regional repositories
+		Multiple repositories per Google Cloud project
+		Repository-native IAM with granular permissions
+		LOCATION-docker.pkg.dev/PROJECT-ID/REPOSITORY/IMAGE:TAG
+	Spinnaker
+		a continuous delivery platform for cloud
+		Google Cloud Build sends Build Notifications when the state of your build changes. 
+		Open-source, multi-cloud deployments
+		Spinnaker subscribes to these pub/sub messages so that it can
+			track the status of builds it has initiated in a GCB stage
+			trigger pipelines based on build status changes
+	
+	After you created a service account in project A you should go to project B to "IAM" (not "Service Accounts"),
+	There you will be able to add the email you just created with proper roles.
+	Terraform
+		Initialize Terraform
+			run terraform init to add the necessary plugins and build the .terraform directory
+		Validate the Terraform configuration
+			terraform plan Verifies that the syntax of main.tf is correct
+			shows a preview of the resources that will be created	
+		Apply the configuration
+			terraform apply
+		Clean up
+			terraform destroy
+	Container analysis and vulnerability scanning
+		Enable the Container Scanning API.
+		The scanning service performs vulnerability scans on images in Artifact Registry and Container Registry
+	Binary Authorization
+		Binary Authorization is a deploy-time security control that ensures only trusted container images are
+		deployed on Google Kubernetes Engine (GKE) or Cloud Run. 
+		you can require images to be signed by trusted authorities during the development process and then enforce
+		signature validation when deploying
+		you view and configure the default rule in the policy. 
+		The default rule allows all images to be deployed.
+	Customizing Cloud Logging logs for Google Kubernetes Engine with Fluentd
+		Deploying the Fluentd daemonset to your cluster
+		Filtering information from the logfile
+			kubernetes/fluentd-configmap.yaml
+			add filters in file
+	Configure the Logging agent
+		Third-party application log input configuration
+			/etc/google-fluentd/config.d/[APPLICATION_NAME].conf	
+		Modifying Log Records
+			filter plugin - filter_record_transformer
+				Add new fields to log entries
+				Update fields in log entries
+				Delete fields in log entries
+			fluent-plugin-record-reformer 
+				similae to above
+				also allows you to modify log tags.
+			fluent-plugin-detect-exceptions
+				output plugin scans a log stream, either unstructured (text) or JSON-format log records,
+				for multi-line exception stack traces.
+				If a consecutive sequence of log entries forms an exception stack trace, the log entries
+				are forwarded as a single, combined log message. Otherwise, the log entry is forwarded as
+				it was.
+	Structured logging
+		structured logs refer to log entries that use the jsonPayload field to add structure to their payloads.
+		Use the Logging API
+		Use the gcloud CLI
+		Use BindPlane
+		Use the Logging agent
+	Alerting
+		roles/monitoring.alertPolicyEditor
+	Export Google Cloud security data to your SIEM system
+		Cloud Pub/Sub and Dataflow to aggregate and stream logs from Cloud Logging
+	Grant access to Cloud Monitoring
+		To view the metrics visible to a metrics scope
+			roles/monitoring.viewer
+		To modify a metrics scope
+			roles/monitoring.monitoring.admin
+	Configure and manage sinks
+		roles/logging.configWriter
+	logging export
+		Cloud Storage: JSON files stored in Cloud Storage buckets.
+		Pub/Sub: JSON messages delivered to Pub/Sub topics. 
+			Supports third-party integrations, such as Splunk, with Logging.
+		BigQuery: Tables created in BigQuery datasets.
+		Another Cloud Logging bucket: Log entries held in Cloud Logging log buckets.
+	
+	Field-level access control
+		let you hide individual LogEntry fields from users of a Google Cloud project,
+		providing you a more granular way to control the logs data a user can access.
+	Dashboards
+		roles/monitoring.dashboardViewer
+			Monitoring Dashboard Configuration Viewer	
+		roles/monitoring.dashboardEditor
+			Monitoring Dashboard Configuration Editor
+	Incidents
+		roles/monitoring.viewer
+		roles/monitoring.editor	
+	Notification channels
+		roles/monitoring.notificationChannelViewer
+		roles/monitoring.notificationChannelEditor	
+	
+	Metrics scope configurations
+		roles/monitoring.metricsScopesViewer
+		roles/monitoring.metricsScopesAdmin
+		
+	instrument your application
+		You can instrument your code by using the Google client libraries. However, 
+		it's recommended that you use OpenTelemetry or OpenCensus to instrument your application. 
+		These are open source tracing packages. OpenTelemetry is actively in development and is the preferred
+		package.
+		Use OpenTelemetry and the associated Cloud Trace client library. This is the recommended way to instrument
+		your applications.
+		Use OpenCensus if an OpenTelemetry client library is not available for your language.
+		Use the Cloud Trace API and write custom methods to send tracing data to Cloud Trace.
+	
+	local development server
+		The Google Cloud CLI includes a local development server (dev_appserver.py
+		to simulate running your application in production App Engine as well as use it to access App Engine
+		bundled services.
+	
+	load balancer health check will not recover the instance. The load balancer health check will exclude the instance
+	from receiving traffic.
+	managed instance group health check will recreate the instance when it fails
+	
+	Use split traffic in GKE for A/B or canary deployment
+	change name for blue/green deployment
+	
+	GKE support for two types of Cloud Load Balancing for a publicly accessible application:
+		Ingress
+		External Network Load Balancing
+	When you expose one or more Services through an Ingress using the default Ingress controller,
+	GKE creates a global external HTTP(S) load balancer (classic) or an internal HTTP(S) load balancer
+	Both of these load balancers support multiple backend services on a single URL map. 
+		

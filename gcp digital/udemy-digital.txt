@@ -1,0 +1,67 @@
+sustained used discounts
+	apllies to only N1,N2 machine types
+	if we use atleast 25% of month
+	only on gke & vm instances
+committed use discounts
+	1 or 3 years
+	upto 70% of discount
+	only on gke & vm instances
+	can not cancel
+Google Cloud Directory Sync
+	syncs only google users, groups and shared contacts
+	doesn't sync content, files or events
+	syncs only in one direction
+	LDAP to GCDS to Cloud Identity
+	if changes made in cloud identity it won't reflect in LDAP
+
+VPC 
+	default
+		created when compute engine API enabled
+		every project has default VPC
+		one subnet per regions
+	auto
+		default can be created
+		fixed subnet ranges per region
+		can expand from /20 to /16
+		default firewall can be added easily
+	custom
+		no subnet automatically created
+		subnet creation manual
+		custom ip range allocation
+		no neccessary to create subnet in each region
+IAM
+	service accounts
+		10 keys per service acc
+		100 service accs per project
+
+Google API private Access
+	allow different subnets to use GCP services privately
+	no external IP Address required
+	call google APIs & Services with internal IP
+
+Hybrid Connectivity
+	cloud VPN
+		through IPsec VPN
+		encrypted by one gateway and decrypted by other gateway
+		traffic over public internet
+		uptp 3Gbps
+	cloud Interconnect
+		extend ur on-premise VPC to GCP network
+		high available low latency
+		access resources with internal IP only
+		no encryption while traffic travelled
+		types
+			dedicated
+			partner
+	
+Migration services
+	Database migration services
+	 	Sync RDBMS
+	 	One time transfer to Google Cloud SQL
+	migrate for Anthos & GKE
+		migrate app from vm to container
+	Bigquery Data Transfer service
+		scheduled and managed transfer service
+		
+		
+	

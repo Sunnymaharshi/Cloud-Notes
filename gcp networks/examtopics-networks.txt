@@ -1,0 +1,305 @@
+You need to restrict access to your Google Cloud load-balanced application so that only specific IP addresses can connect.
+     Tag the backend instances "application," and create a firewall rule with target tag "application" and the source IP range of the allowed clients and Google health check IP ranges. 
+
+Your organization is deploying a single project for 3 separate departments. Two of these departments require network connectivity between each other, but the third department should remain in isolation. Your design should create separate network administrative domains between these departments. You want to minimize operational overhead.
+    Create 3 separate VPCs, and use VPC peering to establish connectivity between the two appropriate VPCs.
+
+You are migrating to Cloud DNS and want to import your BIND zone file.
+    gcloud dns record-sets import ZONE_FILE --zone-file-format --zone MANAGED_ZONE
+
+You created a VPC network named Retail in auto mode. You want to create a VPC network named Distribution and peer it with the Retail VPC.
+    Create the Distribution VPC in custom mode. Use the CIDR range 10.0.0.0/9. Create the necessary subnets, and then peer them via network peering.
+
+You are using a third-party next-generation firewall to inspect traffic. You created a custom route of 0.0.0.0/0 to route egress traffic to the firewall. You want to allow your VPC instances without public IP addresses to access the BigQuery and Cloud Pub/Sub APIs, without sending the traffic through the firewall.
+    Turn on Private Google Access at the subnet level.
+    Create a set of custom static routes to send traffic to the external IP addresses of Google APIs and services via the default internet gateway.
+
+All the instances in your project are configured with the custom metadata enable-oslogin value set to FALSE and to block project-wide SSH keys. None of the instances are set with any SSH key, and no project-wide SSH keys have been configured. Firewall rules are set up to allow SSH sessions from any IP address range. You want to SSH into one instance.
+    Open the Cloud Shell SSH into the instance using gcloud compute ssh.
+
+You work for a university that is migrating to GCP.
+These are the cloud requirements:
+"¢ On-premises connectivity with 10 Gbps
+"¢ Lowest latency access to the cloud
+"¢ Centralized Networking Administration Team
+New departments are asking for on-premises connectivity to their projects. You want to deploy the most cost-efficient interconnect solution for connecting the campus to Google Cloud.
+    Use Shared VPC, and deploy the VLAN attachments and Interconnect in the host project.
+
+You have deployed a new internal application that provides HTTP and TFTP services to on-premises hosts. You want to be able to distribute traffic across multiple
+Compute Engine instances, but need to ensure that clients are sticky to a particular instance across both services.
+Which session affinity should you choose?
+     Client IP
+    
+You created a new VPC network named Dev with a single subnet. You added a firewall rule for the network Dev to allow HTTP traffic only and enabled logging.
+When you try to log in to an instance in the subnet via Remote Desktop Protocol, the login fails. You look for the Firewall rules logs in Stackdriver Logging, but you do not see any entries for blocked traffic. You want to see the logs for blocked traffic.
+    Create a new firewall rule with priority 65500 to deny all traffic, and enable logs
+
+You are trying to update firewall rules in a shared VPC for which you have been assigned only Network Admin permissions. You cannot modify the firewall rules.
+Your organization requires using the least privilege necessary.
+    Security Admin privileges from the Shared VPC Admin
+
+You want to create a service in GCP using IPv6.
+    Configure a global load balancer with the designated IPv6 address.
+    
+You want to deploy a VPN Gateway to connect your on-premises network to GCP. You are using a non BGP-capable on-premises VPN device. You want to minimize downtime and operational overhead when your network grows. The device supports only IKEv2, and you want to follow Google-recommended practices.
+What should you do?
+    Create a Cloud VPN instance. "¢ Create a policy-based VPN tunnel. "¢ Configure the appropriate local and remote traffic selectors to match your local and remote networks. "¢ Configure the appropriate static routes.
+
+Your company just completed the acquisition of Altostrat (a current GCP customer). Each company has a separate organization in GCP and has implemented a custom DNS solution. Each organization will retain its current domain and host names until after a full transition and architectural review is done in one year.
+These are the assumptions for both GCP environments.
+"¢ Each organization has enabled full connectivity between all of its projects by using Shared VPC.
+"¢ Both organizations strictly use the 10.0.0.0/8 address space for their instances, except for bastion hosts (for accessing the instances) and load balancers for serving web traffic.
+"¢ There are no prefix overlaps between the two organizations.
+"¢ Both organizations already have firewall rules that allow all inbound and outbound traffic from the 10.0.0.0/8 address space.
+"¢ Neither organization has Interconnects to their on-premises environment.
+You want to integrate networking and DNS infrastructure of both organizations as quickly as possible and with minimal downtime.
+    Set up some variant of DNS forwarding and zone transfers in each organization.
+    Connect VPCs in both organizations using Cloud VPN together with Cloud Router.
+
+Your on-premises data center has 2 routers connected to your Google Cloud environment through a VPN on each router. All applications are working correctly; however, all of the traffic is passing across a single VPN instead of being load-balanced across the 2 connections as desired.
+During troubleshooting you find:
+"¢ Each on-premises router is configured with a unique ASN.
+"¢ Each on-premises router is configured with the same routes and priorities.
+"¢ Both on-premises routers are configured with a VPN connected to a single Cloud Router.
+"¢ BGP sessions are established between both on-premises routers and the Cloud Router.
+"¢ Only 1 of the on-premises router's routes are being added to the routing table.
+    The ASNs being used on the on-premises routers are different.
+
+You have ordered Dedicated Interconnect in the GCP Console and need to give the Letter of Authorization/Connecting Facility Assignment (LOA-CFA) to your cross-connect provider to complete the physical connection.
+    Download the LOA-CFA from the Hybrid Connectivity section of the GCP Console
+    Check the email for the account of the NOC contact that you specified during the ordering process.
+
+You want to set up two Cloud Routers so that one has an active Border Gateway Protocol (BGP) session, and the other one acts as a standby.
+Which BGP attribute should you use on your on-premises router?
+    Multi-exit Discriminator
+
+You are increasing your usage of Cloud VPN between on-premises and GCP, and you want to support more traffic than a single tunnel can handle. You want to increase the available bandwidth using Cloud VPN.
+    Add a second on-premises VPN gateway with a different public IP address. Create a second tunnel on the existing Cloud VPN gateway that forwards the same IP range, but points at the new on-premises gateway IP.
+
+You are disabling DNSSEC for one of your Cloud DNS-managed zones. You removed the DS records from your zone file, waited for them to expire from the cache, and disabled DNSSEC for the zone. You receive reports that DNSSEC validating resolves are unable to resolve names in your zone.
+    Disable DNSSEC at your domain registrar.
+
+You have an application hosted on a Compute Engine virtual machine instance that cannot communicate with a resource outside of its subnet. When you review the flow and firewall logs, you do not see any denied traffic listed.
+During troubleshooting you find:
+"¢ Flow logs are enabled for the VPC subnet, and all firewall rules are set to log.
+"¢ The subnetwork logs are not excluded from Stackdriver.
+"¢ The instance that is hosting the application can communicate outside the subnet.
+"¢ Other instances within the subnet can communicate outside the subnet.
+"¢ The external resource initiates communication.
+    The traffic is not matching the expected ingress rule.
+    
+You have configured Cloud CDN using HTTP(S) load balancing as the origin for cacheable content. Compression is configured on the web servers, but responses served by Cloud CDN are not compressed.
+    You have to configure the web servers to compress responses even if the request has a Via header.
+
+You are designing a shared VPC architecture. Your network and security team has strict controls over which routes are exposed between departments. Your
+Production and Staging departments can communicate with each other, but only via specific networks. You want to follow Google-recommended practices.
+    Create 1 VPC within the shared VPC Host Project, and share individual subnets with the Service Projects to filter access between the specific networks.
+
+You are using a 10-Gbps direct peering connection to Google together with the gsutil tool to upload files to Cloud Storage buckets from on-premises servers. The on-premises servers are 100 milliseconds away from the Google peering point. You notice that your uploads are not using the full 10-Gbps bandwidth available to you. You want to optimize the bandwidth utilization of the connection.
+    Tune TCP parameters on the on-premises servers.
+
+You are designing a Google Kubernetes Engine (GKE) cluster for your organization. The current cluster size is expected to host 10 nodes, with 20 Pods per node and 150 services. Because of the migration of new services over the next 2 years, there is a planned growth for 100 nodes, 200 Pods per node, and 1500 services. You want to use VPC-native clusters with alias IP ranges, while minimizing address consumption.
+    Create a subnet of size/25 with 2 secondary ranges of: /17 for Pods and /21 for Services. Create a VPC-native cluster and specify those ranges.
+
+You create multiple Compute Engine virtual machine instances to be used at TFTP servers.
+    Network load balancer
+
+You want to configure load balancing for an internet-facing, standard voice-over-IP (VOIP) application.
+    Network load balancer
+
+You want to configure a NAT to perform address translation between your on-premises network blocks and GCP.
+     An instance with IP forwarding enabled 
+
+In order to provide subnet level isolation, you want to force instance-A in one subnet to route through a security appliance, called instance-B, in another subnet.
+    Create a more specific route than the system-generated subnet route, pointing the next hop to instance-B with a tag applied to instance-A. 
+
+You create a Google Kubernetes Engine private cluster and want to use kubectl to get the status of the pods. In one of your instances you notice the master is not responding, even though the cluster is up and running.
+    Create the appropriate master authorized network entries to allow the instance to communicate to the master.
+
+Your company has a security team that manages firewalls and SSL certificates. It also has a networking team that manages the networking resources. The networking team needs to be able to read firewall rules, but should not be able to create, modify, or delete them.
+    Assign members of the networking team the compute.networkAdmin role.
+
+You have created an HTTP(S) load balanced service. You need to verify that your backend instances are responding properly.
+    Set request-path to a specific URL used for health checking, and set response to a string that the backend service will always return in the response body.
+
+You are creating a new application and require access to Cloud SQL from VPC instances without public IP addresses.
+    Activate the Service Networking API in your project.
+    Create a private connection to a service producer.
+
+You want to use Cloud Interconnect to connect your on-premises network to a GCP VPC. You cannot meet Google at one of its point-of-presence (POP) locations, and your on-premises router cannot run a Border Gateway Protocol (BGP) configuration.
+    Partner Interconnect with a layer 3 partner
+
+You need to configure a static route to an on-premises resource behind a Cloud VPN gateway that is configured for policy-based routing using the gcloud command.
+Which next hop should you choose?
+    The name and region of the Cloud VPN tunnel
+
+You want to establish a dedicated connection to Google that can access Cloud SQL via a public IP address and that does not require a third-party service provider.
+    Direct Peering
+
+Your on-premises data center has 2 routers connected to your GCP through a VPN on each router. All applications are working correctly; however, all of the traffic is passing across a single VPN instead of being load-balanced across the 2 connections as desired.
+During troubleshooting you find:
+"¢ Each on-premises router is configured with the same ASN.
+"¢ Each on-premises router is configured with the same routes and priorities.
+"¢ Both on-premises routers are configured with a VPN connected to a single Cloud Router.
+"¢ The VPN logs have no-proposal-chosen lines when the VPNs are connecting.
+"¢ BGP session is not established between one on-premises router and the Cloud Router.
+    One of the VPN sessions is configured incorrectly.
+
+You need to define an address plan for a future new GKE cluster in your VPC. This will be a VPC native cluster, and the default Pod IP range allocation will be used. You must pre-provision all the needed VPC subnets and their respective IP address ranges before cluster creation. The cluster will initially have a single node, but it will be scaled to a maximum of three nodes if necessary. You want to allocate the minimum number of Pod IP addresses.
+Which subnet mask should you use for the Pod IP address range?
+    /22
+
+In your company, two departments with separate GCP projects (code-dev and data-dev) in the same organization need to allow full cross-communication between all of their virtual machines in GCP. Each department has one VPC in its project and wants full control over their network. Neither department intends to recreate its existing computing resources. You want to implement a solution that minimizes cost.
+    Connect the VPCs in project code-dev and data-dev using VPC Network Peering.
+    Enable firewall rules to allow all ingress traffic from all subnets of project code-dev to all instances in project data-dev, and vice versa.
+
+You need to create a GKE cluster in an existing VPC that is accessible from on-premises. You must meet the following requirements:
+✑ IP ranges for pods and services must be as small as possible.
+✑ The nodes and the master must not be reachable from the internet.
+✑ You must be able to use kubectl commands from on-premises subnets to manage the cluster.
+How should you create the GKE cluster?
+    Create a VPC-native GKE cluster using user-managed IP ranges. "¢ Enable privateEndpoint on the cluster master. "¢ Set the pod and service ranges as /24. "¢ Set up a network proxy to access the master. "¢ Enable master authorized networks.
+
+You want to implement an IPSec tunnel between your on-premises network and a VPC via Cloud VPN. You need to restrict reachability over the tunnel to specific local subnets, and you do not have a device capable of speaking Border Gateway Protocol (BGP).
+    Policy-based routing using a custom local traffic selector
+
+You want to use Partner Interconnect to connect your on-premises network with your VPC. You already have an Interconnect partner.
+    Create a Partner Interconnect type VLAN attachment in the GCP Console and retrieve the pairing key.
+
+You need to centralize the Identity and Access Management permissions and email distribution for the WebServices Team as efficiently as possible.
+    Create a Google Group for the WebServices Team.
+
+One instance in your VPC is configured to run with a private IP address only. You want to ensure that even if this instance is deleted, its current private IP address will not be automatically assigned to a different instance.
+    Change the instance's current internal IP address to static.
+
+After a network change window one of your company's applications stops working. The application uses an on-premises database server that no longer receives any traffic from the application. The database server IP address is 10.2.1.25. You examine the change request, and the only change is that 3 additional VPC subnets were created. The new VPC subnets created are 10.1.0.0/16, 10.2.0.0/16, and 10.3.1.0/24/ The on-premises router is advertising 10.0.0.0/8.
+    The more specific VPC subnet route is taking priority.
+
+You need to create a new VPC network that allows instances to have IP addresses in both the 10.1.1.0/24 network and the 172.16.45.0/24 network.
+    Configure an alias-IP range of 172.16.45.0/24 on the virtual instances within the VPC subnet of 10.1.1.0/24.
+
+Your company has a single Virtual Private Cloud (VPC) network deployed in Google Cloud with access from your on-premises network using Cloud Interconnect. You must configure access only to Google APIs and services that are supported by VPC Service Controls through hybrid connectivity with a service level agreement (SLA) in place.
+    Use Private Google Access for on-premises hosts with restricted.googleapis.com virtual IP addresses.
+
+Your company's security team tends to use managed services when possible. You need to build a dashboard to show the number of deny hits that occur against configured firewall rules without increasing operational overhead. What should you do?
+    Configure Firewall Rules Logging. Use Firewall Insights to display the number of hits.
+
+You are configuring your Google Cloud environment to connect to your on-premises network. Your configuration must be able to reach Cloud Storage APIs and your Google Kubernetes Engine nodes across your private Cloud Interconnect network. You have already configured a Cloud Router with your Interconnect VLAN attachments. You now need to set up the appropriate router advertisement configuration on the Cloud Router. What should you do?
+    Configure the route advertisement to the custom setting, and manually add prefix 199.36.153.8/30 to the list of advertisements. Advertise all visible subnets to the Cloud Router.
+
+You are configuring load balancing for a standard three-tier (web, application, and database) application. You have configured an external HTTP(S) load balancer for the web servers. You need to configure load balancing for the application tier of servers. What should you do?
+    Configure a new internal HTTP(S) load balancer for the application tier. 
+
+Your organization has a new security policy that requires you to monitor all egress traffic payloads from your virtual machines in region us-west2. You deployed an intrusion detection system (IDS) virtual appliance in the same region to meet the new policy. You now need to integrate the IDS into the environment to monitor all egress traffic payloads from us-west2. What should you do?
+    Create an internal TCP/UDP load balancer for Packet Mirroring, and add a packet mirroring policy filter for egress traffic.
+
+You are developing an HTTP API hosted on a Compute Engine virtual machine instance that must be invoked only by multiple clients within the same Virtual Private Cloud (VPC). You want clients to be able to get the IP address of the service. What should you do?
+    Ensure that clients use Compute Engine internal DNS by connecting to the instance name with the url https://[INSTANCE_NAME].[ZONE].c.[PROJECT_ID].internal/.
+
+You recently deployed Cloud VPN to connect your on-premises data canter to Google Cloud. You need to monitor the usage of this VPN and set up alerts in case traffic exceeds the maximum allowed. You need to be able to quickly decide whether to add extra links or move to a Dedicated Interconnect. What should you do?
+    In the Google Cloud Console, use Monitoring Query Language to create a custom alert for bandwidth utilization.
+
+You have applications running in the us-west1 and us-east1 regions. You want to build a highly available VPN that provides 99.99% availability to connect your applications from your project to the cloud services provided by your partner's project while minimizing the amount of infrastructure required. Your partner's services are also in the us-west1 and us-east1 regions. You want to implement the simplest solution. What should you do?
+    Create one Cloud Router and one HA VPN gateway in the us-west1 region of your VPC and your partner's VPC. Connect your VPN gateways to the partner's gateways with a pair of tunnels. Enable global dynamic routing in each VPC. 
+
+You are the network administrator responsible for hybrid connectivity at your organization. Your developer team wants to use Cloud SQL in the us-west1 region in your Shared VPC. You configured a Dedicated Interconnect connection and a Cloud Router in us-west1, and the connectivity between your Shared VPC and on-premises data center is working as expected. You just created the private services access connection required for Cloud SQL using the reserved IP address range and default settings. However, your developers cannot access the Cloud SQL instance from on-premises. You want to resolve the issue.
+    1. Modify the VPC Network Peering connection used for Cloud SQL, and enable the import and export of routes.
+    2. Create a custom route advertisement in your Cloud Router to advertise the Cloud SQL IP address range.
+
+Your company has separate Virtual Private Cloud (VPC) networks in a single region for two departments: Sales and Finance. The Sales department's VPC network already has connectivity to on-premises locations using HA VPN, and you have confirmed that the subnet ranges do not overlap. You plan to peer both VPC networks to use the same HA tunnels for on-premises connectivity, while providing internet connectivity for the Google Cloud workloads through Cloud NAT. Internet access from the on-premises locations should not flow through Google Cloud. You need to propagate all routes between the Finance department and on-premises locations. What should you do?
+    Peer the two VPCs. Configure VPC Network Peering to export custom routes from Sales and import custom routes on Finance's VPC network. Use Cloud Router’s custom route advertisements to announce the peered VPC network ranges to the on-premises locations.
+
+You recently noticed a recurring daily spike in network usage in your Google Cloud project. You need to identify the virtual machine (VM) instances and type of traffic causing the spike in traffic utilization while minimizing the cost and management overhead required. What should you do?
+    Enable VPC Flow Logs and send the output to BigQuery for analysis
+    
+You need to enable Private Google Access for use by some subnets within your Virtual Private Cloud (VPC). Your security team set up the VPC to send all internet-bound traffic back to the on- premises data center for inspection before egressing to the internet, and is also implementing VPC Service Controls in the environment for API-level security control. You have already enabled the subnets for Private Google Access. What configuration changes should you make to enable Private Google Access while adhering to your security team’s requirements?
+    1. Create a private DNS zone with a CNAME record for *.googleapis.com to restricted.googleapis.com, with an A record pointing to Google's restricted API address range.
+    2. Create a custom route that points Google's restricted API address range to the default internet gateway as the next hop
+
+You deployed a hub-and-spoke architecture in your Google Cloud environment that uses VPC Network Peering to connect the spokes to the hub. For security reasons, you deployed a private Google Kubernetes Engine (GKE) cluster in one of the spoke projects with a private endpoint for the control plane. You configured authorized networks to be the subnet range where the GKE nodes are deployed. When you attempt to reach the GKE control plane from a different spoke project, you cannot access it. You need to allow access to the GKE control plane from the other spoke projects. What should you do?
+    Configure the authorized networks to be the subnet ranges of the other spoke projects. 
+
+You recently deployed your application in Google Cloud. You need to verify your Google Cloud network configuration before deploying your on-premises workloads. You want to confirm that your Google Cloud network configuration allows traffic to flow from your cloud resources to your on- premises network. This validation should also analyze and diagnose potential failure points in your Google Cloud network configurations without sending any data plane test traffic. What should you do?
+    Use Network Intelligence Center's Network Topology visualizations.
+
+Your company has 10 separate Virtual Private Cloud (VPC) networks, with one VPC per project in a single region in Google Cloud. Your security team requires each VPC network to have private connectivity to the main on-premises location via a Partner Interconnect connection in the same region. To optimize cost and operations, the same connectivity must be shared with all projects. You must ensure that all traffic between different projects, on-premises locations, and the internet can be inspected using the same third-party appliances. What should you do?
+    Configure the third-party appliances with multiple interfaces. Create a hub VPC network for all projects, and create separate VPC networks for on-premises and internet connectivity. Create the relevant routes on the third-party appliances and VPC networks. Use VPC Network Peering to connect all projects’ VPC networks to the hub VPC. Export custom routes from the hub VPC and import on all projects’ VPC networks. 
+
+You have just deployed your infrastructure on Google Cloud. You now need to configure the DNS to meet the following requirements:
+• Your on-premises resources should resolve your Google Cloud zones.
+• Your Google Cloud resources should resolve your on-premises zones.
+• You need the ability to resolve “.internal” zones provisioned by Google Cloud.
+    Configure both an inbound server policy and outbound DNS forwarding zones with the target as the on-premises DNS resolver. Configure your on-premises DNS resolver to forward Google Cloud zone queries to Google Cloud's DNS resolver.
+
+Your organization uses a hub-and-spoke architecture with critical Compute Engine instances in your Virtual Private Clouds (VPCs). You are responsible for the design of Cloud DNS in Google Cloud. You need to be able to resolve Cloud DNS private zones from your on-premises data center and enable on-premises name resolution from your hub-and-spoke VPC design. What should you do?
+    1. Configure a private DNS zone in the hub VPC, and configure DNS forwarding to the on-premises server.
+    2. Configure DNS peering from the spoke VPCs to the hub VPC.
+
+You recently configured Google Cloud Armor security policies to manage traffic to your application. You discover that Google Cloud Armor is incorrectly blocking some traffic to your application. You need to identity the web application firewall (WAF) rule that is incorrectly blocking traffic. What should you do?
+    Enable HTTP(S) Load Balancing logging with sampling rate equal to 1, and view the logs in Cloud Logging.
+
+Your organization's security policy requires that all internet-bound traffic return to your on-premises data center through HA VPN tunnels before egressing to the internet, while allowing virtual machines (VMs) to leverage private Google APIs using private virtual IP addresses 199.36.153.4/30. You need to configure the routes to enable these traffic flows. What should you do?
+    Announce a 0.0.0.0/0 route from your on-premises router with a MED of 1000. Configure a custom route 199.36.153.4/30 with a priority of 1000 whose next hop is the default internet gateway.
+
+Your company has defined a resource hierarchy that includes a parent folder with subfolders for each department. Each department defines their respective project and VPC in the assigned folder and has the appropriate permissions to create Google Cloud firewall rules. The VPCs should not allow traffic to flow between them. You need to block all traffic from any source, including other VPCs, and delegate only the intra-VPC firewall rules to the respective departments. What should you do?
+    Create two hierarchical firewall policies per department's folder with two rules in each: a high-priority rule that matches traffic from the private CIDRs assigned to the respective VPC and sets the action to goto_next, and another lower-priority rule that blocks traffic from any other source.
+
+Your company has recently installed a Cloud VPN tunnel between your on-premises data center and your Google Cloud Virtual Private Cloud (VPC). You need to configure access to the Cloud Functions API for your on-premises servers. The configuration must meet the following requirements:
+
+• Certain data must stay in the project where it is stored and not be exfiltrated to other projects.
+• Traffic from servers in your data center with RFC 1918 addresses do not use the internet to access Google Cloud APIs.
+• All DNS resolution must be done on-premises.
+• The solution should only provide access to APIs that are compatible with VPC Service Controls.
+    1. Create an A record for restricted.googleapis.com using the 199.36.153.4/30 address range.
+    2. Create a CNAME record for *.googleapis.com that points to the A record.
+    3. Configure your on-premises routers to use the Cloud VPN tunnel as the next hop for the addresses you used in the A record.
+    4. Configure your on-premises firewalls to allow traffic to the restricted.googleapis.com addresses.
+
+You need to configure a Google Kubernetes Engine (GKE) cluster. The initial deployment should have 5 nodes with the potential to scale to 10 nodes. The maximum number of Pods per node is 8. The number of services could grow from 100 to up to 1024. How should you design the IP schema to optimally meet this requirement?
+    Configure a /28 primary IP address range for the node IP addresses. Configure a /24 secondary IP range for the Pads. Configure a /22 secondary IP range for the Services. 
+
+You have provisioned a Partner Interconnect connection to extend connectivity from your on-premises data center to Google Cloud. You need to configure a Cloud Router and create a VLAN attachment to connect to resources inside your VPC. You need to configure an Autonomous System number (ASN) to use with the associated Cloud Router and create the VLAN attachment.
+    Use a public Google ASN 16550.
+
+You are configuring a new application that will be exposed behind an external load balancer with both IPv4 and IPv6 addresses and support TCP pass-through on port 443. You will have backends in two regions: us-west1 and us-east1. You want to serve the content with the lowest possible latency while ensuring high availability and autoscaling. Which configuration should you use?
+    Use Network Load Balancing in both regions, and use DNS-based load balancing to direct traffic to the closest region. 
+
+In your project my-project, you have two subnets in a Virtual Private Cloud (VPC): subnet-a with IP range 10.128.0.0/20 and subnet-b with IP range 172.16.0.0/24. You need to deploy database servers in subnet-a. You will also deploy the application servers and web servers in subnet-b. You want to configure firewall rules that only allow database traffic from the application servers to the database servers. What should you do?
+    Create service accounts sa-app@my-project.iam.gserviceaccount.com and sa-db@my-project.iam.gserviceaccount.com. Associate service account sa-app with the application servers, and associate the service account sa-db with the database servers. Run the following command: gcloud compute firewall-rules create app-db-firewall-ru
+    --allow TCP:3306 \
+    --source-service-accounts sa-app@democloud-idp-
+    demo.iam.gserviceaccount.com \
+    --target-service-accounts sa-db@my-
+    project.iam.gserviceaccount.com
+
+You are planning a large application deployment in Google Cloud that includes on-premises connectivity. The application requires direct connectivity between workloads in all regions and on-premises locations without address translation, but all RFC 1918 ranges are already in use in the on-premises locations. What should you do?
+    Use non-RFC 1918 ranges with a single global VPC.
+
+You successfully provisioned a single Dedicated Interconnect. The physical connection is at a colocation facility closest to us-west2. Seventy-five percent of your workloads are in us-east4, and the remaining twenty-five percent of your workloads are in us-central1. All workloads have the same network traffic profile. You need to minimize data transfer costs when deploying VLAN attachments. What should you do?
+    Keep the existing Dedicated Interconnect. Deploy a VLAN attachment to a Cloud Router in us-east4, and deploy another VLAN attachment to a Cloud Router in us-central1
+
+You are designing a hybrid cloud environment. Your Google Cloud environment is interconnected with your on-premises network using HA VPN and Cloud Router in a central transit hub VPC. The Cloud Router is configured with the default settings. Your on-premises DNS server is located at 192.168.20.88. You need to ensure that your Compute Engine resources in multiple spoke VPCs can resolve on-premises private hostnames using the domain corp.altostrat.com while also resolving Google Cloud hostnames. You want to follow Google-recommended practices. What should you do?
+    1. Create a private forwarding zone in Cloud DNS for ‘corp.altostrat.com’ called corp-altostrat-com that points to 192.168.20.88. Associate the zone with the hub VPC.
+    2. Create a private peering zone in Cloud DNS for ‘corp.altostrat.com’ called corp-altostrat-com associated with the spoke VPCs, with the hub VPC as the target.
+    3. Set a custom route advertisement on the Cloud Router for 35.199.192.0/19.
+    4. Configure VPC peering in the spoke VPCs to peer with the hub VPC.
+
+Your organization has a single project that contains multiple Virtual Private Clouds (VPCs). You need to secure API access to your Cloud Storage buckets and BigQuery datasets by allowing API access only from resources in your corporate public networks. What should you do?
+    Create a VPC Service Controls perimeter for your project with an access context policy that allows your corporate public network IP ranges.
+
+Your company has provisioned 2000 virtual machines (VMs) in the private subnet of your Virtual Private Cloud (VPC) in the us-east1 region. You need to configure each VM to have a minimum of 128 TCP connections to a public repository so that users can download software updates and packages over the internet. You need to implement a Cloud NAT gateway so that the VMs are able to perform outbound NAT to the internet. You must ensure that all VMs can simultaneously connect to the public repository and download software updates and packages. Which two methods can you use to accomplish this? 
+    Use the default Cloud NAT gateway to automatically scale to the required number of NAT IP addresses, and update the minimum number of ports per VM to 128.
+    Configure the NAT gateway in manual allocation mode, allocate 4 NAT IP addresses, and update the minimum number of ports per VM to 128.
+
+You are designing a hybrid cloud environment for your organization. Your Google Cloud environment is interconnected with your on-premises network using Cloud HA VPN and Cloud Router. The Cloud Router is configured with the default settings. Your on-premises DNS server is located at 192.168.20.88 and is protected by a firewall, and your Compute Engine resources are located at 10.204.0.0/24. Your Compute Engine resources need to resolve on-premises private hostnames using the domain corp.altostrat.com while still resolving Google Cloud hostnames. You want to follow Google-recommended practices. What should you do?
+    1. Create a private forwarding zone in Cloud DNS for ‘corp.altostrat.com’ called corp-altostrat-com that points to 192.168 20.88.
+    2. Configure your on-premises firewall to accept traffic from 35.199.192.0/19
+    3. Set a custom route advertisement on the Cloud Router for 35.199.192.0/19
+
+You have an HA VPN connection with two tunnels running in active/passive mode between your Virtual Private Cloud (VPC) and on-premises network. Traffic over the connection has recently increased from 1 gigabit per second (Gbps) to 4 Gbps, and you notice that packets are being dropped. You need to configure your VPN connection to Google Cloud to support 4 Gbps. What should you do?
+    Configure a second set of active/passive VPN tunnels. 
+
+
+
+
+

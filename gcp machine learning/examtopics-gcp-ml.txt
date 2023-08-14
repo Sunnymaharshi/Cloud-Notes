@@ -1,0 +1,133 @@
+Your organization wants to make its internal shuttle service route more efficient. The shuttles currently stop at all pick-up points across the city every 30 minutes between 7 am and 10 am. The development team has already built an application on Google Kubernetes Engine that requires users to confirm their presence and shuttle station one day in advance. What approach should you take?
+	Define the optimal route as the shortest route that passes by all shuttle stations with confirmed
+	attendance at the given time under capacity constraints. 2. Dispatch an appropriately sized
+	shuttle and indicate the required stops on the map.
+
+You were asked to investigate failures of a production line component based on sensor readings. After receiving the dataset, you discover that less than 1% of the readings are positive examples representing failure incidents. You have tried to train several classification models, but none of them converge. How should you resolve the class imbalance problem?
+	Downsample the data with upweighting to create a sample with 10% positive examples. 
+
+Because different seasons and population increases impact the data relevance, you will retrain the model every month. You want to follow Google-recommended best practices. How should you configure the end-to-end architecture of the predictive model?
+	Configure Kubeflow Pipelines to schedule your multi-step workflow from training to deploying 
+	your model.
+
+Your team needs to build a model that predicts whether images contain a driver's license, passport, or credit card. The data engineering team already built the pipeline and generated a dataset composed of 10,000 images with driver's licenses, 1,000 images with passports, and 1,000 images with credit cards. You now have to train a model with the following label map: [`˜drivers_license', `˜passport', `˜credit_card']. Which loss function should you use?
+	Sparse categorical cross-entropy
+
+You built and manage a production system that is responsible for predicting sales numbers. Model accuracy is crucial, because the production model is required to keep up with market changes. Since being deployed to production, the model hasn't changed; however the accuracy of the model has steadily deteriorated.
+What issue is most likely causing the steady decline in model accuracy?
+	Lack of model retraining
+
+You have been asked to develop an input pipeline for an ML training model that processes images from disparate sources at a low latency. You discover that your input data does not fit in memory. How should you create a dataset following Google-recommended best practices?
+	Convert the images into TFRecords, store the images in Cloud Storage, and then use the 
+	tf.data API to read the images for training.
+
+You are an ML engineer at a large grocery retailer with stores in multiple regions. You have been asked to create an inventory prediction model. Your model's features include region, location, historical demand, and seasonal popularity. You want the algorithm to learn from new inventory data on a daily basis. Which algorithms should you use to build the model?
+	Recurrent Neural Networks (RNN) 
+
+You are building a real-time prediction engine that streams files which may contain Personally Identifiable Information (PII) to Google Cloud. You want to use the Cloud Data Loss Prevention (DLP) API to scan the files. How should you ensure that the PII is not accessible by unauthorized individuals?
+	Create three buckets of data: Quarantine, Sensitive, and Non-sensitive. Write all data to the
+	Quarantine bucket. Periodically conduct a bulk scan of that bucket using the DLP API, and move
+	the data to either the Sensitive or Non-Sensitive bucket.
+
+You work for a large hotel chain and have been asked to assist the marketing team in gathering predictions for a targeted marketing strategy. You need to make predictions about user lifetime value (LTV) over the next 20 days so that marketing can be adjusted accordingly. The customer dataset is in BigQuery, and you are preparing the tabular data for training with AutoML Tables. This data has a time signal that is spread across multiple columns. How should you ensure that
+AutoML fits the best model to your data?
+	Submit the data for training without performing any manual transformations. Use the columns
+	that have a time signal to manually split your data. Ensure that the data in your validation
+	set is from 30 days after the data in your training set and that the data in your testing sets
+	from 30 days after your validation set. 
+
+
+--scale-tier basic \
+-- \
+--epochs 20 \
+--batch_size=32 \
+--learning_rate=0.001 \
+You want to ensure that training time is minimized without significantly compromising the accuracy of your model. What should you do?
+	Modify the 'scale-tier' parameter.
+
+You have deployed multiple versions of an image classification model on AI Platform. You want to monitor the performance of the model versions over time. How should you perform this comparison?
+	Compare the mean average precision across the models using the Continuous Evaluation feature.
+
+You are an ML engineer at a global shoe store. You manage the ML models for the company's website. You are asked to build a model that will recommend new products to the user based on their purchase behavior and similarity with other users. What should you do?
+	Build a collaborative-based filtering model
+
+You work for a social media company. You need to detect whether posted images contain cars. Each training example is a member of exactly one class. You have trained an object detection neural network and deployed the model version to AI Platform Prediction for evaluation. Before deployment, you created an evaluation job and attached it to the AI Platform Prediction model version. You notice that the precision is lower than your business requirements allow. How should you adjust the model's final layer softmax threshold to increase precision?
+	Decrease the recall.
+
+You are an ML engineer at a regulated insurance company. You are asked to develop an insurance approval model that accepts or rejects insurance applications from potential customers. What factors should you consider before building the model?
+	Traceability, reproducibility, and explainability 
+
+You are training a Resnet model on AI Platform using TPUs to visually categorize types of defects in automobile engines. You capture the training profile using the
+Cloud TPU profiler plugin and observe that it is highly input-bound. You want to reduce the bottleneck and speed up your model training process. Which modifications should you make to the tf.data dataset?
+	Use the interleave option for reading data.
+	Set the prefetch option equal to the training batch size
+
+You have trained a model on a dataset that required computationally expensive preprocessing operations. You need to execute the same preprocessing at prediction time. You deployed the model on AI Platform for high-throughput online prediction. Which architecture should you use?
+	Send incoming prediction requests to a Pub/Sub topic. Transform the incoming data using a
+	Dataflow job. Submit a prediction request to AI Platform using the transformed data. Write the
+	predictions to an outbound Pub/Sub queue. 
+
+Your team trained and tested a DNN regression model with good results. Six months after deployment, the model is performing poorly due to a change in the distribution of the input data. How should you address the input differences in production?
+	Create alerts to monitor for skew, and retrain the model.
+
+You developed an ML model with AI Platform, and you want to move it to production. You serve a few thousand queries per second and are experiencing latency issues. Incoming requests are served by a load balancer that distributes them across multiple Kubeflow CPU-only pods running on Google Kubernetes Engine (GKE). Your goal is to improve the serving latency without changing the underlying infrastructure. What should you do?
+	Recompile TensorFlow Serving using the source to support CPU-specific optimizations. Instruct
+	GKE to choose an appropriate baseline minimum CPU platform for serving nodes. 
+
+You need to design a customized deep neural network in Keras that will predict customer purchases based on their purchase history. You want to explore model performance using multiple model architectures, store training data, and be able to compare the evaluation metrics in the same dashboard. What should you do?
+	Create an experiment in Kubeflow Pipelines to organize multiple runs
+
+Your team is building an application for a global bank that will be used by millions of customers. You built a forecasting model that predicts customers' account balances 3 days in the future. Your team will use the results in a new feature that will notify users when their account balance is likely to drop below $25. How should you serve your predictions?
+	1. Build a notification system on Firebase. 2. Register each user with a user ID on the
+	Firebase Cloud Messaging server, which sends a notification when your model predicts that a
+	user's account balance will drop below the $25 threshold
+
+You are an ML engineer at a global car manufacture. You need to build an ML model to predict car sales in different cities around the world. Which features or feature crosses should you use to train city-specific relationships between car type and number of sales?
+	One feature obtained as an element-wise product between binned latitude, binned longitude, and
+	one-hot encoded car type. 
+
+You are training a TensorFlow model on a structured dataset with 100 billion records stored in several CSV files. You need to improve the input/output execution performance. What should you do?
+	Convert the CSV files into shards of TFRecords, and store the data in Cloud Storage
+
+You work for a credit card company and have been asked to create a custom fraud detection model based on historical data using AutoML Tables. You need to prioritize detection of fraudulent transactions while minimizing false positives. Which optimization objective should you use when training the model?
+	An optimization objective that maximizes the area under the precision-recall curve (AUC PR)
+	value
+
+Your company manages a video sharing website where users can watch and upload videos. You need to create an ML model to predict which newly uploaded videos will be the most popular so that those videos can be prioritized on your company's website. Which result should you use to determine whether the model is successful?
+	The model predicts 95% of the most popular videos measured by watch time within 30 days of
+	being uploaded.
+
+While conducting an exploratory analysis of a dataset, you discover that categorical feature A has substantial predictive power, but it is sometimes missing. What should you do?
+	Add an additional class to categorical feature A for missing values. Create a new binary
+	feature that indicates whether feature A is missing
+
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,197 @@
+Cloud Storage
+	Cloud Storage Transfer
+		move data from
+			on-premise
+			other clouds
+		btw buckets
+		one-time or recurring
+		on-premise transfer
+			< 1TB gsutil
+			> 1TB cloud storage transfer service
+	Transfer Appliance
+		100TB
+		480TB
+	Access controls
+		Uniform bucket level access
+			recommended
+			uses cloud Identity and IAM
+			to bucket or to objects with common prefix
+		Fine-grained
+			legacy
+			uses ACLs
+			applies to both bucket and objects
+		Signed URLs
+			time-limited read or write ops on object
+			allows access to those without IAM authorizations
+		Signed Policy documents
+			specify what can be uploaded
+			size
+			type
+			and other
+	Life cycle policies
+		actions
+			change storage class
+			delete object based on date
+			purge no of versions
+		conditions
+			age
+			created before
+			is live
+			matched storage class
+			no of new versions
+
+Relational Databases
+	Cloud SQL
+		multi-regional - for backups only
+		upto 30TB per database
+		postgresql,mysql and sql server
+		connect through
+			public ip
+			private ip
+			Cloud SQL Auth proxy
+		Cloud SQL Auth proxy
+			supports public and private endpoints
+			validates connections using credentials for service acc or user
+			implements SSL/TLS layer for connections
+			proxy client and proxy server
+	Cloud Spanner
+		global
+		upto 2TB per node
+		horizontal scalable
+		auto replication
+		no planned downtime
+		hot spotting
+			read/write on same node
+			can happen if we use sequential primary keys
+				auto increment 
+				timestamps
+			use
+				hash value of primary
+				bit-reverse sequential values
+				promote high-cardinality attributes in multi-attribute primary key
+		interleaved tables
+			parent-child relationship
+				person to addresses
+			row from parent table stored with rows from child table
+			more efficient when retrieving data from both
+	Cloud Firestore
+		NoSQL Databases
+		document model
+			key-value pairs
+			hierarchical
+		modes
+			datastore mode
+				server based
+			native mode
+				mobile or web
+				large no of connections
+		Index
+			required for all queries
+			single field
+				automatically created
+			composite
+				multiple fields
+				not automatically created
+				manually created
+		namespace is group of kinds
+		kind is group of similar entities 
+		entity is set of properties
+	BigTable
+		build on sparse multi-D array
+		petabyte scale data
+		low-latency writes
+		key-based reads
+		analytics
+		Time series applications
+			IoT
+			Finance
+			Monitoring
+		no of nodes
+		SSD or HDD
+		Region/Zone
+		Scales linearly
+		Multi-region high availability with cluster replication
+		Hbase API
+		Row Key
+			unique identifier for a row
+			not support joins
+			used to find where data is written
+			Within nodes there are multiple storted-string tables (SSTables)
+			Data is sharded into blocks of continuous row called tablets
+			Tablets are stored in Colossus file system
+			Data not stored in nodes
+			only metadata stored in nodes
+			Data stored in Colossus
+			row key determines node and SSTable where data is written
+			Avoid
+				linearly incremented row keys
+				low cardinality attributes
+			Design
+				high to low cardinality
+				sensor id + reverse datetime
+		Denormalization
+			Each table has one index based on row key
+			Rows are sorted by row-key
+			columns are grouped into families
+			all operations are atomic at row level
+			related entities should be sorted in adjacent row to improve read perf
+			empty colomn do not take any space
+		Column Families
+			set of related columns in a table
+			upto 100 column families
+		1000 Tables per instance
+		Better to store in 1 table than many
+	
+	Big Query
+		serverless
+		analytical
+		BigQuery ML
+		BigQuery BI Engine
+		BigQuery GIS
+
+ETL
+	cloud composer
+		apache airflow service
+		DAGs
+	Data fusion
+		CDAP analytics platform
+		code free ETL
+	Cloud Data flow
+		stream and batch processing
+		apache beam runner
+		horizontal scalable
+		used for ETL
+		supports windowing operations		
+	Cloud Dataproc
+		Spark and hadoop service
+		large-scale batch processing and machine learning
+		supports stream processing
+		ephemeral clusters
+		cloud storage connector
+			open source java library
+			allows to use cloud storage instead of HDFS attached storage
+ML
+	Unsupervised learning
+		detect unknown patterns
+		clustering
+		anomoly detection
+		principal component analysis
+	supervised		
+	reinforcement
+		learn from environment
+		maximize reward
+	Symbolic machine learning
+		modeled using symbols
+	neural networks and deep learning
+
+	
+		
+		
+			
+			
+				
+				
+		
+				
+			
+			

@@ -1,0 +1,192 @@
+Regions
+	set of datacenters
+	min 3
+Sovereign Azure
+	not connected to azure public cloud
+	require approval to join / create a subscription
+Availability Zone Services
+	Zonal Services
+		choose specific zone to deploy service
+		should deploy a duplicate service to another zone to achieve resiliency
+		ex: Virtual Machines
+	Zone Redundant Services
+		Automatically deploys across zones for you
+		no need to configure
+		ex: Azure SQL Database
+	Always Available Services
+		Global services
+		Non-regional services
+		ex: Azure portal,Azure Active Directory, Azure front door
+Resource groups
+	associated with a region, which can be different than the resource it contains
+	all services in a resource group should have a similar life cycle
+	deploy and delete together
+	all resources must belong to one and only one resource group
+	permission can be assigned a resource group level
+	no security boundary offered by resource group for communications
+
+Subscriptions
+	billing unit within Azure
+	Always a payment method associated with a subscription
+	users can have access to more than one subscription and different roles
+	Plans
+		Free plan 
+			200$ credits for first 30 days
+			one time only
+		Pay as you go
+			billed to credit card
+		Enterprise Agreement - EA
+		Free credits 
+			MSDN, Startup Plans
+Management groups (Optional)
+	manage Subscriptions on group basis
+
+Virtual Machines
+	IaaS
+VM Scale Sets - VMSS
+	Elasticity
+	two or more vm's runing same code
+	autoscaling
+
+App Service
+	PaaS
+	no access to hardware
+
+Containers
+	Azure Container Instance ACI 
+	Azure Kubernetes Service AKS 
+
+Azure Virtual Desktop
+	Desktop version of windows that runs in cloud
+	can see desktop on IOS, Android or from any web browser
+	Runs on Azure
+
+Networking Services
+	Connectivity
+		Virtual Network 
+		Subnet 
+			sub division of Virtual Network
+			has its own security rules
+		VPN
+		ExpressRoute
+			high speed private connection to Azure 
+		DNS services
+	Protection
+		DDoS Protection
+		Azure Firewall
+		Network security groups
+		private link
+
+Application Gateway
+	higher level of load balancer with Optional Firewall
+
+Azure Front door
+	a load balancer, CDN and Firewall all in one
+
+Storage
+	Azure Storage Account
+		General purpose v2(gpv2) 
+			Blobs, tables, queues, files
+		Standard
+		Premium
+			Block blobs 
+				best for high transaction rates or low storage latency
+			File shares
+				for Enterprise or high-perf Applications that need to scale 
+				shares Directory across offices and syncs
+				storage sync Service in Azure 
+				Azure file sync agent
+				Optional: self service restore
+			Page blobs
+				for random read and writes
+		Azure Data lake Storage Gen2
+			cheapest type of Storage
+			pay per GB 
+		Shared access signature (SAS)
+			URI that grants restricted access to storage Container
+			temporary access
+	Disk Storage
+		VMs
+		managed disks
+		reserve capacity in advance
+		optimized for Virtual hard disks
+
+	Azure Migrate
+	
+	Data transfer
+		Data box
+			100 TB 
+		Data box disk 
+			8 TB 
+		Data box heavy 
+			1 PB 
+
+Azure Active Directory
+	Identity as a service
+	Conditional access
+		checks unusual accesses
+	
+Zero trust model of security
+	verify explicitly
+	use least privilaged access
+	assume breach
+
+Microsoft Defender
+	have to pay
+	security recommendations
+
+Azure cost Management Service
+	analyze spending
+
+Governance and Compliance
+	Azure Blueprints
+		templates with roles and policies already defined
+	Azure Policy
+		programatically define rules
+		for multiple Subscriptions
+	Locks
+
+Tools for managing and deploying Azure resources
+	Azure CLI
+	Powershell
+	Azure portal
+	Azure cloud shell
+	Azure mobile app 
+
+Azure Arc 
+	manage all on-prem infra, anywhere 
+
+Azure Resource Manager (ARM) templates
+	JSON format
+	for creating resources
+
+Monitoring
+	Azure Monitor 
+		deployed resources
+		op prem 
+		other clouds
+	Azure Advisor
+		cost saving and security recommendations
+	Azure Service Health
+		region health 
+		deployed resources 
+		azure health
+		custom dashboards
+
+
+availability set
+	availability set is a logical grouping of VMs that allows Azure to understand 
+	how your application is built to provide for redundancy and availability. 
+
+Azure Logic Apps 
+	is a cloud platform where you can create and run automated workflows with little to no code. 
+	
+
+Azure AD licenses
+	Azure Active Directory Free
+	Azure Active Directory Premium P1
+	Azure Active Directory Premium P2
+	Pay as you go
+
+
+	

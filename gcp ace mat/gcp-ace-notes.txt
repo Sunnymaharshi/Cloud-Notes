@@ -1,0 +1,211 @@
+Notes:
+	Cloud Data Fusion
+		cloud-native data integration at any scale.
+		code-free deployment of ETL/ELT data pipelines
+		scalable data integration solutions to 
+		clean, prepare, blend, transfer, and transform data, 
+		without having to manage the infrastructure.
+	Cloud Audit Logs overview
+		who did what, where, and when?
+		Types:
+			Admin Activity
+				can't configure, exclude, or disable them.
+			Data Access
+				except for BigQuery Data Access audit logs
+				disabled by default
+			System Event
+				can't configure, exclude, or disable them.
+			Policy Denied
+				can't disable
+				can use exclusion filters to prevent Policy Denied audit logs
+				from being ingested and stored in Cloud Logging.
+				
+	Google Kubernetes Engine (GKE)
+		uses Container-Optimized OS
+		Persistent disks and Local SSD
+		Services
+			set of Pods with a network endpoint that can be used
+			for discovery and load balancing
+			Types					
+				ClusterIP (default)
+					Internal clients send requests to a stable internal IP address.
+				NodePort
+					External traffic send requests to the IP address of a Node 
+					on one or more nodePort values
+					nodePort : 30000-32767
+					not secure
+				LoadBalancer
+					Clients send requests to the IP address of a network load balancer.
+					external traffic have access to service through cloud load balancer
+				ExternalName
+					Internal clients use the DNS name of a Service 
+					as an alias for an external DNS name.
+					provides an internal alias for an external DNS name. 
+				Headless
+					Client want to communicate with 1 specific Pod directly
+					Pod to` specific Pod directly
+					statefull apps like mysql (Pod replicas are not identical)
+					clusterIP: None 
+					
+					
+		Ingresses
+			set of rules for routing external HTTP(S) traffic to services
+		commands
+			create cluster
+				gcloud container clusters create
+			create an Autopilot cluster 
+				gcloud container clusters create-auto
+			fetch credentials for a running cluster
+				gcloud container clusters get-credentials
+			increase nodes in cluster
+				gcloud container clusters resize --node-pool
+			auto scale for cluster
+				gcloud container clusters update my-cluster --enable-autoscaling 
+					--min-nodes=1 --max-nodes=10	
+				
+			create deployment (microservice)
+				kubectl create deployment 
+			expose deployment (create service)
+				kubectl expose deployment
+			scale deployment
+				kubectl scale deployment my-dep --replicas=3
+			autoscale deployment
+				kubectl autoscale deployment --max=3 --cpu-percent=70
+			add configuration for microservice
+				kubectl create configmap my-config --from-literal=RDS_DB_NAME=todos
+			add password configuration for microservice
+				kubectl create secret my-sec --from-literal=RDS_PASSWORD=password 
+	Managed instance groups 
+		autoscaling, autohealing, regional (multiple zone) deployment,
+		and automatic updating.
+		
+	Unmanaged instance group
+		VMs that require individual configuration settings or tuning.
+		let you load balance across a fleet of VMs that you manage yourself.
+		
+	Big Query
+		Dry run to estimate cost
+			--dry_run flag in the bq command-line tool
+			dryRun parameter when submitting a query job using the API
+		maximum bytes billed setting to limit query costs.
+	Cloud SQL
+		Point in Recovery
+			can't be done to same instance
+			have to create a clone
+			transaction log retention (1-7days)
+		Replicas
+			Read replicas
+				offload work from a Cloud SQL instance. 
+				exact copy of the primary instance.
+				are read-only; you cannot write to them.
+			Cross-region read replicas
+				read replica in a different region from the primary instance.
+			Cascading read replicas
+				create a read replica under another read replica 
+				in the same or a different region. 
+				During an outage, your selected read replica is promoted to primary
+				A read replica that has its own replica.
+			External read replicas
+				External read replicas are external MySQL instances
+				replicate from a Cloud SQL primary instance. 
+				
+	Google Cloud Directory Sync
+		synchronize the data in your Google Account with 
+		your Microsoft Active Directory or LDAP server.
+		synchronize your Google users, groups, and shared contacts 
+		to match the information in your LDAP server.
+	Binary Authorization
+		Deploy only trusted workloads for containers and serverless.
+		deploy-time security control 
+		trusted container images are deployed 
+		on Google Kubernetes Engine (GKE) or Cloud Run.
+	Budget alerts
+		recipients of email alerts
+			role-based option (default)
+				billing admins and users on the Cloud Billing account.
+			Cloud Monitoring
+				ther people in your organization to receive budget alert emails.
+			Pub/Sub for programmatic notifications 
+	App Engine
+		Build your application in Node.js, Java, Ruby, C#, Go, Python, or PHP.
+		focus on code 
+		Standard environment
+			run in a sandbox, using the runtime environment
+			rapid scaling.
+			Python,Java,Node.js,PHP,Ruby,Go
+			run for free or at very low cost
+			Scale to zero
+			Deployment time in Seconds
+		Flexible environment
+			run within Docker containers on Compute Engine virtual machines (VM).
+			consistent traffic, experience regular traffic fluctuations,
+			Python, Java, Node.js, Go, Ruby, PHP, or .NET
+			Docker container that includes a custom runtime or 
+			source code written in other programming languages.
+			Background processes
+			SSH debugging (disabled by default)
+			minimum 1 instance
+			Deployment time in Minutes
+			
+		app.yaml
+			App Engine app's settings
+			runtime and the latest version
+			URL paths correspond to request handlers and static files. 
+		cron.yaml
+			define scheduled tasks for your application.
+		dispatch.yaml	
+			override routing rules.
+			send incoming requests to a specific service 
+			based on the path or hostname in the URL.
+			app can have only one dispatch.yaml
+			file apply to all of the app's services and versions.
+			up to 20 routing rules.
+		index.yaml	
+			Datastore uses indexes for every query your application makes.
+			You specify which indexes your app needs in a index.yaml
+		queue.yaml
+			to configure both push queues and pull queues.
+			optional for push queues
+			Pull queues must be specifically configured in queue.yaml.
+			
+	Firestore
+		Native mode
+			next major version of Datastore
+			Firestore is a NoSQL document database
+			collection and document data model
+			Real-time updates
+			Mobile and Web client libraries
+			Firestore is backwards compatible with Datastore
+			new data model, real-time updates, and mobile and web client library features are not. 
+			To access all of the new Firestore features, you must use Firestore in Native mode.
+			mobile and web client libraries with real-time and offline features.
+		Datastore mode
+			Entities organized into kinds and entity groups.
+			Removes the previous consistency limitations of Datastore
+			Datastore v1 API support
+		Use Firestore in Datastore mode for new server projects.
+		Use Firestore in Native mode for new mobile and web apps.
+		
+		
+		
+	Cloud Functions triggers
+		HTTP triggers
+			1st gen, you can choose whether HTTPS is required during deployment.
+			2nd gen, requests to a function URL always require HTTPS
+		Pub/Sub triggers
+		Cloud Storage triggers
+		Google Cloud Firestore Triggers
+		Google Analytics for Firebase Triggers
+		Firebase Realtime Database Triggers
+		Firebase Authentication Triggers
+		Firebase Remote Config Triggers
+		Second-Party Triggers with Cloud Logging
+		
+		
+
+
+			
+	
+		
+				
+	

@@ -1,0 +1,158 @@
+Pricing of Cloud
+	Compute
+	Storage
+	Data transfer out of Cloud
+Choose region
+	Compliance
+		data governance
+		legal requirements
+	Proximity to customers
+		reduce latency
+	Available Services
+	Pricing
+Scalability
+	accommodate larger workload by scale up or out
+Elasticity 
+	auto scale based on load
+Agility 
+	Resources are a click away
+	Distractor
+Amazon EC2
+	
+	EC2 user data (bootstraping)
+		launching commands when machine starts
+		run only once at the instance first start
+	Instance Types
+		General purpose instances
+			provide a balance of compute, memory, 
+			and networking resources, and can be used for a wide range of workloads.
+		Compute optimized instances
+			Compute optimized instances are ideal for compute-bound applications
+			that benefit from high-performance processors.
+		Memory optimized instances
+			Memory optimized instances are designed to deliver fast performance 
+			for workloads that process large data sets in memory.
+			best for databases, processing big unstructured data.
+		Storage optimized instances
+			Storage optimized instances are designed for workloads 
+			that require high, sequential read and write access to very large data sets on local storage.
+			They are optimized to deliver tens of thousands of low-latency, 
+			random I/O operations per second (IOPS) to applications.
+			best for databases, online transaction processing.
+	Security groups
+		firewall on ec2 instances
+		access to ports
+		only allow rules
+	Pricing
+		pay per second, min duration is 1 minute
+		On-Demand
+			without any upfront payment or long-term commitment
+			Applications with short-term, spiky, or unpredictable workloads that cannot be interrupted.
+		Reserved
+			1(no upfront) or 3(all upfront) years
+			discount up to 72%
+			Standard
+				can change Availability Zone, the instance size, and networking type
+			Convertible Reserved Instances
+				discount up to 66%
+				can change instance families, operating systems, or tenancies over the Reserved Instance term.
+		Spot Instances
+			up to 90% discount
+			short workloads, cheap and can lose instances
+		Dedicated Hosts
+			On-Demand (hourly).
+			for Reservation up to 70% discount
+			physical EC2 server dedicated for your use.
+			bring your own license
+		Dedicated Instances
+			run in a VPC on hardware that's dedicated to a single customer.
+		Capacity Reservations
+			reserve compute capacity for your Amazon EC2 instances in a specific Availability Zone for any duration.
+EBS Volume
+	network drive
+	persist data after termination
+	can attach only to 1 instance at a time	
+	bound to specific AZ
+EBS Snapshots
+	Archive
+		24-72hrs to restore
+		75% cheap
+	Recycle Bin
+		retention 1D-1Year
+EC2 Image Builder
+	automate creation,validation,test of VM or Container Images
+	free, can run on schedule
+EC2 Instance Store
+	High Performance hardware disk
+	Better I/O
+	loss data if instance stops
+	for cache or temp data
+EFS Elastic File System
+	Managed Network File System NFS 
+	can be mounted on 100s of instances
+	Linux instances in Multi-AZ
+EFS Elastic File System Infrequent Access
+	92% lower cost
+Amazon FSx
+	launch 3rd party High perf file systems 
+	Lustre, Windows file server, NetApp ONTAP
+
+Load Balancer
+	handle failures
+	SSL termination	- decryption of SSL
+	Application load balancer (layer 7)
+		Http/Https
+	Network LB (layer 4)
+		ultra high perf,TCP
+	Classic LB (layer 4&7)
+Auto Scaling Groups
+	Manual
+	Dynamic
+		Simple/Step Scaling - CloudWatch alarm trigger CPU
+		Target Tracking Scaling - Want avg CPU 40%
+		Scheduled Scaling - at particular time
+	Predictive - ML
+Simple Storage Service S3
+	Object storing in Buckets
+	regional level
+	
+	
+
+
+
+
+IAM: Users and Groups
+	Global Service
+	Groups only contains users, Not other groups
+	Policies
+		JSON Docs
+		defince permisions to users
+		Structure
+			version - optional
+			Statement - 1 or more
+			Sid - optional
+			Effect - Allow or Deny
+			Principal (Required in only some circumstances)
+				not required if policy attach to a user or role.
+				implied as that user or role.
+			Action
+				Include a list of actions that the policy allows or denies.
+			Resource (Required in only some circumstances)
+			Condition - optional
+	IAM Security Tools
+		IAM Credentials Report (Acc-level)
+			reports all your account's users with their credentials.
+		IAM Access Advisor (user-level)
+			service permisions granted to a user
+			when those services last used
+		Access keys for programatic access
+	
+			
+
+
+
+
+
+
+	
+	

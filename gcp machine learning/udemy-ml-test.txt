@@ -1,0 +1,89 @@
+The floating point value ranges from 0 to 100.  For the purposes of the model, the floating point value is more precise than needed.  Mapping that value to a feature with possible values "high", "medium", and "low" is sufficient. What feature engineering technique would you use to transform the floating point value to high, medium, or low?
+	bucketing
+
+When testing a regression model to predict the selling price of houses.  After several iterations of model building, you note that small changes in a few features can lead to large differences in the output. This is an example of what kind of problem?
+	High Variance
+
+You want to evaluate a classification model using the True Positive Rate and the False Positive Rate. You want to view a graph showing the performance of the model at all classification thresholds. What evaluation metric would you use?
+	Area under the ROC curve (AUC) is a graph of True Positive and False Positive rates.
+
+You are building a machine learning model and during the data preparation stage, you preform normalization and standardization using the full data set. You then split the full data set into training, validation, and testing data sets. What problem could be introduced by performing the steps in the order described?
+	Data leakage
+	because you are making additional data available during training
+
+What characteristics of feature values do we try to find when using descriptive statistics for data exploration?
+	Central tendency and spread of values
+	Descriptive statistics are used to measure both central tendency and the spread of values. 
+
+Which of the following are ways bias can be introduced in a machine learning model?
+	Biased data distribution
+	proxy variables
+
+You have a dataset with more features than you believe you need to train a model. You would like to measure how well two numerical values linearly correlate so you can eliminate one of them if they highly correlate. What statistical test would you use?
+	The Pearson's Correlation
+	The Pearson's Correlation is used for measuring the linear correlation between two variables.
+	ANOVA is used to measure the difference among means.  Kendall's Rank Coefficient is used for
+	measuring numeric and categorical correlations.   The Chi-Squared test is used for measuring
+	the correlation between categorical values.
+
+You have a dataset with more features than you believe you need to train a model. You would like to measure how well two categorical values linearly correlate so you can eliminate one of them if they highly correlate. What statistical test would you use?
+	Chi-Squared test
+	The Chi-Squared test is used for measuring the correlation between categorical values.
+	Pearson's Correlation is used for measuring the linear correlation between two variables. ANOVA
+	is used to measure the difference among means.  Kendall's Rank Coefficient is used for
+	measuring numeric and categorical correlations.   
+
+When is it appropriate to use the Last Observed Value Carried Forward strategy for missing data?
+	time series data. 
+	The Last Observed Value Carried Forward strategy works well with time series data.
+	Categorical values with a small number of possible values is not a good candidate since the
+	previous value may have not relation to next instance in the data set.  The technique is
+	irrelevant to overfitting or underfitting.
+
+A dataset has been labeled by a crowd-sourced group of labelers. You want to evaluate the quality of the labeling process. You randomly select a group of labeled instances and find several are mislabled. You want to find other instances that are similar to the mislabeled instances. What kind of algorithm would you use to find similar instances?
+	Approximate Nearest Neighbor algorithms
+	which uses clustering to group similar instances and would be the correct choice.
+
+What feature representation is used when training machine learning models using text or image data?
+	Feature vectors
+
+You are making a large number of predictions using an API endpoint.  Several of the services making requests could send batches of requests instead of individual requests to the endpoint.  How could you improve the efficiency of serving predictions?
+	Using batches with large batch size will take advantage of vectorization
+
+Which component of the Vertex AI platform provides for the orchestration of machine learning operations in Vertex AI?
+	Vertex AI Platform Pipelines
+
+A team of researchers have built a TensorFlow model for predicting near-term weather changes. They are using TPUs but are not achieving the throughput they would like. Which of the following might improve the efficiency of processing?
+	Using the tf.data API to maximize the efficiency of data pipelines using GPUs and TPUs
+
+Managed data sets in Vertex AI provided which of the following benefits?
+	managed data sets in a central location and create labels and annotations only.
+
+Which of the following are options for tabluar datasets in Vertex AI Datasets?
+	CSV files and BigQuery tables and views for tabular data.
+
+Which of the follwoing techniques can be used to mask sensitive data?
+	Substitution cipher, tokenization, and principal component analysis
+
+Which of the following is a type of security risk to machine learning models?
+	Data poisoning
+	is a security risk associated with an attacker compromising the training process in order to
+	train the model to behave in ways the attacker wants
+
+Aerospace engineers are building a model to predict turbulence and impact on a new airplane wing design. They have large, multi-dimensional data sets. What file format would you recommend they use for training data?
+	Petastorm
+	is designed for multi-dimensional data.
+	Parquet and ORC are both columnar formats and could be used but Petastorm is a better option.
+	CSV is inefficient for large data sets.
+
+You would like to use a nested file format for training data that will be used with TensorFlow. You would like to use the most efficient format. Which of the following would you choose?
+	TFRecords is based on protobuf, a binary nested file format and optimized for TensorFlow. 
+
+
+
+
+
+
+
+
+	

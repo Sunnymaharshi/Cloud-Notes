@@ -1,0 +1,687 @@
+Notes:
+	Organizations
+		when google workspace or Cloud Identity account creates
+		a project, organization automatically created.
+		Google workspace super admins granted ability to asign IAM roles by default.
+		project belong to org, not user. 
+	Biling Acc
+		link to projects
+		Payment profile
+			credit card info
+	Compute engine
+		CPU overcommit
+		no autoscale for statefull mig
+	GKE
+		features
+			loadbalancing of workloads
+			node pools to segment nodes within a cluster
+			auto scale and update
+			auto heal
+			monitoring and logging
+		Modes
+			standard
+				pay per resources provisioned
+				user configured resources
+				user configured auto scaling
+				regional or zonal
+			autopilot
+				google manages nodes and pools
+				provision based on pode specification
+				pay per pod, only resources used
+				Builtin security best practices
+				Regional
+			workloads
+				horizontal pod scaler
+				vertical pod scaler
+			Infrastructure
+				cluster autoscaler
+					more nodes
+				node auto provisioning
+					Different node pools
+
+		deployments 
+			replace failed pods
+		 	useful for stateless apps
+
+		statefulsets 
+			used to manage statefull apps
+			sticky indentity for each pod
+		Daemonsets
+			ensures all nodes run a copy of pod
+			used for monitoring agent
+			used for collecting logs
+		Volume
+			directory that accessible to all containers in pod
+			storage units
+		Persistent Volume
+			durable storage
+		Persistent Volume Claim
+			dynamically provision a persistent volume 
+			backed by Compute engine persistent disk
+		Container storage interface (CSI)
+			open standard for accessing storage from kubernetes
+			CSI driver for Compute engine persistent disk
+		CongigMaps
+			bind configuration artifacts to containers and system components
+			not for confidential data
+		Secrets
+			secure objects for storing confidential data
+			can be mounted as data volumes or exposed as environment variables
+		IP Address
+			ClusterIP
+				assigned to a service
+				fixed for life of service
+			Pod IP
+				ephemeral ip assigned to a pod
+				/24 cidr, 256 addresses
+				standard has max 110 pods per node with /24
+				autopilot has max 32 pods per node
+			Nope IP	
+				IP assigned to node in a cluster
+				/32 cidr, 1 address
+				Service ip assigned by VPC, called ClusterIP
+
+		Services Types
+			ClusterIP
+				internal clients send request to stable internal ip
+				not accessible outside the cluster
+			NopePort
+				clients send request to node ip of node and nodeport value 
+				specified by service
+			LoadBalancer
+				clients send request to ip of loadbalancer
+			ExternalName
+				clients use DNS names of service
+			Headless
+				pod group that does not need a stable ip
+		LoadBalancers
+			External
+				gke provides network loadbalancer for service
+				configures firewall rules to allow traffic from outside cluster
+			internal
+				provision internal TCP/UDP loadbalancer
+				uses ip from VPC subnet
+			HTTP(S)
+				uses kubernetes Ingress resource
+				Ingress
+					maps URLs and hostnames to services in cluster
+					Service is configured to use both ClusterIP and nodeport
+		network policies 
+			to limit access amoung pods
+				uses 
+					labels
+					IP ranges
+					Port numbers
+			create pod level firewall rules
+			restrict access to External loadbalancer by setting source ranges
+			in service
+		Health checks
+			Readiness probes
+				inform kubernetes when app is available to serve traffic
+			Liveliness probes
+				indicate if app is alive or dead
+	Anthos
+		application management platform
+		it builds on kubernetes
+		extends gke for hybrid and multi cloud envs
+		abstraction that builds on container orchestractions and hybrid and multi-cloud implementation
+		manages apps across infras on premises and in multiple clouds
+		benifits
+			centralize management of configuration as code 
+			ability to rollback deployments with git
+			single view of all cluster infras and apps
+			Instrumentation of code using anthos service mesh
+			service protection with anthos service mesh authorization and routing
+		Deployment options
+			google cloud
+			on-prem vmware
+			on-prem bare-metal
+			AWS
+			attached cluster
+		multi cluster ingress
+			single vIP address for applications regadless of where they are deployed
+			proximity based routing
+		Service mesh
+			based on istio 
+				traffic management
+				observability
+				security
+			controls how parts of an app communicate and share data
+			dedicated infra layer
+			requests to services routed through proxies, aka sidecars
+			proxies implement policies to support a service such as security or logging
+			microservices don't need to implement these features within service
+	App engine
+		standard
+			runs in secure sandbox
+			python,php, java, ruby, node, go
+		flexible
+			runs customised docker containers
+			not as restricted as standard
+			min 1 intance running
+		scaling
+			automatic
+				autoscale based on traffic
+				autoscale based on cpu
+			manual
+				manually set number of instances
+				regardless of load
+			basic
+				create instances when requests came,
+				stutdown while idle
+		split traffic
+			IP address
+			HTTP cookie
+			Random
+	Cloud functions
+		uses
+			lightweight apis
+			lightweight etl
+			webhooks
+			mobile backends
+			IoT
+		Events
+			HTTP events
+			Cloud storage
+			pub/sub
+			firebase
+			cloud logging
+	cloud storage
+		signed urls
+			limitted time read or write access to objects
+			without iam authorization
+		signed policy document
+			specify what can be uploaded to bucket.
+			size, type etc
+	
+	Databases
+		big table
+			high volume
+			low latency writes
+			wide column
+		Cloud SQL
+			regional
+			multi zone
+			multi regional for backups only
+			30TB per database
+			MySql, PostgreSQL, SQL server
+			Cloud SQL Auth Proxy
+				works as proxy client and server
+				public and private endpoints
+				validates connection using credentials for
+				service account or user
+				implements SSL/TLS layer for connections
+		Cloud spanner
+			globally scallable
+			point in time recovery
+			100 db per instance
+			upto 2TB per node
+			max 10mb per cell
+		Cloud Firestore
+			NoSQL database
+			document model
+			key-value pairs
+			semi-structured data
+			Datastore mode
+				Backend for server apps
+				when mobile syncing is not required
+			Native mode 
+				mobile and web apps
+				mobile sync
+				supports large no of connections
+				mobile and web clients
+			Graph Query Language (GQL)
+				filters, sorts
+		Bigtable
+			wide column, not support joins
+			NoSQL database
+			sparse multi-dimensional array
+			within nodes there are multiple sorted-string tables (SSTables)
+			Data is sharded into blocks of contiguis rows called tablets
+			Tablets are stored in Colossus file system
+			Data is never stored on a node
+			Only metadata is stored on a node
+			Data stored on Colossus
+			Row key
+				determine node and SSTable where data is written
+				row keys evenly distributed across nodes
+				Avoid
+					Linearly incrementing keys
+					start key with time value
+					Low cardinality attributes
+				Better
+					Contatinate multiple attributes
+					Start from higher cardinality to lower cardinality attributes
+					ex: sensor ID + reverse datatime
+			Column families
+				set of related columns in a table
+				supports 100 column families efficiently
+			limit 1000 tables per instance
+			better to store data in one table than many
+			hard limits
+				single value in table cell 100MB
+				all values in single row 256MB
+			Petabyte scale
+			Low latency writes
+			key-based Reads
+			Analytics
+			Time series apps
+				IoT
+				Finance
+				monitoring
+			Reads and writes attomic at row level
+			Hbase API
+			Replication
+				by default,eventual consistency
+				read-your-writes consistency
+					requires single cluster routing
+				Strong consistency
+					all apps see same data
+					requires single cluster routing
+					can use Different cluster in failover
+			Similar open source
+				Hbase (Hadoop)
+				Cassandra
+			Used for time series data
+				CPU utilization over time
+				Temp at each time
+				Stock prices
+	
+	Big Query
+		serverless data warehouse
+		Petabyte scale
+		uses sql but not relational database
+		analytical db
+		BigQuery ML
+			uses sql 
+		BigQuery BI Engine
+			supports in-mem storage of Data
+		BigQuery GIS
+			set of functions for supporting geographic information systems
+		BigQuery Omni
+			can run in AWS or Azure
+		Federated Data access
+			Bigtable
+			Cloud SQL
+			Cloud Storage
+				Parquet
+				ORC 
+			Google Drive
+				CSV
+				JSON
+				Avro
+				Sheets
+		Data Access controls
+			org level
+			project level
+			dataset level
+			table or view level
+			column level security
+				taxonomy of tags in Data Catalog
+				tags assign to columns 
+				use iam roles
+		Partitioned table
+			divided into segments called partitions
+			improve query performance
+			low cost
+			partition by Ingestion Time
+				automatically partitioned by ingestion time
+				In query
+					pseudo-column _PARTITIONTIME
+					to limit no of partitions scanned
+			Date/Time partitioning
+				partition by date or timestamp column
+			Integer Range Partitioning
+				partition by integer column
+				specify start and end of range
+				interval of each partition
+			Require Partition filter
+				require_partition_filter parameter
+				specify at table level
+				where clause must include partition parameter
+			Sharding
+				use separate tables for each day
+				use union to scan to scan multiple tables
+			partitioning prefered over sharding
+				less metadata to maintain
+				less permission checking
+				better performance
+		Clustered Table
+			data stored based on values in one or more columns
+			can impore performance of aggregate queries
+			can reduce scanning when cluster columns used in where clause
+			use when need of more granularity than partitioning
+			high cardinality cluster column
+			use when partitioning is alone lead to less than 1GB per partition
+			maintains sort order, recluster in background
+			for partitioned tables that use clustering,
+			clustering is  maintained within each partition
+		performance considerations
+			Avro binary is preffered format
+			compressed or uncompressed
+				compressed avro files not supported
+				compressed avro data blocks are supported
+			Parquet has efficient encoding typically results in
+			better compression ratio and smaller files
+			loads uncompressed files faster than compressed
+		BigQuery Transfer Service
+			move data to bigquery from SaaS services
+			schedule loads
+			automatically scales
+			access other data sources through connectors
+		BigQuery IAM 
+			column level security
+				sensitive data
+				define policy and taxonomy tags
+			row level security
+				create row access policy to table
+				filter data based on user condition 
+				hide or display data based on user condition
+		BigQuery ML 
+			machine learning model in sql 
+			AutoML tables
+				auto use best model
+		BI Engine
+			fast in-memory analysis service
+			bigquery data stored in in-memory
+			upto 100GB/project/location and 10GB/table 
+			optimizes data movement in btw BI engine in-memory storage
+			bigquery cache and bigquery storage
+			integrated with popular BI tools
+			BI Engine sql interface for querying
+	Caching data and cloud memorystore 
+		Redis and memchached 
+		for cache data for db, games, streams
+		Redis
+			connect from 
+				app engine flexible
+				app engine standard
+				Compute engine 
+				cloud functions 
+				cloud run 
+				GKE 
+			scale as needed upto """300GB"""
+			upto 12gbs network throughput
+			Redis protocol Complaint 
+				Basic tier
+					cache with no Replication
+					no cross zone replication 
+				Standard Tier
+					cache with Replication
+					cross zone replication 
+					automatic failover 
+			supports
+				strings
+				lists 
+				sets
+				sorted sets
+				hashes
+				bitmaps based on strings
+				HyperLogLogs (based on strings, approx. no of distinct elements in list)
+		Memchache
+			distributed in-mem key value store 
+			for large memory store
+			used for
+				reference data 
+				database query cache 
+				session cache 
+			Instance is one cluster - """max 5TB in instance ""
+			configure
+				no of nodes - max 20
+				no og vCPUs - 1 to 32
+				Memory - 1 to 256gb per node 
+			supports 
+				compute engine 
+				gke
+				cloud functions
+				app engine 
+				"""Not cloud run"""
+
+	Cloud Pub/sub
+		message queue service
+		asyncronous
+		topic
+			where we store messages
+	Data analysis
+		Cloud Dataflow
+			stream and batch processing
+			based on apache beam runner
+			used for
+				ETL
+			supports windowing operations
+		Cloud Data fusion
+			based on open source CDAP data analytics platform
+			code-free ETL/ELT development tool 
+			over 160 connectors and transformations
+			drag and drop etl/elt constructions
+			support change data capture
+			editions
+				developer
+					lowest code
+					limited resources
+				Basic
+					visual designer
+					transformations
+					sdk
+				enterprise
+					basic + streaming pipelines
+					integration metadata  repository
+					high available
+					triggers
+					schedules
+		Cloud Dataproc
+			spark and hadoop service
+			large scale batch processing and machine learning
+			stream processing
+			elt/etl
+			ephemeral clusters
+			cloud storage connector
+				HDFS compatible
+				quick setup
+		Vertex AI 
+			build deploy and monitor machine learning models
+			supports MLOps practices
+			Unified framework for ML workflows
+			components
+				AutoML
+				Deep learning VM images
+				Notebooks
+				Data labeling 
+				Edge manager
+				Explainable AI
+				Feature store 
+				Model monitoring
+				pipelines
+				predictions
+	Data processing orchestraction
+		Cloud Composer
+			Apache airflow service 
+			pipeline orchestraction for complex dependencies
+			executes workflows defined in directed acyclic graghs (DAGs)
+		Cloud workflows
+			use apis
+			work with google cloud resources and apis
+			used for business processes
+	
+	Deployment manager
+		Infra deployment service
+		configuration files in
+			Jinja 2.10
+			python 3.x
+
+	networking
+		cloud router
+			uses border gateway protocol 
+			custom routes can omit ranges
+			Dynamic routing mode
+				regional
+					only advertises subnets in same regional
+				global
+					all subnets in a VPC network
+		Shared VPC
+			connect resources from multiple projects to common VPC network
+			communicates using internal network
+			host project and service projects
+			Sharing VPC network in host project
+				all subnets in host project including newly created
+				Individual subnets
+			org policy constraints
+			have to be same org
+		VPC network peering
+			no need to be same org
+			works with
+				compute engine
+				gke
+				app engine flexible
+		Cloud NAT 
+			network address translation
+			provide outbound access to internet without external IP addresses
+			works with
+				compute engine
+				private gke clusters
+				cloud run, cloud functions, app engine
+		Cloud Armor
+			DDoS protection
+			Web application firewall
+			detects attacks at load loadbalancing
+		private service connect
+			allows private consumption of services across VPC, groups, teams, projects or org
+			Uses internal IP addresses for services  that you define
+		Cloud VPN
+			connects business network to VPC network
+			uses IPsec VPN
+			traffic encrypted over internet
+			Types
+				classic VPN
+					99.9 available
+					uses single external ip
+					support static and dynamic (BGP) routing
+				HA VPN
+					99.99 available
+					uses two external ips
+					only supports dynamic (BGP) routing
+
+		Cloud Interconnect
+			extends on-premise network to google cloud
+			high availablility, low latency
+			Types
+				dedicated
+					direct physical connection
+				partner
+					connect to google cloud over service provider network
+		Direct peering
+			peering btw your network and google network
+			exists outside google cloud
+			use when need access to google workspace apps
+		Load balancer
+			global
+				external http(s)
+				TCP proxy
+				SSL proxy for non-HTTPS SSL/TLS traffic
+			regional
+				Internal TCP/UDP
+				Internal HTTP(S)
+				External TCP/UDP network
+			network tiers
+				premium
+					high perf networking
+					global
+					high reliability
+				standard
+					low cost, lower perf
+					regional load balancing
+					public internet
+		Service directory
+			publish discover and connect to services
+			tracks IP address changes and automatically updates DNS records
+		Cloud CDN
+			uses external https loadbalancer
+	
+	IAM
+		7 types of members
+			google account
+			service account
+			gooogle group
+			google workspace domain 
+			google Identity domain
+			all authenticated users
+			all users 
+		Identity aware proxy
+			IAP provides app authorization layer for applications accessed by https 
+			grant access based on application model instead of network, no need of VPN
+			works with signed headers or app engine user api in app engine standard
+			access through proxy by members who have correct IAM role
+		workload Identity Federation
+			grant external Identities iam roles, including impersonating a service acc 
+			use short lived access key instead of long lived service acc key
+			workload Identity pools are collection of related Identities for granting fine grain access
+			workload identity provider describes relationship between google and external identity provider
+		use workload identity Federation to avoid sharing service acc key
+	Data Loss Prevention
+		can discover and classify data
+			personally identifying information (PII)
+			credentials and Secrets
+			county specific identifiers
+		automatically mask data 
+		measure re-identification risk
+		info types
+			pattern detectors to indentify sensitive data
+		inspection jobs
+			applied info types to dataset
+		risk analysis jobs
+			calculate the probability that data can be re-indentified
+		HIPAA
+			health insurance portability and accountability act 
+			HIPAA privacy rule
+			HIPAA security rule
+		health information technology for economics and clinical health (HITECH)
+			covers transmission of data
+			extends HIPAA to business associates
+		children's Online privacy protection act 
+			in US 
+		GDPR
+			general data protection regulation 
+			EU regulation standardize privacy protections
+		Customer managed encryption keys
+			Cloud KMS is hosted key management service
+			customer generate and store keys in GCP
+			used when 
+				customers wants control over key generation
+				do not want to support key management Infrastructure
+				for app level encryption
+		Customer supplied encryption key 
+			generate keys and stored in self managed key infra 
+			used when 
+				wants complete control over keys
+				full lifecycle management
+				keys kept on premises
+				passed to gcp via apis when needed 
+
+		VPC service controls
+			creates security perimeter around gcp services 
+			complements IAM 
+			can extend perimeter to on-premises networks 
+
+	observability monitoring and logging
+		four golden rules
+			latency 
+			traffic 
+			errors
+			saturation
+				measure of capacity in use
+	Migrate to cloud 
+		lift and shift
+		improve and move
+		rip and replace
+		specialised migration 
+			database migration service 
+			migrate for anthos 
+			migrate for compute engine 
+			VMware engine 
+			storage 
+				BigQuery transfer service 
+				Transfer appliance 
+				storage transfer service 
+
+
+

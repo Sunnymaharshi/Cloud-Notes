@@ -1,0 +1,17 @@
+Notes:
+    30 TB is max db size for cloud SQL
+    2 TB is the maximum size of data stored per node in Cloud Spanner
+    Indexes are automatically created for single fields in a document
+    best option for the start of a row key in Bigtable?
+        High cardinality attributes distribute data well, 
+        adding a reverse timestamp further enhances distribution
+    ensure data is stored in a sorted order in partitions?
+        Clustering is used to maintain data in a sort order.
+    Cloud Composer is a managed Apache Airflow service
+    Private Service Connect enables private consumption of services across VPC networks
+    Workload Identity Federation allows an external user to impersonate a service account 
+    without the need to share service account keys.
+    Data Loss Prevention Service is used to prevent the 
+    unauthorized release of private or sensitive data
+    Latency, traffic, errors, and saturation are the four golden signals
+    Services Only is not a migration strategy

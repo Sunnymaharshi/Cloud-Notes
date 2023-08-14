@@ -1,0 +1,232 @@
+commands:
+	
+	gcloud
+		init
+			Initialize, authorize, and configure the gcloud tool.
+		version
+			version and installed components.
+		components install
+			Install specific components.
+		components update
+			Update your Cloud SDK to the latest version.
+		config set project
+			Set a default Google Cloud project
+		info
+			Display current gcloud tool environment details.
+			
+			
+		
+		help
+			Search the gcloud tool reference documents for specific terms.
+		feedback
+			Provide feedback for the Cloud SDK team.
+		topic
+			Supplementary help material for non-command topics like accessibility,
+			filtering, and formatting.
+		
+		
+		
+		config set
+			Define a property (like compute/zone) for the current configuration.
+		config get-value
+			Fetch value of a Cloud SDK property.
+		config list
+			Display all the properties for the current configuration.
+		config configurations create
+			Create a new named configuration.
+		config configurations list
+			Display a list of all available configurations.
+		config configurations activate
+			Switch to an existing named configuration.
+			
+			
+			
+		auth login
+			Authorize Google Cloud access for the gcloud tool with Google 
+			user credentials and set current account as active.
+		auth activate-service-account
+			Like gcloud auth login but with service account credentials.
+		auth list
+			List all credentialed accounts.
+		auth print-access-token
+			Display the current account's access token.	
+		auth revoke
+			Remove access credentials for an account.
+		
+		
+		
+		projects describe
+			Display metadata for a project (including its ID).
+		projects add-iam-policy-binding
+			Add an IAM policy binding to a specified project.
+		
+		
+		
+		iam list-grantable-roles
+			List IAM grantable roles for a resource.
+		iam roles create
+			Create a custom role for a project or org.
+		iam service-accounts create
+			Create a service account for a project.
+		iam service-accounts add-iam-policy-binding
+			Add an IAM policy binding to a service account.
+		iam service-accounts set-iam-policy-binding
+			Replace existing IAM policy binding.
+		iam service-accounts keys list
+			List a service account's keys.		
+		
+		
+		
+		auth configure-docker
+			Register the gcloud tool as a Docker credential helper.
+		container clusters create
+			Create a cluster to run GKE containers.
+		container clusters list
+			List clusters for running GKE containers.
+		container clusters get-credentials
+			Update kubeconfig to get kubectl to use a GKE cluster.
+		container images list-tags
+			List tag and digest metadata for a container image.
+			
+		
+		
+		compute zones list
+			List Compute Engine zones.
+		compute instances describe
+			Display a VM instance's details.
+		compute instances list
+			List all VM instances in a project.
+		compute snapshots create
+			Create snapshot of persistent disks.
+		compute snapshots describe
+			Display a snapshot's details.
+		compute snapshots delete
+			Delete a snapshot.
+		compute ssh
+			Connect to a VM instance by using SSH.
+		
+		
+		compute networks list
+			all networks
+		networks describe <network-name> --format json
+			Detail of one network
+		compute networks create <network-name>
+			Create network
+		networks subnets create subnet1 --network net1 --range 10.5.4.0/24
+			Create subnet
+		compute addresses create --region us-west2-a vpn-1-static-ip
+			Get a static ip
+		compute addresses list
+			List all ip addresses
+		compute addresses describe <ip-name> --region us-central1
+			Describe ip address
+		compute routes list
+			List all routes
+		
+		
+		
+		dns record-sets list --zone my_zone
+			List of all record-sets in my_zone
+		
+		
+		
+		
+		compute firewall-rules list
+			List all firewall rules
+		compute forwarding-rules list
+			List all forwarding rules
+		compute firewall-rules describe <rule-name>
+			Describe one firewall rule
+		compute firewall-rules create my-rule --network default --allow tcp:9200 tcp:3306
+			Create one firewall rule
+		compute firewall-rules update default --network default --allow tcp:9200 tcp:9300
+			Update one firewall rule
+			
+			
+			
+		compute images list
+			displays all Google Compute Engine images in a project.
+		sql instances list
+			List all sql instances
+		
+		
+		
+		compute backend-services list
+			List my backend services
+		compute http-health-checks list
+			List all my health check endpoints
+		compute url-maps list
+			List all URL maps
+		
+			
+			
+		
+		app deploy
+			Deploy your app's code and configuration to the App Engine server.	
+		app versions list
+			List all versions of all services deployed to the App Engine server.
+		app browse
+			Open the current app in a web browser.
+		app create
+			Create an App Engine app within your current project.
+		app logs read
+			Display the latest App Engine app logs.
+			
+			
+			
+		kms decrypt
+			Decrypt ciphertext (to a plaintext file) 
+			using a Cloud Key Management Service (Cloud KMS) key.
+		logging logs list
+			List your project's logs.
+		sql backups describe
+			Display info about a Cloud SQL instance backup.
+		sql export sql
+			Export data from a Cloud SQL instance to a SQL file.
+		
+		
+		
+		A flag can be either a:
+			Name-value pair (--foo=bar)
+			Boolean (--force  --no-force).
+			Additionally, flags can either be: Required
+		Global flags
+			--help
+			--project
+				If using a project other than the current one.
+			--quiet
+				Disabling interactive prompting (and applying default values for inputs).
+			--verbosity
+				Can set verbosity levels at debug, info, warning, error, critical, and none.
+			--version
+				Display gcloud version information.
+			--format
+				Set output format as config, csv, default, diff, disable, 
+				flattened, get, json, list, multi, none, object, 
+				table, text, value, or yaml.
+		
+		
+		
+		bq mk
+			to create a dataset
+		bq show
+			dataset’s properties
+		bq load 
+			to load your CSV into a BigQuery table.
+		bq rm
+			delete the dataset you created
+			-r flag to remove any tables it contains.
+		
+		
+		
+		
+		
+			
+			
+			
+			
+			
+			
+			
+	
+			

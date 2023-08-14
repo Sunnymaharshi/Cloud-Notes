@@ -1,0 +1,425 @@
+Notes:
+	Google Kubernetes Engine (GKE)
+		Container as a Service (CaaS)
+	Cloud Functions (Serverless)
+		Functions as a Service
+	Cloud Run
+		scale Containerized apps quickly
+		serverless for containers
+	Billing Acc
+		Sub-acc can be used for resellers
+		can pay for projects in diff org
+		projects not linked to Billing acc cannot use paid Services
+	Payments Profile
+		Process payments for all Google Services, Not just Google Cloud
+	Commited Use Discounts
+		1 or 3 years
+		Types
+			Spend
+				SQL,VMware Engine
+			Resource
+		billed monthly
+	Sustained Use Discounts
+		Automatic Discounts
+	Billing Budgets
+		Alert mails to billing admins & Specific users
+		CLoud Monitoring to specify other people to receive budget alert emails
+	Cloud SDK
+		Command line Interface
+			gcloud init
+				initialize, authorize and setup
+			gcloud auth login
+				authorize access for gcloud
+			gcloud components
+				install, update, delete sdk components
+			gcloud config
+				configure accounts and projects
+			format
+				gcloud  compute   instances  create     instance-1      --zone=us-east1-a
+				       component  entity    operation  positional args    flags
+			gcloud interactive shell is in gcloud beta component
+			
+			IAM
+				Policies
+					gcloud projects get-iam-policy <project-id>
+					gcloud resource-manager folders get-iam-policy <folder-id>
+					gcloud organizations get-iam-policy <org-id>
+				
+	Limits and Quotas
+		Rate Quota
+			API requests
+			resets after some time
+		Allocation Quota
+			`must be explicitly released
+	Identity and Access Management (IAM)
+		
+		Policy
+			1 per resource
+			1500 members or 250 Google grps per policy
+			100 conditional role bindings per policy
+			Members
+			Conditional Bindings - only in version 3
+			Role
+			Metadta - etags(concurrency control),version
+			Audit Config
+				to configure audit logging
+					
+			
+		AllAuthenticatedUsers
+			all service accounts and all users on internet who
+			have authenticated with Google Acc
+		AllUser
+			anyone on the internet
+		Permissions
+			Not granted to users directly
+			compute.instances.list
+			service resource  verb
+		Roles
+			Set of Permissions
+			Grant roles to users
+			Primitive - avoid if possible
+				Owner - grant only through console
+				Editor
+				Viewer
+			Predefined
+				created by google
+				finer-grained access control
+			Custom
+				launch stages
+					alpha - in testing
+					beta - tested & awaiting for approval
+					ga - generally available
+		Service Accounts
+			User managed
+			Default
+				Auto granted with Editor role
+				Access scopes
+					default access
+					allow full access to all Cloud APIs
+					Set access for each API
+			Google managed
+	Cloud Identity
+		manage users and grps
+		Device managememt
+		Security
+			MFA
+		SSO
+		Reporting
+		Directory Management
+	Virtual Private Cloud (VPC)
+		Support only IPv4 traffic
+		auto to custom mode is possible
+		custom to auto is not possible
+		
+		Subnet
+			name or region cannot be changed once created
+			cannot undo expansion of ip ranges
+			reserved ips
+				1st - Network
+				2nd - Default gateway
+				2nd last - Google future use
+				last - Broadcast
+		firewall rules
+			ingress or egress not both
+			allow or deny not both
+			statefull
+		VPC Peering
+			privately connect across 2 VPCs
+			same or diff projects and orgs
+			not transitive 
+				a->b->c
+				c not connected to a
+		Shared VPC
+			multiple projects share a VPC
+			1 host project and multiple guest projects
+		VPC Flow logs
+			Network monitoring
+			network forensics
+		Network Address Translation (NAT) 
+			 translate private IPs to public IPs
+			 no need for IPv6
+			 security and privacy
+			 Static
+			 	private ip -> public ip or 1:1
+			 Dyanamic
+			 	private ip -> 1 in pool of public IPs
+			 Port Address Translation (PAT)
+			 	private IP is replaced by public IP
+			 	public source port is allocated from poll
+			 	many:1
+	Compute Engine
+		Per sec biling
+		launched in VPC
+		Multi or Sole tenent node
+		storage
+			Standard - HDD
+			Balanced - SSD
+			SSD
+			Local SSD - physically attached
+		Machine Types
+			GPUs or TPUs can only added to N1 series
+			custom types are only available in General purpose
+			Shared Core
+				in N1,E2
+				Burstable workloads
+				Cost effective
+				non-resource intensive apps
+			General purpose
+				E2 - day-to-day computing at low cost
+				N1,N2,N2D
+				 
+			Compute optimised
+				C2 - only predefined
+			Memory optimised
+				M1,M2
+		Shielded VMs
+			Boot Process
+				Secure Boot
+				Virtual Trusted Platform Module
+				Integrity Monitoring
+		Metadata
+			startup scripts
+			project
+				applys to all instances
+			Instance
+		live migration
+			moves instance to other zone in same region
+			without stoping it
+	Compute Engine Pricing
+		each resource billed separately
+		vCPU, GPUs and GBs are charged by second with min of 1min
+		
+		Sustained use discounts
+			apply automatically after certain usage period per month
+		Committed use discounts
+			1 or 3 years
+		Preemptible VMs
+			upto 80% cheap
+			always stopped after 24hrs
+			no live migration or auto restart
+			batch processing jobs
+			fault tolerant apps
+	Storage
+		Block Storage
+			resize to only bigger
+			Persistent Disk
+				network storage
+				resize while running
+				encrypted by default
+				Zonal
+					1 zone in 1 region
+				Regional
+					2 zones in same region
+					slow
+				Standard
+					HDD
+					low cost
+				Balanced
+					alternative to SSD
+					less cost than SSD
+				SSD
+			Local SSD
+				Physically attached
+				data persists until instance is stoped or deleted
+				no customer managed keys, only encryption by google
+				SCSI
+					old 
+					less perf than NVME
+				NVME 
+					high cost
+					more perf
+			Snapshots
+				Incremental
+				Stored in Cloud Storage
+				Scheduled Snapshots
+					best practice
+					same region
+					can't edit
+					detach before deleting Schedule
+	Deployment Manager
+		Configuration in yml,python etc
+		only through command line
+	Load Balancer
+	
+		types:
+			HTTP(S)
+				Layer 7
+				Global
+				
+			SSL Proxy
+				Client SSl sessions terminated at load balancer
+				Layer 4
+				Support for TCP with SSL offload
+			TCP Proxy
+				Client TCP sessions terminated at load balancer
+				Layer 4
+				non HTTP apps
+			Network
+				Not a proxy
+				regional
+				
+			Internal
+				layer 4
+				resional and internal
+				not to balance internet trafic
+	Managed Instance Groups
+		Stateless apps
+		Regional or zonal
+		need Instance Template to create
+	Google Kubernetes Engine
+		Cluster
+			1 or more control planes(scheduling and management)
+			1 or more Nodes (run containerized apps, docker runtime)
+			kubectl command
+			Node pools
+				group of nodes within cluster with same config
+				1 or more nodes
+			Zonal
+				single or multi
+			Regional
+	Cloud VPN
+		Regional
+		low cost than cloud interconnect
+		for low latency not needed
+		connects peer network to VPC
+		through IPsec VPN connection
+		IPsec tunnel over the public internet
+		site to site VPN only (no site to clieny)
+		Private Google Access
+		3Gbps
+		Classic
+			99.9% SLA
+			static and dynamic routing
+		HA VPN
+			99.99% SLA
+			Dynamic routing only
+			Recommended
+	Cloud Interconnect
+		low latency, highly available on-premis to VPC
+		internal IPs accessable - Private Google Access
+		Dedicated Connection
+		Not traverse the public internet
+		not encrypted
+		Expensive
+		Dedicated 
+			through point of presence
+		Partner interconnect 
+			service provider
+	App Engine
+		serverless platform
+		web apps
+		PaaS
+		Code or Containers
+		Autoscale
+		Standard
+			sandbox env
+			scale to 0 instances
+			sudden and extreme spikes
+		Flexible
+			docker containers
+			consistent traffic
+			VMs are managed and ssh access
+	Cloud Fucntions
+		Serverless
+		Function as a Service
+		Event-driven
+		HTTP, PUB/Sub, Cloud STorage
+		pricing - time + resources
+	Cloud Storage
+		Types
+			Standard
+			Nearline
+				30 day min duration
+				per month access
+			Coldline
+				90 day min duration
+				once per quarter
+			Archive
+				365 min duration
+		Access Control
+			IAM
+			Access Control List (ACL)
+				permission + scope
+			Signed Urls
+				Limited duration of time
+	Cloud SQL
+		low latency, transactional, relational db
+		MySQL, PostgreSQL, SQL Server
+		Read Replicas - regional and cross regional
+		30TB
+		offer Encryption at rest and transit
+	Cloud Spanner
+		relational
+		horizontal scalable
+		Global
+	NoSQL
+		Cloud Bigtable
+			analytic
+			Mapreduce
+			petaByte scale
+			Iot, Graph
+		Cloud Datastore
+			SQL like lang GQL
+			Encrypted
+			App dev
+			User profiles, Transactions
+		FireStore for Firebase
+			serverless
+			document and collections
+			Offline Support
+		Memory Store
+			Caches
+			Secure
+			Gaming, Stream processing
+	Big Data Services
+		Big Query
+			Warehouse
+			Data transfer service
+			Analytics
+			bq cmd tool
+		Pub/Sub
+			messaging service
+		Composer
+			workflow orchestration built on Apache Airflow
+		Dataflow
+			processing service
+			serverless
+			Apache Beam runtime
+		Dataproc
+			Spark and Hadoop service
+		Cloud Datalab
+			data exploration,
+			analysis, visualization
+			Machine learning
+		Cloud Dataprep
+			for clean and preparing data
+	Machine learning
+		Sight
+			Vision
+				label to images
+			Video Intelligence
+				recognise objects
+				
+		Language
+			Natural Language
+				insights from unstructured text
+			Translation
+		Conversation
+			Dialog Flow
+			Speech to Text
+			Text to Speech
+		AutoML
+	Operations Suite
+		Monitoring - metrics, dahsboards and charts, alerting
+		Logging - cloud and on-premise
+		Error Reporting
+		App Perf Management
+			Debugger - debug running app
+			Trace - latency 
+			Profiler - usage and memory allocation
+			
+			
+	
+			
+		
+		

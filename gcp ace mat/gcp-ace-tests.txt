@@ -1,0 +1,64 @@
+tests:
+	u can create upto 5 Monitoring channel to define email
+	recipients that receive budget alerts
+	
+	Internal http(s) load balancer can only use NEGs
+	
+	to transfer 100TB of data to Google
+		Transfer Appliance
+		
+	VPN is less cost than Interconnect
+	
+	automate deployment of environments dev/test 
+		Cloud Foundation Toolkit
+			to create 1 deployment template and deploy with terraform.
+			templates for Deployment Manager and Terraform 
+			which reflect Google Cloud best practices.
+			infrastructure as code (IaC),
+			Best Practice
+			
+	cost-effective solution for relational data & support point-in-time recovery.
+		Cloud SQL (MySQL). Verify that the enable binary logging option is selected
+	
+	The data stored in the storage is written to the server in the cloud storage system based on the file name. In
+	 this case, similar file names are being written to the same server. Uploading a large number of files with
+	  similar names, such as assigning a user ID as a date, will concentrate the workload on a single server and
+	   reduce performance. This is called a hotspot.
+	
+	OpenCensus is a library for developing custom metrics that can be used in the operation suite Logging.
+	
+	Image families are used to group related images together so you can roll forward or back between specific
+	images versions. 
+	
+	gsutil rewrite command with the -s parameter is used to change storage classes.
+	
+	When Cloud Run starts a container, it creates environment variables: K_Configuration, K_Revision, K_Service,
+	and Port. K_Configuration specifies the configuration that created the container. 
+	
+	gcloud compute project-info describe --project [PROJECT ID]. to show the default region and zone
+	
+	roles/logging.privateLogsViewer  to review audit logs.
+	
+        guest attributes enabled to enable to store SSH host keys
+        
+        
+        gcloud compute snapshots describe to know the source disk for each snapshot. 
+        
+        
+        --enable-stackdriver-kubernetes to use Cloud Operations for GKE instead of legacy monitoring and logging.
+        
+        To copy files to a VM, a firewall rule must be in place to allow traffic on port 22, the default SSH port.
+        
+        VPC Network Peering to connect the VPC networks across organizations. 
+        
+        The source and cloned disk must be in the same zone and region and must be of the same type.
+        
+        Cloud Audit Logs maintain three audit logs: Admin Activity logs, Data Access logs, and System Event logs.
+        
+        
+        sole-tenant node to hosting only your project's VMs.
+        
+        Shielded VMs are virtual machines (VMs) on Google Cloud hardened by a set of security controls that help
+        defend against rootkits and bootkits.
+        
+	

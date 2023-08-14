@@ -1,0 +1,529 @@
+Notes:
+	Devops
+		set of practices, guidelines and culture
+		to reduce gap between software development and software operations
+		productivity increases
+		Five Goals
+			Reduce organization silos
+			Accept failure as normal
+			Implement gradual changes
+			Leverage tooling and automation
+			Measure everything
+	SRE
+		Devops is Philosophy where SRE is implementation of Devops's Philosophy
+		SRE Role
+			SRE is basically result of asking software engineer to design an operations team
+			SRE requires experience in both development as well as operations
+			SRE spends half of time doing ops-related work
+				production issues, attending call, performing manual interventions
+			SRE spends other half of time in 
+				development tasks
+				scaling system
+				automation
+			SRE and developer both share responsibility of Prod Server
+			SRE builds tools that developers use to compile, test and deploy their code(CI/CD Pipeline)
+			SREs and Developers work together to fix issue
+		Blameless postmortems
+			Goal is to accept failure as normal
+			Analyze system failure
+			Root cause behind it
+			Discuss what happened exactly
+			What action need to be performed
+			Not to look for someone who can be blamed
+			Assumption is - everyone has good intentions
+			postmortem questions
+				When incident begin & end
+				How incident get notified
+				Who are all involved
+				Which systems are affected
+				What is root cause of failure
+				How to avoid in future
+			Honest Communication with other team so that similar incident can be avoided in future
+		Error Budget
+			Goal is to implement gradual change
+			Why outage accurs
+				Added a new feature
+				change
+				new hardware
+				security patches
+			More change leads to less stable system
+			How to balance between change & stability
+			We have to define metric for high system stability 
+			How much can system fail before it begins to have a significant negative impact
+			How quickly do we need to be able to release new features
+			Depending on target, need to define error budget
+			Anytime your system is down, time require to recover it will be consumed from error budget
+			After you define error budget
+				as long as you are within error budget, u are good to for more changes
+				Once you run out of error budget, need to hold all future changes for developement
+				and make system stable first
+			Larger error budget
+				means more downtime for service is acceptable
+				frequent changes possible
+			Less error budget
+				means less downtime for service is acceptable
+				lesser changes allowed
+			Error budget make sure smaller & gradual changes developed
+		Toil
+			Goal is to leverage tooling and automation
+			There are lots of tasks are manual, laborious
+			Task like Password change, copy files, create new folders, restart servers
+			these type of tasks are considered as Toil
+			Identifying toil is important
+			Not all tasks are toil
+			There are tasks which are laborious but not necessary is toil
+			Toil is related to
+				Prod system
+				Manual, repetitive & automatable tasks
+			SRE want to reduce Toil by automation
+			Task like
+				Automate CI/CD Pipeline
+				Schedule jobs
+				Write automation scripts
+				Automate testing
+				No manual provisioning hardware
+			If repetitive task is automatable, it should be automated
+			SRE should spend significant amount of time in reducing toil
+		SLO (Service Level Objective)
+			Internal objective of team
+			SLO is something everyone in org want to achieve
+			Error budget is directly related to SLO
+			SLO is complement to error budget
+			Error budget - 3% means service is down 3% at max
+			SLO - 97% means service should be up for 97%
+			Error budget + SLO = 100%
+			Define SLO with respect to latency, availability, response time			
+		SLI (Service Level Indicator)
+			Internal to team
+			SLI needs to be compared against SLO	
+			SLI are metrics which track over time (generally 5min interval)
+			SLI ranges from 0 to 100%
+			SLI = Total Good Event/Total Valid Event  X 100
+			If SLO - 96%
+				96% of request should be serve within 300ms latency
+			if current SLI is 95% or anything less than 96% system is under performing
+			SLI helps us to find which services are not performing as per SLO
+			If changes to SLI does not impact customer, SLI defination is not worth
+			Different signal to track
+				Latency
+				Traffic
+				Errors
+				Saturation
+				Availability of system
+			Selecting right SLO & SLI lead to success
+		SLA (Service Level Agreement)	
+			SLA is contract with consequences of failing to meet SLOs 
+			SLO & SLA are quite similar
+			SLAs should not be same as SLOs
+			SLO is internal objective
+				if u cannot meet SLO, team can slow down process
+			SLAs violations are shared with your customers
+				if u cannot meet SLA, compensate need to be provided to customers
+	Docker
+		software development platform
+		You will package ur app in image
+		Container use image to start application
+		Containers run on any OS
+		It works same independent of OS, machine, environment
+		Lightweight compared to VM
+		Easier to maintain and deploy
+		Docker works with any language, runtime, OS
+		HOST_PORT:CONTAINER_PORT
+		first our request goes to host port then container port
+		Creating Docker image
+			docker build -t gcr.io/project_id/image_name:version .
+			. is to search Dockerfile in current directory
+			base image also created separately
+			gcr.io location is US by default	
+		Run image in container
+			HOST_PORT:CONTAINER_PORT
+			First our request goes to host port then container port
+			docker run -p 9090:8080 gcr.io/project_id/image_name:version
+			-d option to run it in background
+		List running container
+			docker ps -a
+		Deleting container
+			You can't delete running container
+			stop container using below command
+			docker stop container_id 
+			Delete container using below command
+			docker rm container_id			
+		Push docker image to Google Container Registry
+			docker push gcr.io/project_id/myimage:v1.0
+	Container
+		Software shipping technology
+		Containers are lightweight
+		Easily portable to any public cloud, VM, bare metal
+		For micro-service deployment, lightweight containers are preferred
+		Fast CI/CD cycle
+		Can Deploy in GCP
+			VM
+			Cloud Run
+			GKE
+	GCP Container Registry
+		Online storage for docker images
+		Naming Convention
+			HostName/ProjectID/imagename:Tag
+			gcr.io/[PROJECT_ID]/nginx:1.0
+		Binary authorization
+			used to detect vulnerabilities & enforce deployment polices.
+		No IAM Role defined at granular level
+		No region specific repository
+		Pricing - store in Google Cloud Storage
+	GCP Artifact Registry
+		Comes with fine grained access via Cloud IAM
+		Multiple repositories per project
+		Regional & multi-regional repositories
+		Not just Docker images but many more like NPM, maven, python packages
+		Naming Convention
+			asia-southeast1-docker.pkg.dev/[PROJECT_ID]/[repo]/nginx:v1.0
+		Must create a repo (doesn't have for container registry)	
+		Configure
+			gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+			
+	Deploy Application on Google Cloud	
+		Deployment methods
+			Blue/Green
+				Two copies of production systems are running in parallel
+				When new version came up, it is deployed to one of the systems
+				Then users traffic is diverted to that system
+				one version is live at a time.
+			Rolling
+				If app is running on multiple servers
+				When new version came up, it is deployed to one of the servers
+				Gradually all servers are updated with new version 
+				If something goes wrong in new version only some of users affected
+			Canary
+				If app is running on multiple servers
+				When new version came up, it is deployed to small percentage of the servers
+				If everything is good in new version, all servers are updated with new version
+			Traffic Splitting
+				Small percentage of user will be served with new version
+				If everything good, redirect all users to new version
+				Used for A/B testing
+			
+			
+		Compute options
+			Compute Engine
+				Deployment
+					Containerized app
+						container optimized OS
+						Other OS + manual docker install
+					Non-containerized app
+						manual apache install
+						startup script to install apache
+							serial port console to see startup script logs
+				Instance Group
+					Instance Template
+						Blueprint for intance group
+						global resource
+					Type
+						Managed (stateless)
+						Managed (stateful)
+						Un-managed
+					Autoscaling
+						On:add or remove instances to group
+						Scale out: only add instances to group
+						Off: do not autoscale
+						Min no of Intances, Max no of instances
+						Metric
+							CPU utilization
+							HTTP loadbalancing utilization
+							Cloud Monitoring metric
+							
+					
+				HTTP Load Balancer
+					Backend configuration
+						backend bucket
+							for static website or file in bucket
+						backend service
+							instance groups
+							health checks
+							balancing mode
+								Utilization
+								Rate						
+			Google Kubernetes Engine
+				Steps
+					create cluster
+					create workload
+					expose workload
+				Service type
+					ClusterIP
+						exposes service on internal IP in cluster
+					Node Port
+						exposes service on same port of each selected node
+					Load Balancer
+						creates load balancer with external IP
+				Rolling update
+					Minimum seconds ready
+					Maximum surge
+						max no of pods that can be created over desired no of pods
+					Maximum unavailable
+								
+			App Engine
+				used for web application
+				you can only deploy one app engine per project
+				can't change region later
+				app.yaml is required
+				we can deploy multiple services with multiple versions
+				it can come to 0 instances, if we don't use for long time
+				traffic splitting
+			Cloud Run
+				CPU allocation and pricing
+					CPU is allocated during request processing
+					CPU is always allocated
+				traffic splitting
+			Cloud Function
+				you don't have any provision to go back to previous version
+				if current version have issues	
+				used for single micro-service
+			
+	CI/CD Pipeline
+		Continuous Integration
+			Push code to repository
+			Build server
+				build the app
+				creates some artifacts
+		Continuous Deployment
+			artifacts are deployed to Deployment server
+			fully automated
+		Continuous Delivery
+			Release to production
+			may involve manual approval
+		Services
+			Source code management
+				Cloud Source Repository (GCP)
+				Bitbucket
+				Github etc
+			Build
+				Cloud Build (GCP)
+				Jenkins
+				Teamcity
+				circleci
+			Arifacts storage
+				Aritifact Registry (GCP)
+				Container Registry (GCP)
+				Dockerhub
+				Jfrog Artifactory
+			Deployment in GCP
+				Compute Engine
+				Kubernetes
+				App Engine
+				Cloud Run
+				Cloud Function
+		Pipeline 1
+			Source repository
+				gcloud source repos clone repo_name --project=PROJECT_ID
+				after adding files
+				git push -u origin master
+			Build
+				Cloud Build executes your build as a series of build steps,
+				where each build step is run in a Docker container.
+				Create trigger
+					Event
+						push to branch
+						push new tag
+						pull request (not for gcp source repo)
+					Configuration
+						Cloud build configuration file (yaml or json)
+						Dockerfile
+						Buildpacks
+		Pipeline 2
+			App Engine
+				build configuration file schema
+					cloudbuild.yaml
+					to write all the steps u want to perform on source code
+		Pipeline 3
+			Cloud Function
+				cloudbuild.yaml
+		Pipeline 5
+			GKE
+				Cloudbuild
+					substitution variables
+						to substitute specific variables at build time
+		Jenkins
+		
+		IAC (Infrastructure as Code)
+			manage and provision cloud resource using descriptive language
+			In GCP - Deployment manager		
+			
+			Terraform
+				popular tool for infrastructure provisioning
+				agentless tool
+				not a configuration tool
+				HCL language (preffered) or JSON
+				
+				terraform init
+					install latest terraform
+					initializes a working directory containing Terraform configuration files.
+				terraform plan
+					creates an execution plan
+					preview the changes that Terraform plans to make to your infrastructure.
+				terraform apply
+					executes the plan
+				terraform destroy
+					destroys all resources
+			
+		Secure Container Deployment
+			Google managed base images
+				Google marketplace
+			Container analysis
+				Container scanning
+					automated vulnerability scanning
+					manual vulnerability scanning
+						gcloud artifacts docker images scan imageurl --remote
+					for containers in both artifact and container registry
+			Binary authorization
+				deploy-time security control
+				allow-all - default
+				disallow-all (check mark to allow google images)
+				require attestations
+					create and add attestator using KMS key
+					sign the image with attestator then deploy
+					gcloud beta container binauthz attestations sign-and-create 
+					--arifact-url="image_url" --attester="attester_name" 
+					--attester-project="project_id" --keyversion-project="project_id"
+					--keyversion-loaction="global" 	--keyversion-keyring="key_ring_name"
+					--keyversion-key="key_name" --keyversion="key_version" 
+			
+			
+	Operation Tool
+		Cloud Monitoring 
+			different metrics can be measured
+			monitor one of more GCP projects or AWS
+			Ops Agent to monitor VM
+			Uptime check
+				specific case of alerting
+				checks whether app is running and up or not
+				check can happen from global or specific locations
+			Alerting
+				can add multiple conditions & metrics
+			Groups
+				can add multiple resources to a group to monitor as whole
+				
+		Logging
+			fully managed
+			store exabyte scale data
+			logs can collected from different sources
+			Cloud Audit Logging
+				who did what, when, where
+				Types
+					Admin Activity
+						By default Enabled, can't configure or disable
+						Administrative action
+						400 days retention
+						Free
+						ex: create or delete vm
+					System Event
+						By default Enabled, can't configure or disable
+						Generated by Google System
+						400 days retention
+						Free
+						ex:vm migration due to lack of resources, preemtive vm
+					Data Access
+						By default not enabled, can be disabled
+						For Bigquery by default enabled and free
+						create or modify resource data
+						30 days retention
+						Not Free
+						ex:create object in bucket
+					Policy Denied
+						By default Enabled, can't configure or disable
+						But can be excluded with filters
+						Google service denies access
+						30 days retention
+						Not Free
+						ex:security violation
+			Log Collection
+				Log read/write via gcloud sdk
+					gcloud logging write log_name "log_msg"
+				Automatically
+					Cloud Run, GKE, App Engine
+				Loggin Agent
+					compute engine on GCP/AWS
+					by installing legacy agent or ops agent
+					fleuntd worker catches logs from other apps like ngnix
+				Cloud logging API
+					Python/Java SDK
+					From on-premises
+			Log based metrics
+				charts for monitoring
+				have alerts also
+				Type
+					counter
+						counts no of log entries matching given filter
+					distribution
+						collects numeric data from log entries	
+				
+					
+			Log Router
+				Log data through Logging API goes to
+					_Required log sink
+						_Required log bucket
+						400 days retention
+						Non-configurable
+					_Default log sink
+						_Default log bucket
+						30 days retention
+						Configurable
+					User-defined log sink
+						User-defined log bucket
+						30 days retention
+						Configurable
+						region can't be changed later
+					Lob-based metrics
+						Cloud Monitoring
+				Logging buckets can't be visible in cloud storage bucket list
+				These longs can sink to (Sinks)
+					Logging bucket
+					Cloud Storage bucket
+					BigQuery
+					Pub/Sub
+		Dev/Ops tool
+			Cloud Error Reporting
+			Cloud Debugger 
+				find state of running app
+				snapshot
+					can create a snapshot upto a line to see all the variables
+				log point
+					can add a condition at a line to write a log 
+				
+			Cloud Trace
+				shows latency for each endpoint
+			Cloud Profiler
+				How much resource consumed
+		Optimize resource utilization
+			Billing
+				Budgets
+					can limit monthly cost 
+			
+			Preemptible VM
+				short lived cheaper vm - max 24hr
+				use only when workload is fault tolerant
+				upto 80% discount
+				google gives 30sec warning before auto shutdown
+			Pricing
+				Flat rate discount
+					pay for what u use
+					no discount
+					ex:E2 & A2 type in compute engine
+				Sustained use discount
+					automatic discounts
+					for specific compute engine resources
+					only for N1 & N2 type in compute engine
+					only on vm instances and gke
+				Committed use discounts
+					for predictable workload
+					1 or 3 years
+					upto 70% discount
+					only on gke and vm instances
+					can't cancel commitments
+				Total cost of operations
+					TCO = purchase cost of asset + cost of operation
+					In GCP
+						no purchase cost
+						only operation cost
+						pay as you go
+						
+			
+			

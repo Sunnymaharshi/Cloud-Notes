@@ -1,0 +1,65 @@
+Your company built a TensorFlow neutral-network model with a large number of neurons and layers. The model fits well for the training data. However, when tested against new data, it performs poorly. What method can you employ to address this?
+	Dropout Methods
+
+You designed a database for patient records as a pilot project to cover a few hundred patients in three clinics. Your design used a single database table to represent all patients and their visits, and you used self-joins to generate reports. The server resource utilization was at 50%. Since then, the scope of the project has expanded. The database must now store 100 times more patient records. You can no longer run the reports, because they either take too long or they encounter errors with insufficient compute resources. How should you adjust the database design?
+	Normalize the master patient-record table into the patient table and the visits table, and create
+	other necessary tables to avoid self-join. 
+
+You are creating a model to predict housing prices. Due to budget constraints, you must run it on a single resource-constrained virtual machine. Which learning algorithm should you use?
+	Linear regression
+
+You are building new real-time data warehouse for your company and will use Google BigQuery streaming inserts. There is no guarantee that data will only be sent in once but you do have a unique ID for each row of data and an event timestamp. You want to ensure that duplicates are not included while interactively querying data. Which query type should you use?
+	Use the ROW_NUMBER window function with PARTITION by unique ID along with WHERE row equals 1.
+
+You want to process payment transactions in a point-of-sale application that will run on Google Cloud Platform. Your user base could grow exponentially, but you do not want to manage infrastructure scaling.
+	Cloud Datastore 
+
+You want to use a database of information about tissue samples to classify future tissue samples as either normal or mutated. You are evaluating an unsupervised anomaly detection method for classifying the tissue samples. Which two characteristic support this method?
+	There are very few occurrences of mutations relative to normal samples.
+	You expect future mutations to have different features from the mutated samples in the database. 
+
+You need to store and analyze social media postings in Google BigQuery at a rate of 10,000 messages per minute in near real-time. Initially, design the application to use streaming inserts for individual postings. Your application also performs data aggregations right after the streaming inserts. You discover that the queries after streaming inserts do not exhibit strong consistency, and reports from the queries might miss in-flight data. How can you adjust your application design?
+	Estimate the average latency for data availability after streaming inserts, and always run
+	queries after waiting twice as long.
+
+Your company is migrating their 30-node Apache Hadoop cluster to the cloud. They want to re-use Hadoop jobs they have already created and minimize the management of the cluster as much as possible. They also want to be able to persist data beyond the life of the cluster.
+	Create a Cloud Dataproc cluster that uses the Google Cloud Storage connector.
+
+You have spent a few days loading data from comma-separated values (CSV) files into the Google BigQuery table CLICK_STREAM. The column DT stores the epoch time of click events. For convenience, you chose a simple schema where every field is treated as the STRING type. Now, you want to compute web session durations of users who visit your site, and you want to change its data type to the TIMESTAMP. You want to minimize the migration effort without making future queries computationally expensive. What should you do?
+	Construct a query to return every row of the table CLICK_STREAM, while using the built-in
+	function to cast strings from the column DT into TIMESTAMP values. Run the query into a
+	destination table NEW_CLICK_STREAM, in which the column TS is the TIMESTAMP type. Reference the
+	table NEW_CLICK_STREAM instead of the table CLICK_STREAM from now on. In the future, new data
+	is loaded into the table NEW_CLICK_STREAM.
+
+You are working on a sensitive project involving private user data. You have set up a project on Google Cloud Platform to house your work internally. An external consultant is going to assist with coding a complex transformation in a Google Cloud Dataflow pipeline for your project. How should you maintain users' privacy?
+	Create an anonymized sample of the data for the consultant to work with in a different project.
+
+You are building a model to predict whether or not it will rain on a given day. You have thousands of input features and want to see if you can improve training speed by removing some features while having a minimum effect on model accuracy. What can you do?
+	Combine highly co-dependent features into one representative feature.
+
+Your company is performing data preprocessing for a learning algorithm in Google Cloud Dataflow. Numerous data logs are being are being generated during this step, and the team wants to analyze them. Due to the dynamic nature of the campaign, the data is growing exponentially every hour.
+The data scientists have written the following code to read the data for a new key features in the logs.
+	Use .fromQuery operation to read specific fields from the table
+
+You have Google Cloud Dataflow streaming pipeline running with a Google Cloud Pub/Sub subscription as the source. You need to make an update to the code that will make the new Cloud Dataflow pipeline incompatible with the current version. You do not want to lose any data when making this update. What should you do?
+	Update the current pipeline and use the drain flag.
+
+Your software uses a simple JSON format for all messages. These messages are published to Google Cloud Pub/Sub, then processed with Google Cloud
+Dataflow to create a real-time dashboard for the CFO. During testing, you notice that some messages are missing in the dashboard. You check the logs, and all messages are being published to Cloud Pub/Sub successfully. What should you do next?
+	Run a fixed dataset through the Cloud Dataflow pipeline and analyze the output. 
+
+Your company has recently grown rapidly and now ingesting data at a significantly higher rate than it was previously. You manage the daily batch MapReduce analytics jobs in Apache Hadoop. However, the recent increase in data has meant the batch jobs are falling behind. You were asked to recommend ways the development team could increase the responsiveness of the analytics without increasing costs. 
+	Rewrite the job in Apache Spark.
+
+You work for an economic consulting firm that helps companies identify economic trends as they happen. As part of your analysis, you use Google BigQuery to correlate customer data with the average prices of the 100 most common goods sold, including bread, gasoline, milk, and others. The average prices of these goods are updated every 30 minutes. You want to make sure this data stays up to date so you can combine it with other data in BigQuery as cheaply as possible.
+What should you do?
+	Store and update the data in a regional Google Cloud Storage bucket and create a federated data
+	source in BigQuery 
+
+Your company receives both batch- and stream-based event data. You want to process the data using Google Cloud Dataflow over a predictable time period.
+However, you realize that in some instances data can arrive late or out of order. How should you design your Cloud Dataflow pipeline to handle data that is late or out of order?
+	Use watermarks and timestamps to capture the lagged data. 
+
+
+	

@@ -1,0 +1,49 @@
+You have several Cloud SQL PostgreSQL instances in the us-west1 region. Three instances are development and four are used for QA and production. You would like maintenance to happen on the development instances before the production instances. How would you configure this?
+	In Maintenance Settings, set the development instances order of update to Earlier and QA and production instances to
+	Later.
+
+The workload on a Cloud SQL PostgreSQL database running in the us-central1 region is increasing. The application is write intensive and has ra relatively small amount of read operations. Users in europe-west2 and europe-west1 are experience long latencies when adding new data to the database. You want to improve performance while minimizing changes to the application. Which of the following would address the problem while subject to the listed constraints?
+	Cloud Spanner using PostgreSQL interface
+
+A data modeler experienced in relational database design has designed a Bigtable database for tracking stock market data. The modeler has created a large number of tables in the database, similar to what you would find in a relational database. Why could that design choice lead to poor performance in Bigtable?
+	Small tables increase connection overhead and are hard to load balance.
+
+A developer is writing an application that will write data to a Cloud SQL PostgreSQL database. The developer is running the application on a non-Google Cloud platform. The IP address the developer was given for the Cloud SQL instances is 172.16.0.10. The developer is not able to connect to the database in Google Cloud but can connect to a PostgreSQL database locally. The database engineer who created the database in Google Cloud can reach the database. What is the likely problem?
+	The database engineer provided an IP address of 172.16.0.10, which is a private IP address and not routable over the
+	internet.
+
+What factors are used to calculate the cost of using Cloud Firestore? 
+	Number of Document Reads
+	Number of Document Writes
+	Number of Document Deletes
+
+What database dialects are available in Cloud Spanner?
+	Google Standard SQL and PostgreSQL
+
+A database engineer wants to export a Cloud SQL PostgreSQL database every weekday evening at 10pm local time. How would you recommend they do that?
+	Use Cloud Scheduler to write a message at 10pm on weekday nights to a Cloud Pub/Sub topic which triggers a Cloud
+	Function to start the export. 
+
+You are creating a Cloud SQL instance and see that private service access is setup for your VPC. This will allow you to connect to Cloud SQL using which of the following?
+	From internal sources with access to your VPC network
+	From external sources over a VPN tunnel
+	From external sources over Cloud Interconnect
+
+A team of data scientists would like to analyze customer data stored in a Cloud SQL PostgreSQL database. The data scientists need data from 3 tables and will be loading the data into a self-managed PostgreSQL database. How would you recommend sending the data to them?
+	Create an export of the three tables and send that to the data scientists.
+
+As a developer tasked with building a prototype application using Cloud Spanner, you want to have access to the most functionality, including PostgreSQL interface, while minimizing costs. You want to use the smallest amount of resources possible. What Cloud Spanner configuration would you use?
+	100 processing units
+
+A database administrator who is unfamiliar with Cloud Spanner is asking for your advice about poor write performance. It seems that many writes on occurring on one node at any time rather than more evenly distributed across all nodes. What would you suggest the database administrator do?
+	Check the primary key for sequential values and use something else, such as a hash of the sequential value.
+
+You need to create an export from a production Cloud SQL database for a team of data analysts. They only need a one time export and can wait until it is convenient for you to make the export. You top priority is not impacting performance of production systems. What method would you use to export data?
+	use serverless export
+
+A new database engineer has joined your team. You are reviewing your procedures for creating new database servers. Which of the following security recommendations would you include in your review?
+	Change or disable default accounts that come with a database
+	Use strong passwords when username/passwords are used for authentication
+	Use service accounts for each application accessing the database
+
+

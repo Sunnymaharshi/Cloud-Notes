@@ -1,0 +1,223 @@
+Which two implied firewall rules are defined on a VPC network? (Choose two.)
+    A rule that allows all outbound connections
+    A rule that denies all inbound connections
+
+When creating a secure container image, which two items should you incorporate into the build if possible? (Choose two.)
+    Package a single app as a container.
+    Remove any unnecessary tools not needed by the app.
+
+A customer needs to launch a 3-tier internal web application on Google Cloud Platform (GCP). The customer's internal compliance requirements dictate that end- user access may only be allowed if the traffic seems to originate from a specific known good CIDR. The customer accepts the risk that their application will only have SYN flood DDoS protection. They want to use GCP's native SYN flood protection.
+	Cloud Armor 
+
+A company is running workloads in a dedicated server room. They must only be accessed from within the private company network. You need to connect to these workloads from Compute Engine instances within a Google Cloud Platform project.
+	Configure the project with Cloud VPN.
+	Configure the project with Cloud Interconnect.
+	 	Provides direct access to VPC network resources that have only internal IP addresses.
+	 	Direct peering can't access to above
+	 	
+A customer implements Cloud Identity-Aware Proxy for their ERP system hosted on Compute Engine. Their security team wants to add a security layer so that the ERP systems only accept traffic from Cloud Identity-Aware Proxy.
+	Make sure that the ERP system can validate the JWT assertion in the HTTP requests.
+
+A company has been running their application on Compute Engine. A bug in the application allowed a malicious user to repeatedly execute a script that results in the Compute Engine instance crashing. Although the bug has been fixed, you want to get notified in case this hack re-occurs.
+	Create an Alerting Policy in Stackdriver using a Process Health condition, checking that the number of executions
+	of the script remains below the desired threshold. Enable notifications.
+
+Your team needs to obtain a unified log view of all development cloud projects in your SIEM. The development projects are under the NONPROD organization folder with the test and pre-production projects. The development projects share the ABC-BILLING billing account with the rest of the organization.
+	Export logs in each dev project to a Cloud Pub/Sub topic in a dedicated SIEM project. 2. 
+	Subscribe SIEM to the topic.
+
+A customer needs to prevent attackers from hijacking their domain/IP and redirecting users to a malicious site through a man-in-the-middle attack.
+	DNS Security Extensions
+
+A customer deploys an application to App Engine and needs to check for Open Web Application Security Project (OWASP) vulnerabilities.'
+	Web Security Scanner
+
+A customer's data science group wants to use Google Cloud Platform (GCP) for their analytics workloads. Company policy dictates that all data must be company-owned and all user authentications must go through their own Security Assertion Markup Language (SAML) 2.0 Identity Provider (IdP). The
+Infrastructure Operations Systems Engineer was trying to set up Cloud Identity for the customer and realized that their domain was already being used by G Suite.
+	Ask customer's management to discover any other uses of Google managed services, and work with \
+	the existing Super Administrator.
+
+An application running on a Compute Engine instance needs to read data from a Cloud Storage bucket. Your team does not allow Cloud Storage buckets to be globally readable and wants to ensure the principle of least privilege.
+	 Use a service account with read-only access to the Cloud Storage bucket to retrieve the credentials 
+	 from the instance metadata. 
+	
+An organization's typical network and security review consists of analyzing application transit routes, request handling, and firewall rules. They want to enable their developer teams to deploy new applications without the overhead of this full review.
+	Mandate use of infrastructure as code and provide static analysis in the CI/CD pipelines to enforce policies.
+
+An employer wants to track how bonus compensations have changed over time to identify employee outliers and correct earning disparities. This task must be performed without exposing the sensitive compensation data for any individual and must be reversible to identify the outlier.
+	CryptoReplaceFfxFpeConfig 
+
+Google-recommended practices to leverage envelope encryption and encrypt data at the application layer.
+	Generate a data encryption key (DEK) locally to encrypt the data, and generate a new key encryption key (KEK) in
+	Cloud KMS to encrypt the DEK. Store both the encrypted data and the encrypted DEK.
+
+In order to meet PCI DSS requirements, a customer wants to ensure that all outbound traffic is authorized.
+Which two cloud offerings meet this requirement without additional compensating controls? 
+	Compute Engine
+	Google Kubernetes Engine
+
+A company's application is deployed with a user-managed Service Account key. You want to use Google-recommended practices to rotate the key.
+	Create a new key, and use the new key in the application. Delete the old key from the Service Account.
+
+Your team needs to configure their Google Cloud Platform (GCP) environment so they can centralize the control over networking resources like firewall rules, subnets, and routes. They also have an on-premises environment where resources need access back to the GCP resources through a private VPN connection.
+The networking resources will need to be controlled by the network security team.
+	Shared VPC Network with a host project and service projects
+
+An organization is migrating from their current on-premises productivity software systems to G Suite. Some network security controls were in place that were mandated by a regulatory body in their region for their previous on-premises system. The organization's risk team wants to ensure that network security controls are maintained and effective in G Suite. A security architect supporting this migration has been asked to ensure that network security controls are in place as part of the new shared responsibility model between the organization and Google Cloud.
+	Network security is a built-in solution and Google's Cloud responsibility for SaaS products like G Suite.
+
+A company has redundant mail servers in different Google Cloud Platform regions and wants to route customers to the nearest mail server based on location.
+	Configure TCP Proxy Load Balancing as a global load balancing service listening on port 995.
+
+A company migrated their entire data/center to Google Cloud Platform. It is running thousands of instances across multiple projects managed by different departments. You want to have a historical record of what was running in Google Cloud Platform at any point in time.
+	Use Forseti Security to automate inventory snapshots.
+
+You are creating an internal App Engine application that needs to access a user's Google Drive on the user's behalf. Your company does not want to rely on the current user's credentials. It also wants to follow Google-recommended practices.
+	Create a new service account, and grant it G Suite domain-wide delegation. Have the application use it to
+	impersonate the user.
+
+A customer wants to move their sensitive workloads to a Compute Engine-based cluster using Managed Instance Groups (MIGs). The jobs are bursty and must be completed quickly. They have a requirement to be able to control the key lifecycle.
+	Customer-managed encryption keys (CMEK) using Cloud Key Management Service (KMS)
+
+Your company is using Cloud Dataproc for its Spark and Hadoop jobs. You want to be able to create, rotate, and destroy symmetric encryption keys used for the persistent disks used by Cloud Dataproc. Keys can be stored in the cloud.
+	Use the Cloud Key Management Service to manage the key encryption key (KEK).
+
+You are a member of the security team at an organization. Your team has a single GCP project with credit card payment processing systems alongside web applications and data processing systems. You want to reduce the scope of systems subject to PCI audit standards.
+	Move the cardholder data environment into a separate GCP project.
+
+A customer has 300 engineers. The company wants to grant different levels of access and efficiently manage IAM permissions between users in the development and production environment projects.
+	Create a folder for each development and production environment.
+	Create a Google Group for the Engineering team, and assign permissions at the folder level.
+
+You want to evaluate your organization's Google Cloud instance for PCI compliance. You need to identify Google's inherent controls.Which document should you review to find the information?
+	PCI DSS Requirements and Security Assessment Procedures
+
+A DevOps team will create a new container to run on Google Kubernetes Engine. As the application will be internet-facing, they want to minimize the attack surface of the container.
+	Build small containers using small base images. 
+
+You want to limit the images that can be used as the source for boot disks. These images will be stored in a dedicated project.
+	Use the Organization Policy Service to create a compute.trustedimageProjects constraint on the organization level.
+	List the trusted project as the whitelist in an allow operation.
+
+A customer deployed an application on Compute Engine that takes advantage of the elastic nature of cloud computing.
+How can you work with Infrastructure Operations Engineers to best ensure that Windows Compute Engine VMs are up to date with all the latest OS patches?
+	Build new base images when patches are available, and use a CI/CD pipeline to rebuild VMs, deploying incrementally.
+	
+A patch for a vulnerability has been released, and a DevOps team needs to update their running containers in Google Kubernetes Engine (GKE).
+	Update the application code or apply a patch, build a new image, and redeploy it.
+
+A customer wants to deploy a large number of 3-tier web applications on Compute Engine.
+How should the customer ensure authenticated network separation between the different tiers of the application?
+	Run each tier with a different Service Account (SA), and use SA-based firewall rules.
+
+A manager wants to start retaining security event logs for 2 years while minimizing costs. You write a filter to select the appropriate log entries. Where should you export the logs?
+	 Cloud Storage buckets 
+	 	not bigquery as they asked for cheeper
+	 	
+For compliance reasons, an organization needs to ensure that in-scope PCI Kubernetes Pods reside on `in-scope` Nodes only. These Nodes can only contain the `in-scope` Pods.
+	Add a nodeSelector field to the pod configuration to only use the Nodes labeled inscope: true
+
+In an effort for your company messaging app to comply with FIPS 140-2, a decision was made to use GCP compute and network services. The messaging app architecture includes a Managed Instance Group (MIG) that controls a cluster of Compute Engine instances. The instances use Local SSDs for data caching and
+UDP for instance-to-instance communications. The app development team is willing to make any changes necessary to comply with the standard
+	Encrypt all cache storage and VM-to-VM communication using the BoringCrypto module.
+	boringcrypto is fips 140-2 approved
+
+A company is backing up application logs to a Cloud Storage bucket shared with both analysts and the administrator. Analysts should only have access to logs that do not contain any personally identifiable information (PII). Log files containing PII should be stored in another bucket that is only accessible by the administrator.
+	Use Cloud Pub/Sub and Cloud Functions to trigger a Data Loss Prevention scan every time a file is uploaded to the
+	shared bucket. If the scan detects PII, have the function move into a Cloud Storage bucket only accessible by the
+	administrator.
+
+In a shared security responsibility model for IaaS, which two layers of the stack does the customer share responsibility for?
+	Network Security
+	Access Policies
+
+As adoption of the Cloud Data Loss Prevention (Cloud DLP) API grows within your company, you need to optimize usage to reduce cost. Cloud DLP target data is stored in Cloud Storage and BigQuery. The location and region are identified as a suffix in the resource name.
+	Use rowsLimit and bytesLimitPerFile to sample data and use CloudStorageRegexFileSet to limit scans.
+
+Your team uses a service account to authenticate data transfers from a given Compute Engine virtual machine instance of to a specified Cloud Storage bucket. An engineer accidentally deletes the service account, which breaks application functionality. You want to recover the application as quickly as possible without compromising security.
+	Use the undelete command to recover the deleted service account.
+
+You have an application where the frontend is deployed on a managed instance group in subnet A and the data layer is stored on a mysql Compute Engine virtual machine (VM) in subnet B on the same VPC. Subnet A and Subnet B hold several other Compute Engine VMs. You only want to allow the application frontend to access the data in the application's mysql instance on port 3306.
+	Configure an ingress firewall rule that allows communication from the frontend's unique service account to the
+	unique service account of the mysql Compute Engine VM on port 3306.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+You are developing a new application on a VM that is on your corporate network. The application will use Java Database Connectivity (JDBC) to connect to Cloud SQL for PostgreSQL. Your Cloud SQL instance is configured with IP address 192.168.3.48, and SSL is disabled. You want to ensure that your application can access your database instance without requiring configuration changes to your database. What should you do?
+	Define a connection string using Cloud SQL Auth proxy configured with a service account to point to the internal
+	(private) IP address of your Cloud SQL instance.
+
+Your digital-native business runs its database workloads on Cloud SQL. Your website must be globally accessible 24/7. You need to prepare your Cloud SQL instance for high availability (HA). You want to follow Google-recommended practices. What should you do?
+	Enable point-in-time recovery.
+	Schedule automated backups
+
+Your customer has a global chat application that uses a multi-regional Cloud Spanner instance. The application has recently experienced degraded performance after a new version of the application was launched. Your customer asked you for assistance. During initial troubleshooting, you observed high read latency. What should you do?
+	Use SQL statements to analyze SPANNER_SYS.READ_STATS* tables.
+
+Your company has PostgreSQL databases on-premises and on Amazon Web Services (AWS). You are planning multiple database migrations to Cloud SQL in an effort to reduce costs and downtime. You want to follow Google-recommended practices and use Google native data migration tools. You also want to closely monitor the migrations as part of the cutover strategy. What should you do?
+	Use Database Migration Service to migrate all databases to Cloud SQL.
+
+Your organization is running a MySQL workload in Cloud SQL. Suddenly you see a degradation in database performance. You need to identify the root cause of the performance degradation. What should you do?
+	Use Cloud Monitoring to monitor CPU, memory, and storage utilization metrics.
+
+Your organization operates in a highly regulated industry. Separation of concerns (SoC) and security principle of least privilege (PoLP) are critical. The operations team consists of:
+Person A is a database administrator.
+Person B is an analyst who generates metric reports.
+Application C is responsible for automatic backups.
+	roles/spanner.databaseAdmin for Person A
+	roles/spanner.databaseReader for Person B
+	roles/spanner.backupWriter for Application C
+	
+Your company uses Cloud Spanner for a mission-critical inventory management system that is globally available. You recently loaded stock keeping unit (SKU) and product catalog data from a company acquisition and observed hotspots in the Cloud Spanner database. You want to follow Google-recommended schema design practices to avoid performance degradation. What should you do?
+	Promote high-cardinality attributes in multi-attribute primary keys
+	Use bit-reverse sequential value as the primary key
+
+You are managing multiple applications connecting to a database on Cloud SQL for PostgreSQL. You need to be able to monitor database performance to easily identify applications with long-running and resource-intensive queries. What should you do?
+	Use Query Insights for Cloud SQL
+
+Your customer is running a MySQL database on-premises with read replicas. The nightly incremental backups are expensive and add maintenance overhead. You want to follow Google-recommended practices to migrate the database to Google Cloud, and you need to ensure minimal downtime. What should you do?
+	Use the mysqldump utility to take a backup of the existing on-premises database, and then import it into Cloud SQL.
+
+Your team uses thousands of connected IoT devices to collect device maintenance data for your oil and gas customers in real time. You want to design inspection routines, device repair, and replacement schedules based on insights gathered from the data produced by these devices. You need a managed solution that is highly scalable, supports a multi-cloud strategy, and offers low latency for these IoT devices. What should you do?
+	Use MongoD8 Atlas with Charts
+
+Your application follows a microservices architecture and uses a single large Cloud SQL instance, which is starting to have performance issues as your application grows. in the Cloud Monitoring dashboard, the CPU utilization looks normal You want to follow Google-recommended practices to resolve and prevent these performance issues while avoiding any major refactoring. What should you do?
+	Use many smaller Cloud SQL instances.
+
+You plan to use Database Migration Service to migrate data from a PostgreSQL on-premises instance to Cloud SQL. You need to identify the prerequisites for creating and automating the task. What should you do? 
+	Ensure that all PostgreSQL tables have a primary key.
+	Ensure that pglogical is installed on the source PostgreSQL database.
+
+You are using Compute Engine on Google Cloud and your data center to manage a set of MySQL databases in a hybrid configuration. You need to create replicas to scale reads and to offload part of the management operation.
+	Use Cloud SQL for MySQL external replica.
+
+Your company is shutting down their data center and migrating several MySQL and PostgreSQL databases to Google Cloud. Your database operations team is severely constrained by ongoing production releases and the lack of capacity for additional on-premises backups. You want to ensure that the scheduled migrations happen with minimal downtime and that the Google Cloud databases stay in sync with the on-premises data changes until the applications can cut over. What should you do?
+	Use Database Migration Service to migrate the databases to Cloud SQL.
+	Use replication from an external server to migrate the databases to Cloud SQL.
+
+Your company is migrating the existing infrastructure for a highly transactional application to Google Cloud. You have several databases in a MySQL database instance and need to decide how to transfer the data to Cloud SQL. You need to minimize the downtime for the migration of your 500 GB instance. What should you do?
+	1. Create migration job using Database Migration Service.
+	2. Set the migration job type to Continuous, and allow the databases to complete the full dump phase and start
+	sending data in change data capture (CDC) mode.
+	3. Wait for the replication delay to minimize, initiate a promotion of the new Cloud SQL instance, and wait for the
+	migration job to complete.
+	4. Update your application connections to the new instance. 
+
+You are starting a large CSV import into a Cloud SQL for MySQL instance that has many open connections. You checked memory and CPU usage, and sufficient resources are available. You want to follow Google-recommended practices to ensure that the import will not time out. 
+	Close idle connections or restart the instance before beginning the import operation.
+
+You need to redesign the architecture of an application that currently uses Cloud SQL for PostgreSQL. The users of the application complain about slow query response times. You want to enhance your application architecture to offer sub-millisecond query latency. 
+	Configure Memorystore, and modify your application to offload queries.
+
+You need to migrate existing databases from Microsoft SQL Server 2016 Standard Edition on a single Windows Server 2019 Datacenter Edition to a single Cloud SQL for SQL Server instance. During the discovery phase of your project, you notice that your on-premises server peaks at around 25,000 read IOPS. You need to ensure that your Cloud SQL instance is sized appropriately to maximize read performance.
+	Create a SQL Server 2019 Standard on High Memory machine type with 16 vCPUs, 104 GB of RAM, and 4 TB of SSD.
+
+You work in the logistics department. Your data analysis team needs daily extracts from Cloud SQL for MySQL to train a machine learning model. The model will be used to optimize next-day routes. You need to export the data in CSV format. 
+	Use Cloud Scheduler to trigger a Cloud Function through Pub/Sub to call the cloudsql.instances.export API.
+
+You are managing a Cloud SQL for MySQL environment in Google Cloud. You have deployed a primary instance in Zone A and a read replica instance in Zone B, both in the same region. You are notified that the replica instance in Zone B was unavailable for 10 minutes. You need to ensure that the read replica instance is still working. 
+	Use the Google Cloud Console or gcloud CLI to manually create a new failover replica from backup.
+
+You are deploying a new Cloud SQL instance on Google Cloud using the Cloud SQL Auth proxy. You have identified snippets of application code that need to access the new Cloud SQL instance. The snippets reside and execute on an application server running on a Compute Engine machine. You want to follow Google-recommended practices to set up Identity and Access Management (IAM) as quickly and securely as possible. 
+	For the application server, set up a service account.
+
+Your organization has strict policies on tracking rollouts to production and periodically shares this information with external auditors to meet compliance requirements. You need to enable auditing on several Cloud Spanner databases.
+	Use Liquibase to roll out changes to higher environments.
+
+Your organization has a production Cloud SQL for MySQL instance. Your instance is configured with 16 vCPUs and 104 GB of RAM that is running between 90% and 100% CPU utilization for most of the day. You need to scale up the database and add vCPUs with minimal interruption and effort.
+	Issue a gcloud sql instances patch command to increase the number of vCPUs.
+
+You are configuring a brand new Cloud SQL for PostgreSQL database instance in Google Cloud. Your application team wants you to deploy one primary instance, one standby instance, and one read replica instance. You need to ensure that you are following Google-recommended practices for high availability. 
+	Configure the primary instance in zone A, the standby instance in zone C, and the read replica in zone B, all in the
+	same region
+
+Your organization has a security policy to ensure that all Cloud SQL for PostgreSQL databases are secure. You want to protect sensitive data by using a key that meets specific locality or residency requirements. Your organization needs to control the key's lifecycle activities. You need to ensure that data is encrypted at rest and in transit.same region.
+	Create the database with customer-managed encryption keys.
+
+
+	

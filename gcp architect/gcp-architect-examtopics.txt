@@ -1,0 +1,172 @@
+They need to keep the old version of the API available and deployable, while allowing new customers and testers to try out the new API. They want to keep the same SSL and DNS records in place to serve both APIs.
+What should they do?
+	Use separate backend pools for each API path behind the load balancer 
+
+You need to reduce the number of unplanned rollbacks of erroneous production deployments in your company's web hosting platform. Improvement to the QA/Test processes accomplished an 80% reduction.
+	Introduce a green-blue deployment model 
+	Fragment the monolithic platform into microservices
+	
+Your application needs to process credit card transactions. You want the smallest scope of Payment Card Industry (PCI) compliance without compromising the ability to analyze transactional data and trends relating to which payment methods are used.
+	Create a tokenizer service and store only tokenized data
+
+You have been asked to select the storage system for the click-data of your company's large portfolio of websites. This data is streamed in from a custom website analytics package at a typical rate of 6,000 clicks per minute. With bursts of up to 8,500 clicks per second. It must have been stored for future analysis by your data science and user experience teams.
+	Google Cloud Bigtable
+
+During a high traffic portion of the day, one of your relational databases crashes, but the replica is never promoted to a master. You want to avoid this in the future.
+	Choose larger instances for your database
+
+Your organization requires that metrics from all applications be retained for 5 years for future analysis in possible legal proceedings.
+	Configure Stackdriver Monitoring for all Projects, and export to Google Cloud Storage
+	for long term, so not bigquery
+
+Be based on open-source technology for cloud portability
+Dynamically scale compute capacity based on demand
+Support continuous software delivery
+Run multiple segregated copies of the same application stack
+Deploy application bundles using dynamic templates - helm
+Route network traffic to specific services based on URL
+	Google Kubernetes Engine, Jenkins, and Helm
+
+Your development team has installed a new Linux kernel module on the batch servers in Google Compute Engine (GCE) virtual machines (VMs) to speed up the nightly batch process. Two days after the installation, 50% of the batch servers failed the nightly batch run. You want to collect details on the failure to pass back to the development team.
+	Use Stackdriver Logging to search for the module log entries
+	Use gcloud or Cloud Console to connect to the serial console and observe the logs 
+	Adjust the Google Stackdriver timeline to match the failure time, and observe the batch server metrics
+
+You are designing a mobile chat application. You want to ensure people cannot spoof chat messages, by providing a message were sent by a specific user.
+	Use public key infrastructure (PKI) to encrypt the message client side using the originating user's private key. 
+
+As part of implementing their disaster recovery plan, your company is trying to replicate their production MySQL database from their private data center to their GCP project using a Google Cloud VPN connection. They are experiencing latency issues and a small amount of packet loss that is disrupting the replication.
+	Configure a Google Cloud Dedicated Interconnect
+
+You are using Cloud Shell and need to install a custom utility for use in a few weeks. Where can you store the file so it is in the default execution path and persists across sessions?
+	~/bin 
+
+You want to create a private connection between your instances on Compute Engine and your on-premises data center. You require a connection of at least 20Gbps. 
+ 	Create a VPC and connect it to your on-premises data center using Dedicated Interconnect.	
+
+You are building a continuous deployment pipeline for a project stored in a Git source repository and want to ensure that code changes can be verified before deploying to production. What should you do?
+	Use Jenkins to monitor tags in the repository. Deploy staging tags to a staging environment for testing. After
+	testing, tag the repository for production and deploy that to the production environment.
+
+You have an outage in your Compute Engine managed instance group: all instances keep restarting after 5 seconds. You have a health check configured, but autoscaling is disabled. Your colleague, who is a Linux expert, offered to look into the issue. You need to make sure that he can access the VMs.
+	Disable the health check for the instance group. Add his SSH key to the project-wide SSH Keys
+
+Your company is migrating its on-premises data center into the cloud. As part of the migration, you want to integrate Google Kubernetes Engine (GKE) for workload orchestration. Parts of your architecture must also be PCI DSS-compliant. Which of the following is most accurate?
+	GKE and GCP provide the tools you need to build a PCI DSS-compliant environment.
+
+Your company has multiple on-premises systems that serve as sources for reporting. The data has not been maintained well and has become degraded over time. You want to use Google-recommended practices to detect anomalies in your company data.
+	Upload your files into Cloud Storage. Use Cloud Dataprep to explore and clean your data
+
+You have found an error in your App Engine application caused by missing Cloud Datastore indexes. You have created a YAML file with the required indexes and want to deploy these new indexes to Cloud Datastore.
+	Point gcloud datastore create-indexes to your configuration file
+
+You have an application that will run on Compute Engine. You need to design an architecture that takes into account a disaster recovery plan that requires your application to fail over to another region in case of a regional outage. 
+	Deploy the application on two Compute Engine instance groups, each in the same project but in a different region.
+	Use the first instance group to serve traffic, and use the HTTP load balancing service to fail over to the standby
+	instance group in case of a disaster.
+
+You are deploying an application on App Engine that needs to integrate with an on-premises database. For security purposes, your on-premises database must not be accessible through the public internet.
+	Deploy your application on App Engine flexible environment and use Cloud VPN to limit access to the on-premises
+	database.
+
+You are working in a highly secured environment where public Internet access from the Compute Engine VMs is not allowed. You do not yet have a VPN connection to access an on-premises file server. You need to install specific software on a Compute Engine instance.
+	Upload the required installation files to Cloud Storage. Configure the VM on a subnet with a Private Google Access
+	subnet. Assign only an internal IP address to the VM. Download the installation files to the VM using gsutil
+
+Your company is moving 75 TB of data into Google Cloud. You want to use Cloud Storage and follow Google-recommended practices.
+	Move your data onto a Transfer Appliance. Use a Transfer Appliance Rehydrator to decrypt the data into Cloud
+	Storage. 
+
+You have an application deployed on Google Kubernetes Engine using a Deployment named echo-deployment. The deployment is exposed using a Service called echo-service. You need to perform an update to the application with minimal downtime to the application. 
+	Use kubectl set image deployment/echo-deployment <new-image>
+
+Your company is using BigQuery as its enterprise data warehouse. Data is distributed over several Google Cloud projects. All queries on BigQuery need to be billed on a single project. You want to make sure that no query costs are incurred on the projects that contain the data. Users should be able to query the datasets, but not edit them.
+	Add all users to a group. Grant the group the roles of BigQuery jobUser on the billing project and BigQuery
+	dataViewer on the projects that contain the data.
+
+You need to set up Microsoft SQL Server on GCP. Management requires that there's no downtime in case of a data center outage in any of the zones within a GCP region.
+	Configure a Cloud SQL instance with high availability enabled. 
+
+You are creating an App Engine application that uses Cloud Datastore as its persistence layer. You need to retrieve several root entities for which you have the identifiers. You want to minimize the overhead in operations performed by Cloud Datastore. 
+	Create the Key object for each Entity and run a batch get operation
+	
+You need to upload files from your on-premises environment to Cloud Storage. You want the files to be encrypted on Cloud Storage using customer-supplied encryption keys.
+	Supply the encryption key in a .boto configuration file. Use gsutil to upload the files.
+
+You want to establish a Compute Engine application in a single VPC across two regions. The application must communicate over VPN to an on-premises network.
+	Deploy Cloud VPN Gateway in each region. Ensure that each region has at least one VPN tunnel to the on-premises
+	peer gateway.
+
+You want your Google Kubernetes Engine cluster to automatically add or remove nodes based on CPU load.
+	Configure a HorizontalPodAutoscaler with a target CPU usage. Enable the Cluster Autoscaler from the GCP Console. 
+
+You are using Cloud CDN to deliver static HTTP(S) website content hosted on a Compute Engine instance group. You want to improve the cache hit ratio.
+	Customize the cache keys to omit the protocol from the key.
+
+Your customer runs a web service used by e-commerce sites to offer product recommendations to users. The company has begun experimenting with a machine learning model on Google Cloud Platform to improve the quality of results.
+	Save a history of recommendations and results of the recommendations in BigQuery, to be used as training data
+
+You have an application that makes HTTP requests to Cloud Storage. Occasionally the requests fail with HTTP status codes of 5xx and 429.
+	Implement retry logic using a truncated exponential backoff strategy. 
+
+Your company creates rendering software which users can download from the company website. Your company has customers all over the world. You want to minimize latency for all your customers. You want to follow Google-recommended practices.
+	Save the files in multiple Multi-Regional Cloud Storage buckets, one bucket per multi-region. 
+
+You are deploying a PHP App Engine Standard service with Cloud SQL as the backend. You want to minimize the number of queries to the database.
+	Set the memcache service level to dedicated. Create a key from the hash of the query, and return database values
+	from memcache before issuing a query to Cloud SQL
+
+You need to ensure reliability for your application and operations by supporting reliable task scheduling for compute on GCP. Leveraging Google best practices
+	Using the Cron service provided by App Engine, publish messages to a Cloud Pub/Sub topic. Subscribe to that topic
+	using a message-processing utility service running on Compute Engine instances. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

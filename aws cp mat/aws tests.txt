@@ -1,0 +1,174 @@
+	identify ec2's under utilised, without manual configurations
+		cost explorer
+		trusted advisor
+			cost,perf,security,fault tolerance,Service
+			
+	run container and also underlying servers
+		E Container Service
+			not fully managed
+			
+	low latency gameplay 
+		local Zones
+			compute,storage closer to users
+	online training and self paced labs
+		Enterprise plan
+	prohibited uses of web services
+		AWS Acceptable Use policy
+	block level storage
+		Instance Store
+		EBS
+	active-active cross region
+		DynamoDB with global tables
+	AMI must be of same region of EC2
+		
+	Compute Optimizer
+		ec2, ec2-autoscale, EBS, Lambda
+	USB MFA
+		U2f security key
+	Operational Insights of resources
+		Systems Manager
+			resourse grps
+	Data encrpt by default
+		S3 glacier
+		Storage Gateway
+	RDS DB Read replica
+		Scalability, improve read perf
+	RSS feed to status of all AWS Service interruptions
+		AWS Service Health Dashboard
+	Infra Event Management for additional fee
+		Business plan
+	VPC Endpoint for private conn from VPC
+		S3,Dynamo DB
+		interface endpoints for other services
+	Web Application Firewall (WAF)
+		Layer 7
+		HTTP,HTTPS
+		API Gateway,Cloud Front, App load Balancer
+	remove aws acc from Org
+		must be able to operate as standalone
+	architecture guidance to specific use case
+		Business
+	default enabled for all aws customers
+		Shield Standard
+	7 core checks from Trusted Adviser
+		Basic, Developer
+	Shield Advanced
+		Global Accelerator
+		Route 53
+	Decouple microservices
+		SNS
+		SQS
+	Reliability Pillar Well-Arch framework
+		Config, CloudWatch, CloudTrail
+	guidance, configuration, troubleshoot of AWS interoperability with 3rd party software
+		Business, Enterprise
+	Storage Gateway types
+		tape, file, Volume 
+	block users from geographies
+		WAF, Route 53
+	VPC spans all of AZs, subnet spans only one AZ in region
+	foundation services for reliability pillar
+		Service Quotas
+		Trusted Advisor
+	separate invoices for dev and prod
+		create separate accounts
+	mandatory in Policy JSON
+		Effect, Action
+	Online analytic processing
+		Redshift
+	EFS
+		EC2 can access EFS accross AZs, Regions and VPCs
+	Amazon kendra 
+		pdfs txts word doc
+	AWS transit Gateway
+		to connect VPCs and on-premise
+		through central hub
+	Trusted Advisor
+		Cost, Service limits
+	move it resourse to diff region
+		create new resourse in destination
+		migrate data to destination
+	AWS GLobal Accelerator
+		static ip fixed endpoint
+		non-Http use cases
+	RDS Read Replica
+		perf, disaster recovery
+	Web App Firewall WAF
+		SQL injection
+		block all except one you allow
+	Shield Advanced
+		EC2
+		ELB
+		Cloud Front
+		Route 53
+		Global Accelerator
+	EC2 utilise drops alerts
+		AWS Budgets
+	Payment Card Industry reports 
+		AWS Artifact
+	Programatic access to AWS Support Centre Features	
+		Enterprise, Business
+	root user signin alerts
+		CloudWatch, SNS
+	unattached or underutilised EBS
+		Trusted Advisor
+	Route 53
+		Health checks and monitoring 
+		Domain registration
+	Amazon Lex
+		chatbot
+		NLU
+	dev/test env with low pricing
+		LightSail
+	temp sec credentials
+		Security Token Service STS
+	separate cost by departments
+		simple
+		tags
+	DataSync
+		incremental data backups
+	Total Cost of Ownership
+		Server Administration
+		power/cooling	
+	Fault injection Simulator
+		Chao Engg
+		blind spots
+		resiliency
+	EBS bound to several AZs
+	Manage Encryption Keys
+		Cloud HSM hardware security Module
+	Keep server images upto date
+		EC2 Image builder
+	Guard Duty
+		monitor malicious activities and unauthorised behaviour
+	AWS workspaces
+		global
+	AWS Wavelength
+		ultra-low latency
+		mobile networks
+		compute and storage services
+	Amazon detective
+		trail logs,VPC logs and guardduty findings
+	Bean stack
+		not public metric to CLoudWatch
+		determine ASgroup available with atleast 1 instance
+	EFS
+		managed NFS
+	CloudEndure Disaster Recovery 
+		for on premises
+		apps,dbs on EC2 only
+	Savings Plans
+		Compute
+		EC2 instance
+	GUI to manage Snowball devices 	
+		OpsHub
+	Control Tower
+		blueprints to new AWS accs
+	Apps from browsers
+		AppStream 2.0
+	Cloud Trail Insights
+		unusual write management API
+	Cloud Trail events log
+		management logs
+		
+	

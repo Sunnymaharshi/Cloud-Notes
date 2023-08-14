@@ -1,0 +1,315 @@
+aws overview
+	6 advantages of cloud computing
+		Trade fixed expense for variable expense
+		Benefit from massive economies of scale 
+		Stop guessing capacity 
+		Increase speed and agility 
+		Stop spending money running and maintaining data centers
+		Go global in minutes
+		
+	Global infrastructure
+		AWS Region is a physical location in the world where we have multiple Availability Zones.
+		Availability Zones consist of one or more discrete data centers.
+		AWS Local Zones 
+			place compute, storage, database, and other select AWS services closer to end-users.
+			AWS Local Zones, you can easily run highly-demanding applications that require single-digit
+			millisecond latencies to your end-users such as media & entertainment content creation,		
+			real-time gaming, reservoir simulations, electronic design automation, and machine learning.
+		AWS Wavelength 
+			enables developers to build applications that deliver single-digit millisecond 
+			latencies to mobile devices and end-users.
+			5G networks.
+			single-digit millisecond latencies such as game and live video streaming, machine learning 				inference at the edge, and augmented and virtual reality (AR/VR).
+			Application traffic can reach application servers running in Wavelength Zones without leaving 				the mobile provider’s network.
+		AWS Outposts 
+			bring native AWS services, infrastructure, and operating models to virtually any data center, 				co-location space, or on-premises facility.
+			designed for connected environments and can be used to support workloads that need to remain
+			on-premises due to low latency or local data processing needs.
+		
+			
+		
+	Benefits of AWS security
+		Keep Your data safe
+		Meet compliance requirements
+		Save money
+		Scale quickly
+	Shared Responsibility Model
+		Shared Controls
+			Patch Management
+			Configuration Management
+			Awareness & Training
+			
+	AWS Well-Architected Framework
+		Operational Excellence Pillar
+			The operational excellence pillar includes how your organization supports your business
+			objectives, your ability to run workloads effectively, gain insight into their operations, and
+			to continuously improve supporting processes and procedures to deliver business value.
+			Design Principles:
+				Perform operations as code
+				Make frequent, small, reversible changes
+				Refine operations procedures frequently
+				Anticipate failure
+				Learn from all operational failures
+		Security Pillar
+			The security pillar focuses on protecting information and systems. Key topics include confidentiality and 				integrity of data, managing user permissions, and establishing controls to detect security events.
+			Design Principles:
+				Implement a strong identity foundation
+				Enable traceability
+				Apply security at all layers
+				Automate security best practices
+				Protect data in transit and at rest
+				Keep people away from data
+				Prepare for security events
+		Reliability Pillar
+			The reliability pillar focuses on workloads performing their intended functions and how to recover 				quickly from failure to meet demands. Key topics include distributed system design, recovery planning, 				and adapting to changing requirements.
+			Design Principles:
+				Automatically recover from failure
+				Test recovery procedures
+				Scale horizontally to increase aggregate workload availability
+				Stop guessing capacity
+				Manage change in automation
+		Performance Efficiency Pillar
+			The performance efficiency pillar focuses on structured and streamlined allocation of IT and computing 				resources.
+			The performance efficiency pillar focuses on the efficient use of computing resources to meet 				requirements, and how to maintain efficiency as demand changes and technologies evolve.
+			Design Principles:
+				Democratize advanced technologies
+				    Make advanced technology implementation easier for your team
+				Go global in minutes
+				Use serverless architectures
+				Experiment more often
+				Consider mechanical sympathy
+		Cost Optimization Pillar
+			The cost optimization pillar focuses on avoiding unnecessary costs.
+			Design Principles:
+				Practice Cloud Financial Management
+				Expenditure and usage awareness
+				Cost-effective resources
+				Manage demand and supplying resources
+				Optimize over time
+			Sustainability Pillar
+				The sustainability pillar focuses on minimizing the environmental impacts of running cloud 					workloads.
+				Design principles:
+					Understand your impact
+					Establish sustainability goals
+					Maximize utilization
+					Anticipate and adopt new, more efficient hardware and software offering
+					Use managed services
+					Reduce the downstream impact of your cloud workloads		
+	AWS Well-Architected Tool
+		designed to help you review the state of your applications and workloads, and it provides a central place for
+		architectural best practices and guidance.
+		free of cost.
+	Support plans
+		https://aws.amazon.com/premiumsupport/plans/?cp=sec&sec=prep	
+		
+	Accessing AWS Services
+		AWS Management Console
+		AWS Command Line Interface
+		Software Development Kits
+	
+	
+	
+	
+	Analytics
+		Amazon Athena
+			serverless.
+			interactive query service.
+			analyze data in Amazon S3 using standard SQL.
+			no need for complex ETL jobs to prepare your data for analysis.
+			integrated with AWS Glue Data Catalog.
+		Amazon EMR
+			cloud big data platform for processing vast amounts of data.
+			Apache Spark, Apache Hive, Apache HBase, Apache Flink, Apache Hudi, and Presto.
+			petabyte-scale analysis at less than half of the cost of traditional on-premises solutions.
+			over 3x faster than standard Apache Spark.
+			
+Notes:
+
+	DynamoDB Accelerator
+		fast, in-mem
+	DynamoDB global tables
+		cross region active active
+	Aurora multi master
+		only within region
+	Amazon Inspector
+		automate security and compliance assess
+	Personal Health Dashboard
+		alerts and remedy when aws have events that might affect you.
+	Cost Explorer
+		cost and usage
+		forecast 
+	VPC Endpoint for private conn from VPC
+		S3,Dynamo DB
+		interface endpoints for other services
+	Must activate both aws tags and user tags separately before they appear in cost explorer
+	each tag must be unique and each tag have only one value
+	
+	Biling alarm for estimated charges
+		Cloud Watch
+	API GAteway
+		front door
+		RESTful, WebSocket
+	Control Tower
+		setup , govern multi acc environment
+		best practice
+
+
+	Savings plans 
+		Compute
+			EC2, Lambda, Fargate
+		EC2 instance
+		SageMaker
+	Snow Family
+		Snowcone
+			edge computing
+			data storage
+			data transfer on the go
+			little or no connectivity
+		Snowball
+			Compute Optimized
+			Storage Optimized
+			petabyte scale migration
+			OpsHub
+				manage device, transfer data
+				launch EC2
+		Snowmobile
+			Exabyte-scale
+			upto 100PB
+	Amazon Workspaces
+		fully managed desktop virtualization service for Windows and Linux
+	AWS Cloud9
+		A cloud IDE for writing, running, and debugging code
+		BUILD SERVERLESS APPLICATIONS
+	AWS DataSync
+		online data transfer service
+		NFS,Server Message Block (SMB), Hadoop Distributed File System (HDFS) and more
+		Data migration
+	Amazon GLue
+		serverless data integration
+		ETL
+		prepare data for analytics
+	Amazon EMR	
+		Big data platform
+		Easily run and scale Apache Spark, Hive, Presto, and other big data workloads
+		on EC2, EKS and serverless
+	Key Management Service kMS
+		Multi-Tenant
+		Create and control keys used to encrypt or digitally sign your data
+		manage cryptographic keys to encrypt your data at rest
+	Secrets manager
+		manage, retrieve, and rotate database credentials, 
+		API keys, and other secrets throughout their lifecycles.
+		Centrally manage the lifecycle of secrets
+		store your passwords in variables and use the variables in the application 
+		instead of hard coding a password. 
+	AWS CloudHSM	
+		Single-Tenant
+		Manage single-tenant hardware security modules (HSMs) on AWS
+		computing devices that process cryptographic operations
+		provide secure storage for cryptographic keys.
+		offload SSL/TLS processing for web servers
+	GuardDuty
+		Protect your AWS accounts with intelligent threat detection
+		Protect your Amazon Web Services accounts, workloads, 
+		and data with intelligent threat detection and continuous monitoring
+		
+	Amazon Detective	
+		Analyze and visualize security data to rapidly get to the root cause of potential security issues
+		sources such as (Amazon VPC) Flow Logs,	AWS CloudTrail logs,
+		Amazon Elastic Kubernetes Service (Amazon EKS) audit logs,
+		and Amazon GuardDuty findings
+		
+	Root user
+		account owner
+		You can't use IAM policies to explicitly deny the root user access to resources.
+		only the root user can close your account
+		can only use an AWS Organizations service control policy (SCP) 
+		to limit the permissions of the root user.
+		Change your account settings. 
+		Restore IAM user permissions.
+		Activate IAM access to the Billing and Cost Management console.
+		Close your AWS account.
+	Disaster recovery
+		Recovery Time Objective (RTO)
+			maximum acceptable delay between the interruption of service and restoration of service. 
+		Recovery Point Objective (RPO)
+			maximum acceptable amount of time since the last data recovery point.
+		Backup and restore
+			RPO in hours, RTO in 24 hours or less
+		Pilot light
+			RPO in minutes, RTO in hours
+			application servers are loaded with application code and configurations,
+			switched off and are only used during testing or when Disaster Recovery failover is invoked.
+		Warm standby
+			RPO in seconds, RTO in minutes
+			Maintain a scaled-down but fully functional version of 
+			your workload always running in the DR Region.
+			When scaled up to full scale this is known as a Hot Standby.
+		Multi-region (multi-site) active-active
+			RPO near zero, RTO potentially zero
+			
+	AWS Storage Gateway
+		Provide on-premises applications with access to virtually unlimited cloud storage
+		set of hybrid cloud storage services
+		Amazon S3 File Gateway
+		Amazon FSx File Gateway
+		Volume Gateway
+		Tape Gateway
+	AWS Trusted Advisor
+		Cost optimization
+		Performance
+		Security
+		Fault tolerance
+		Service quotas
+
+	AWS Cost Explorer
+		Visualize, understand, and manage your AWS costs and usage over time
+		forecast
+	Amazon Inspector
+		vulnerability management service that continuously scans your AWS workloads for vulnerabilities
+		Amazon EC2 instances 
+		Container images residing in Amazon Elastic Container Registry (Amazon ECR) 
+	AWS Compute Optimizer
+		Recommends optimal AWS resources to reduce costs and improve performance for your workloads
+		EC2
+		EBS
+		Lambda
+	
+	
+	AWS Plans:
+		Basic
+			Customer service
+			Trusted Advisor
+			Personal Health Dashboard
+Developer							    Business							Enterprise
+Trusted Advisor - NO PRIORITY				Trusted Advisor - NO PRIORITY				Trusted Advisor - HIGH PRIORITY
+	Quotas and Basic Security				Full Checks						full checks
+Business hrs web access to Support Associates		24/7 phone, web, chat to Support				""
+1 primary contact					unlimited contacts						""
+Unlimited Cases						Unlimited Cases, Slack Support					""
+Gen Guidance < 24hr					Production system impaired: < 4 hours				""
+Sys impaired < 12hr					Production system down: < 1 hour				""
+												Business/Mission-critical system down < 15min
+												30min for Enterprise On-Ramp
+
+Architectural Guidance					Architectural Guidance    		Architectural Guidance
+	General							Contextual to your use-cases	Consultative review and guidance based on your apps
+No Programatic access					AWS Support API							""
+No 3rd Party		 				Interoperability and 						""
+							configuration guidance and troubleshooting
+											
+No AWS Incident Detection and Response 			Infrastructure Event Management for additional fee		no addition fee
+												   AWS Incident Detection and Response for an additional fee.
+No AWS Managed Services					Access to AWS Managed Services (AMS) for an additional fee.	""
+No Technical Account Management					"" 					Designated Technical Account Management
+No Training							""						Access to online self-paced labs
+															Concierge Support Team
+									
+			
+		
+			
+		
+				
+			
+		
+		

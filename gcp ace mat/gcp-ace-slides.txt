@@ -1,0 +1,254 @@
+Notes:
+	Connecting to Google Cloud:
+		Cloud VPN
+			encrypt traffic
+			lower throughput solution
+			upto 3Gbps
+			site-to-site
+			Types:
+				Classic VPN
+					do not support IPv6.
+					SLA of 99.9%
+					static routes
+					
+					
+				HA VPN (high-availability)
+					IPsec VPN connection
+					SLA of 99.99%
+					
+		Cloud Interconnect
+			enterprise-grade connection
+			higher throughput
+			access to internal IPs
+			dedicated connection(Dedicated Interconnect) - 10-100Gbps
+				Connection in Colocation facility
+			or use a service provider (Partner Interconnect) - 50Mbps to 10Gbps
+	Connecting to Google Workspace and Google APIs:
+		routed using BGP
+		access to Public IPs
+		Direct Peering
+			direct peering connection between your business network and Google's edge network 
+			exchange high-throughput cloud traffic
+		Carrier Peering	
+			access Google applications, such as Google Workspace,
+			using a service provider to obtain enterprise-grade network services
+			
+			
+	Choosing a network Connection Option
+		Interconnect
+			Direct access to internal IPs in your VPC with SLA
+			Dedicated Interconnect
+			Partner Interconnect
+			CLoud VPN
+		Peering
+			Access to Google public IPs only 
+			without SLA
+			Direct Peering
+			Carrier Peering	
+	
+	Shared VPC
+		diff projects withing org
+		Centralised Administration
+		host project and service projects
+	VPC Peering
+		across org or within project
+		Decentralised Administration
+	Load Balancers
+		Global
+			HTTP(S)
+				SSL session terminates at LB
+				layer 7
+				Cloud CDN
+					caches
+					for low latency and decrease egress cost
+			SSL Proxy
+				layer 4
+				encrypted, non-http traffic
+			TCP Proxy
+				layer 4
+				unencrypted non-http traffic
+				
+		Regional
+			Internal TCP/UDP
+			Network TCP/UDP
+				non proxied
+			Internal HTTP(S)
+	Network Intelligence Centre
+		to visualize network topology and test network connectivity
+		
+			
+			
+			
+	Network endpoint groups (NEG)
+		group of backend endpoints or services
+		
+			
+			
+	Cloud Spanner
+		HA, SQL relational DB
+		Global Consistency
+		>2TB
+		high IOPS
+		Petabytes
+	Firestore
+		realtime query
+		offline query support
+	Cloud Bigtable
+		Analytical Data
+		large data
+		Petabytes
+	Storage and databases
+		Object
+			Cloud Storage
+				Binary or Object Data
+		File
+			File Store
+				Network Attached Storage
+		Relational
+			fixed schema
+			Cloud SQL
+				Web frameworks
+				CMS, eCommerce
+			Cloud Spanner
+				RDBMS, HA
+				Horizontal Scale
+				can be multi-zone
+		Non-Relational
+			Firestore
+				mobile,web
+				user profile
+				game state
+				document database
+				schemaless
+				can be multi-zone
+			Cloud Bigtable
+				heavy read-write
+				IoT
+				schemaless
+		Warehouse	
+			Big Query
+				analytics
+				fixed schema
+		Memory Store
+			caching
+			In-memory data store
+			game state, user sessions
+			Redis DB
+	Cloud Dataflow
+		data proccessing
+		serverless
+		Batch and stream processing
+		automatic
+	Cloud Dataproc
+		Apache Spark and Hadoop clusters
+		Manual
+	Cloud Dataprep 
+		serverless
+		explore, clean and prepare data
+		for analysis and ML
+		Trifacta partner service
+		
+	Google Kubernetes Engine GKE
+		nodes - VMs
+		services deployed into pods
+	Cloud Run
+		serverless
+		stateless apps
+		deploy docker containers
+	App Engine
+		microservices
+		1 app per project
+		1 or more services with versions
+		traffic splitting
+		
+	Cloud Functions
+		serverless
+		loosely coupled
+		event driven microservices
+		Triggers
+			changes in storage buckets
+			Pub/Sub messages
+			web requests - http
+	
+			
+		
+			
+			
+				
+	
+	Key Performance indicators KPIs
+		metrics used to measure success
+		SLI
+			measurable attribute of service
+		SLO
+			goal u want to achieve for SLI
+		SLA
+			binding contract
+			compensation if service doesn't meet expectations
+			more restrictive version of SLO
+	Microservices
+		12 factors
+	APIs managing
+		Apigee API Platform
+		Cloud Endpoints
+	Binary authorization
+		deploy only trusted containers into GKE
+		
+	Cloud Storage Transfer Service
+		smaller or scheduled data uploads
+		S3,HTTP(S),Cloud storage buckets
+		scheduled jobs
+		100s of TBs
+	Transfer Appliance
+		large data
+		upto 1PB shipped to google
+	Disaster Recovery
+		Cold Standby
+			snapshots,images and backups in multi region
+			if failure occurs, spin up servers in backup region
+		Hot Standby
+			create instances in multiple regions
+			store in multi-regions
+			spanner or firestore
+	Identity Aware Proxy (IAP)
+		less time than to implement VPN
+		simplifies auth to google apps and VMs
+		Control access to your cloud-based and on-premises applications and VMs running on Google Cloud
+		Work from untrusted networks without the use of a VPN
+		HTTP(S) LB
+		GKE, APP Engine
+		access web based apps without VPN
+	Cloud Armor
+		layer 7
+		Web App firewall (WAF) rules
+		to create network security policies
+		allow and deny lists of IPs or ranges
+	Server-side Encryption
+		Data Encryption Key DEK use AES 256 key
+		keys encrypted by Key Encryption keys (KEK)
+	Customer supplied encryption keys (CSEK)
+		Compute Engine
+		Cloud Storage
+	Data Loss Prevention API
+		find sensitive data
+		cloud storage
+		Big Query
+		Firestore
+	Rolling Updates
+		if it is ok to run 2 versions simul
+		update each instance at a time
+	blue/green deployment
+		Blue - current ver
+		green - new ver
+		don't want to run multiple versions simul
+	Canary releases
+		deploy at some part
+		monitor for errors
+	Monitoring
+		monitor things u pay
+			CPU
+			Storage
+			Read writes
+			Network egress
+			SLIs
+		

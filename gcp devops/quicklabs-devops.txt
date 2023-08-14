@@ -1,0 +1,156 @@
+Google Cloud Fundamentals: Core Infrastructure
+	Project
+		Project ID
+			Globally unique
+			Assigned by Google Cloud but mutable during creation
+			Immutable after creation
+		Project Name
+			Need not be unique
+			Choosen by you
+			Mutable
+		Project Number
+			Globally unique
+			Assigned by Google Cloud
+			Immutable
+	Custom roles can only applied project level or Org level but not folder level
+	Saturation
+		Measures how close to capacity a system is
+		Memory utilization
+		Thread pool utilization
+		Cache utilization
+		Disk utilization
+		CPU utilization
+		Disk quota
+		Memory quota
+		no of available connections
+		no of user on the system
+	Logging
+		Audit logs
+			Admin activity
+			Data access
+			System event
+		Agent logs
+			Fluentd agent
+		Network logs
+			VPC flow logs
+			Firewall rules logs
+			NAT gateway logs			
+		Service logs
+			Standard Out/Err
+			
+			
+			
+Developing a Google SRE Culture 
+	SRE is a way to implement DevOps.
+	Accepting failure as normal is a key pillar of DevOps
+	Error budgets created shared incentive and ownership between developers and SREs.
+	
+	
+	
+	
+	Build Triggers
+		Push to a branch
+		Push new tag
+		Pull request - Not available for Cloud Source Repositories
+		Or in response to
+			Manual invocation
+			Pub/Sub message
+			Webhook event
+		Configuration
+			Type
+				Cloud Build configuration file (yaml or json)
+				Dockerfile
+				Buildpacks
+	Horizontal Scalable
+		Bigtable
+		Spanner
+	Vertical Scalable
+		Cloud SQL
+		Memory store
+	Auto scale with no limits
+		Cloud Storage
+		Big Query
+		Firestore
+	google Cloud Armor
+		to create network security policies
+		can allow or deny access to your cloud resources using IP addresses or ranges
+		create allow list to allow known addresses
+		create deny list to block known attackers
+		supports layer 7 web application firewall (WAF) rules
+			to prevent SQL injection and cross-site scripting
+			allow or deny traffic using headers, geo locations, ip addresses, cookies etc
+	Rolling updates
+		allow u to deploy new versions with no downtime
+		if it is ok to have 2 different versions running simultaneously during update
+		feature of instance groups
+		default in kubernetes
+		completely automated in App Engine		
+	Blue/Green deployment
+		when u don't want 2 different versions running simultaneously during update
+		Compute engine
+			use DNS to migrate requests from one load balancer to other
+		Kubernetes
+			configure service to route to new pods using labels
+		App engine
+			use traffic splitting
+			
+	Canary release
+		used prior to rolling update to reduce risk
+		monitor for errors
+		Compute engine
+			create new instance group, add it as additional backend to load balancer
+		Kubernetes
+			create new pods with same label as exixting pods
+		App engine
+			use traffic splitting
+		
+	
+	
+	Prioritize Alerts based on customer impact and SLA
+		Only involve humans for critical alerts
+		High priority alerts
+			send a message to ur teams slack channel
+			or 
+			through SMS
+			Pager Duty
+				third party on-call management and incident response service
+		Low priority alerts
+			Log
+			Ticket, Email
+	
+	Resource groups can monitor multiple resources 
+		can have sub-groups upto 6 level deep
+	
+	
+	Best practices Before the incident
+		clear criteria for declaring a incident
+		choose a communication channel in advance
+		create templates for communicating
+		train the team how to respond
+		conduct drills and practices
+	When incident is declared, service restore is priority	
+	gcloud container clusters get-credentials jenkins-cd
+	kubectl cluster-info
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
