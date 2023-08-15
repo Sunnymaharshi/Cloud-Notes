@@ -1081,7 +1081,164 @@ Notes:
 				A Job consists of list of objects, action and optional parameters
 				manages retries, tracks progress, send completion Notifications, generate reports
 				Can use S3 Inventory to get objects list and S3 Select to filter objects
+		S3 Security
+			Encrypt 
+				Server side encryption (SSE)
+					Amazon S3 Managed Keys (SSE-S3)
+						Enabled by default
+						AES-256
+						must set header "x-amz-server-side-encryption":"AES256"
+					Server side encryption with KMS (SSE-KMS)
+						Keys stored in AWS KMS 
+						keys handled and managed by KMS 
+						user control over key + audit key usage using CloudTrail
+						must set header "x-amz-server-side-encryption":"aws:kms"
+						KMS 
+							when you upload it calls the GenerateDataKey KMS API
+							when download it calls the Decrypt KMS API
+					Server side encryption with Customer provided Keys (SSE-C)
+						when you want to manage your own keys 
+						keys managed outside aws 
+						aws doesn't store the ecryption key you provide 
+						HTTPS must be used 
+						Key must be provided in HTTP headers, for every http request 
+						only through CLI
+					Dual layer server side encryption with KMS (DSSE-KMS)
+				Client side encryption 
+					Use client libraries such as Amazon S3 Client-Side Encryption Library
+					client must encrypt data before sending to aws 
+					customer fully manages keys and encryption cycle 
+				Encryption in Transit(SSL/TLS)
+					HTTPS is recommended
+					HTTPS is mandatory for SSE-C 
+					Force encryption in transit using Bucket policy
 
+				Default encryption vs Bucket Policies
+					SSE-S3 encryption is automatically applied to new objects 
+					Optionally u can force encryption using a bucket policy 
+						refuse any API call to PUT an object without encryption headers 
+					bucket policies always encrypted before "default encryption"
+			CORS 
+				Cross-Origin Resource sharing 
+				Origin =  scheme(protocol) + host(domain) + port 
+				Web browser based mechanism to allow requests to other origins while visiting the main origin
+				Requests won't be fulfilled unless other origin allows for requests using CORS
+				If client makes a cross origin request on S3 bucket, we need to enable the correct CORS headers
+				can allow specific origin or all 
+			MFA Delete
+				force users to generate a code on device(mobile or hardware) before doing
+				important operations on S3
+				versioning must be enabled to use MFA 
+				only bucket owner(root acc) can enable/disable MFA Delete
+				required to
+					permanently delete object version
+					suspend versioning
+				not required
+					enable versioning 
+					list deleted versions 
+			Access logs 
+				target logging bucket must be in same AWS region
+				Do not set your logging bucket to be Monitoring bucket
+				it'll create infinite logging loop
+			Pre Signed URLs
+				can generate using console, cli or sdk
+				URL expiration
+					console 
+						1-720min (12hrs)
+					CLI 
+						default 3600sec
+						max 604800sec ~ 168hrs
+				for GET/PUT 
+			Glacier Vault lock 
+				Adopt WORM(write once and read many)
+				create vault lock policy 
+				lock the policy
+			Object Lock 
+				versioning must be enabled
+				WORM model 
+				block object version deletion for a specific time 
+				Retention Mode - Compliance
+					Object versions can't be overwritten or deleted by any user, including root user 
+					Object retention modes can't be changed and retention periods can't be shortened
+				Retention Mode - Governance 
+					Most users can't overwrite or delete object version or alter its lock settings 
+					Some users have permission to change the retention or delete the object 
+				Retention period 
+					protect the object for a fixed period, it can be extended 
+				Legal Hold 
+					protect the object indefinitely, independent from retention period and retention mode 
+					can be freely placed and removed using the s3:PutObjectLegalHold permission
+			S3 Access Points 
+				policy 
+				each has it's own DNS 
+				manage security at scale (prefix/folder)
+			S3 Object Lambda
+				Use AWS lambda functions to change object before it is retrieved by caller application
+				access through lambda access point 
+				use cases 
+					redacting PII info 
+					converting data format 
+					resizing 
+	Cloud Front 
+		Global Service
+		Content Delivery Network(CDN)
+		content is cached at edge location
+		216 point of presence globally (edge locations)
+		DDoS protection 
+		Integration with shield 
+		AWS Web Application Firewall (WAF)
+		Origins 
+			S3 bucket
+				Enhanced security with CloudFront Origin Access Control(OAC)
+				OAC is replacing Origin Access Identity (OAI)
+				can be used as ingress (to upload files to S3)
+			Custom Origin (HTTP)
+				Application load balancer (ALB)
+				EC2 Instance
+				S3 website (must first enable bucket as static S3 website)
+				Any HTTP backend
+		files are cached for TTL (maybe a day)
+		Great for static content that must be available everywhere
+		S3 cross region replication 
+			Read only, files are updated in near real-time
+			for dynamic content that needs to be available at low latency in few regions 
+		Geo Restriction
+			Allowlist
+				allow users to access content only if they're in one of the countries on list 
+			Blocklist 
+				to block users from countries in list 
+		Price Classes
+			can reduce no of edge locations for cost reduction
+			Price Class All
+			Price Class 200
+				most regions but exclude most expensive regions 
+			Price Class 100
+				only have least expensive regions 
+		Cache Invalidation
+			can force entire or partial cache refresh 
+			can invalidate all files(*) or specific path(/images/*)
+
+	AWS Global Acceleration
+		Leverage AWS internal network to route to your app
+		2 Anycast IPs are created for app
+		Anycast IP send traffic directly to edge locations
+		Works with 
+			Elastic IP 
+			EC2 instance
+			ALB
+			NLB 
+			public or private
+		Consistent performance
+			Intelligent routing to lowest latency and fast regional failover
+			No issue with client cache (because IP doesn't change)
+			Internal AWS Network
+		health checks 
+			Helps your app global(failover in less than 1min)
+			disaster recovery
+		Security
+			only 2 external IP need to be whitelisted 
+			DDoS protection (AWS Shield)
+			
 
 
 
