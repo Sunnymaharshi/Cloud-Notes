@@ -1218,7 +1218,7 @@ Notes:
 			can force entire or partial cache refresh 
 			can invalidate all files(*) or specific path(/images/*)
 
-	AWS Global Acceleration
+	AWS Global Accelerator
 		Leverage AWS internal network to route to your app
 		2 Anycast IPs are created for app
 		Anycast IP send traffic directly to edge locations
@@ -1238,7 +1238,418 @@ Notes:
 		Security
 			only 2 external IP need to be whitelisted 
 			DDoS protection (AWS Shield)
+		CloudFront vs AWS Global Accelerator
+			CloudFront
+				Improves performance for both cacheable and dynamic content
+				content is served at edge locations 
+			Global Accelerator
+				imporve performance of wide range of apps over TCP or UDP
+				Proxying packets at edge locations to apps running in one or more AWS regions 
+				Good fit for non-HTTP use cases 
+					gaming(UDP), IoT(MQTT) or Voice over Ip 
+				Good for HTTP use cases that require static IPs
+	
+	AWS Storage Extras 
+		AWS Snow Family 
+			highly-secure portable devices to collect and process data at edge
+			migrate data into and out of AWS 
+			offline devices to perform data migrations
+			if it takes more than 1 week to transfer over the network, use Snow Family 
+			Data migration
+				Snowcone
+				Snowball edge
+				Snowmobile 
+			Edge computing 
+				Snowcone
+				Snowball Edge 
+			Snowball Edge 
+				move TBs or PBs of data in or out of AWS
+				pay per data transfer job 
+				provide block storage and S3 compatible object storage
+				Snowball Edge Storage Optimised 
+					80TB of HDD capacity for block volume and S3 compatible object storage 
+				Snowball Edge Compute Optimised 
+					42TB of HDD or 28TB NVMe capacity for block volume and S3 compatible object storage
+				Usecases 
+					large data migration 
+					disaster recovery
+			Snowcone 
+				small portable computing anywhere 
+				rugged secure withstands any harsh environments
+				used for edge computing storage and data transfer
+				DataSync agent pre-installed
+				Snowcone 
+					8TB of HDD Storage 
+				Snowcone SSD 
+					14TB of SSD storage 
+				use it when we have less space 
+				must provide ur own battery/cables 
+				can be sent to AWS offline or connect it to internet and use AWS DataSync to send data 
+			Snowmobile
+				transfer exabytes of data (1EB = 1000PBs = 1,000,000TBs)
+				each have 100PB capacity
+				high security, temperature controlled, GPS and 24/7 video surveilance
+				Better than snowball if u transfer more than 10PB 
+			Usage process	
+				request device from AWS console for delivery
+				Install snowball client/AWS OpsHub on your servers
+				connect device to servers and copy files using client
+				ship back to AWS 
+				data loaded into S3 bucket
+				Snowball is completely wiped
+			Edge Computing 
+				process data while it's being created on an 
+				edge location(anything that doesn't have internet, far from cloud)
+				we setup snowball edge/Snowcone device to do edge computing 
+				Usecases 
+					Preprocess Data
+					Machine learning at the edge 
+					Transcoding media streams 
+				Snowcone & snowcone SSD (smaller)
+					2 CPUs, 4GB of memory, wired or wireless access
+					USB-C power using a cord or optional battery 
+				Snowball Edge - Computing Optimised 
+					104 vCPUs, 416 GiB of RAM 
+					optional GPU (useful for video processing or machine learning)
+					28TB NVMe or 42TB HDD usable storage 
+					Storage Clustering available(upto 16 nodes)
+				Snowball Edge - Storage Optimised 
+					upto 40 vCPUs, 80 GiB of RAM, 80TB storage
+				All can run EC2 Instances & AWS Lambda functions (aws IoT Greengrass)
+				Long-Term deployment options: 1 and 3 years discounting price
+			AWS OpsHub 
+				A software u install on ur computer/laptop to manage  ur Snow Family Device
+				Unlocking and configuring single or clustered devices 
+				Transfering files 
+				Launching and managing instances running on Snow Family Device
+				monitor device metrics 
+				launch compatible AWS services on your devices 
+			Snowball into Glacier 
+				cannot import into Glacier directly
+				must use S3 incombination with an S3 kifecycle policy
+		Amazon FSx 
+			Launch 3rd party high-performance file systems on AWS 
+			fully managed
+			FSx File System Deployment Options 
+				Scratch File System
+					Temporary Storage
+					Data is not replicated(doesn't persist if server fails)
+					High Burst(6X faster, 200MBps per TiB)
+					shorterm processing, optimise costs 
+				Persistent File System
+					long term storage 
+					Data is replicated within same AZ
+					Relace failed files within minutes 
+					long-term processing sensitive data			
+			FSx for lustre
+				type of parallel distributed file system for large scale computing 
+				name is derived from Linux and Cluster
+				Machine Learning, High Performance Computing (HPC)
+				Video processing, financial modeling, electronic design automation
+				Scales upto 100s GB/s, milions of IOPS, sub-ms latencies 
+				Storage options	
+					SSD 
+						low latency, IOPS intensive workloads, small & random file operations 
+					HDD
+						throughput-intensive workloads, large and sequential file operations
+				Seamless integration with S3 
+					Can read S3 as a file system (through FSx)
+					Can write output of computations back to S3 (through FSx)
+				Can be used from on-premises servers(VPN or Direct Connect)		
+			FSx for Windows (File Server)
+				fully managed file system share drive 
+				Supports SMB protocol & Windows NTFS 
+				Microsoft Active Directory integration, ACLs, user quotas
+				Can mount on Linux EC2 instance 
+				Supports Microsoft's Distribution File System(DFS) Namespaces(group files across multiple FS)
+				Scale upto 10s of GB/s milions of IOPs, 100s of PB of data 
+				Storage options 
+					SSD 
+						latency sensitive workloads 
+					HDD 
+						broad spectrum of workloads
+				Can be accessed from your on-prem infra(VPN or Direct Connect)
+				can be configured to be Multi-AZ
+				Data is backed-up daily to S3 
+			FSx for NetApp ONTAP 
+				managed NetApp ONTAP on AWS 
+				move from ONTAP or NAS to AWS 
+				works with 
+					Linux,windows,MacOS
+					VMWare Cloud on AWS 
+					Amazon workspaces & App stream 2.0
+					Amazon EC2,ECS and EKS 
+				Storage shrinks and grows automatically
+				Snapshots, replications, low cost, compression and data de-duplication
+				Point-in-time instantaneous Cloning(helpful for testing new workloads)			
+			FSx for OpenZFS
+				managed OpenZFS on AWS 
+				File system compatible with NFS(v3,v4,v4.1,v4.2)
+				Move workloads running on ZFS to AWS 
+				works with 
+					Linux,windows,MacOS
+					VMWare Cloud on AWS 
+					Amazon workspaces & App stream 2.0
+					Amazon EC2,ECS and EKS 
+				upto to 1,000,000 IOPS with <0.5ms latency
+				Snapshots, compression and low cost 
+				Point-in-time instantaneous Cloning(helpful for testing new workloads)
+		AWS Storage Gateway
+			Bridge between on-premises data and cloud data 
+			Use cases
+				disaster recovery
+				backup & restore
+				tiered storage
+				on-premise cache & low latency files access
+			Types of Storage Gateway 
+				S3 file gateway 
+					all classes except Glacier 
+					Configured s3 buckets are accessible using NFS and SMB protocol
+					Most recently used data is cached in file gateway
+					Transition to S3 Glacier using lifecycle policy 
+					Bucket access using IAM roles for each File Gateway
+					SMB protocol has integration with Active Directory(AD) for user authentication 				
+				FSx file gateway
+					Native access to Amazon FSx for windows file server 
+					Local cache for frequently accessed data 
+					Windows native compatability (SMB,NFTS,Active Directory)
+					useful for group file shares and home directories
+				Volume gateway
+					Block storage using iSCSI protocol backed by S3
+					Backed by EBS snapshots which can help restore on-premise volumes 
+					Cached volumes 
+						low latency access to most recent data 
+					Stored Volumes	
+						entire dataset is on premise, scheduled backups to S3
+					usefull for backup of on premise server volumes 
+				Tape gateway
+					Some companies have backups using physical tapes 
+					Tape Gateway uses same process but in cloud 
+					Virtual Tape Library(VTL) backed by Amazon S3 and Glacier
+					Backup data using existing tabe-based processes(and iSCSI interface)
+			These gateways has to be installed on corporate datacentre
+			Hardware appliance
+				Using storage gateway means you need on-premise vitualization 
+				Otherwise, u can use Storage Gateway Hardware Appliance
+				works with 
+					File gateway
+					Volume gateway
+					Tape gateway
+				has required CPU, memory, network, SSD cache resource
+				helpful for daily NFS backups in small data centers 
+		AWS Transfer Family
+			fully managed service for file transfers into and out of S3 or EFS using "FTP" protocol
+			Supported protocols 
+				AWS Transfer for FTP 
+				AWS Transfer for FTPS (File transfer protocol over SSl)
+				AWS Transfer for SFTP (Secure File transfer protocol)
+			Pay per provisioned endpoint per hour + data transfers in GB 
+			Store and manage user credentials within service 
+			Integrate with existing authentication systems (MS Active Directory, LDAP, Okta,Amazon Cognito, custom)
+			Usage 
+				sharing files 
+				public datasets 
+				CRM,ERP
+		AWS DataSync 
+			Move large amount of data to and from 
+				on-premise or other cloud to AWS(needs agent)
+				AWS to AWS (different storage services) (no agent needed)
+			Can synchronize to 
+				Amazon S3(including Glacier)
+				Amazon EFS 
+				Amazon FSx 
+			Replication tasks can be scheduled hourly, daily or weekly
+				not have continous sync 
+			"File permissions and metadata are preserved (NFS,POSIX,SMB)"
+			One agent task can use 10 Gbps, can setup bandwidth limit
+
+		Quiz 
+			You need to move hundreds of Terabytes into Amazon S3, then process the data using a fleet of EC2 instances.
+			You have a 1 Gbit/s broadband. You would like to move the data faster and possibly processing it while in transit. 
+				Snowball Edge 
+	Decoupling Applications 
+		SQS 
+			Unlimited throughput and no of messages in queue
+			Default retention of messages: 4 days, max of 14 days 
+			Low latency (<10ms on publish and receive)
+			Limitation of 256KB per message sent 
+			Types 
+				Standard
+					At-least once delivery
+					Best effort ordering
+				FIFO
+					First in first out 
+					Exactly once processing
+			Can have duplicate messages (at least once delivery, occasionally)
+			Can have out of order messages (best effort ordering)
+			Can scale autoscaling group with Queue length
+			Encryption
+				In-flight with HTTPS API 
+				AT-rest KMS keys 
+				Client side encryption
+			Access control using IAM Policy 
+			SQS Access Policies (similar to S3 bucket policies)
+			Message Visibility Timeout
+				after message is pulled by one consumer, it becomes invisible to other consumers 
+				default 30sec (within message has to be processed)
+				if msg is not processing within timeout, it will be processed twice
+				ChangeMessageVisibility API to get more time 
+			Long Pooling 
+				when consumer requests, it can optionally wait for messages to arrive if there are none 
+				can wait 1 to 20sec 
+				long pooling preffered to short pooling 
+				can enable at queue level or API level using WaitTimeSeconds
+			FIFO 
+				Limited throughput 300,sg/s without batching, 3000 msg/s with 
+				Exactly once send capability (by removing duplicates)	
+				ordering by message group id (all messages in same group are ordered)	
+				Deduplication using a Deduplication id or content based Deduplication
+		SNS 
+			one msg to many receivers 
+			pub/sub 
+			Many AWS services can send msgs directly to SNS 
+			publish 
+				Topic publish (using SDK)
+					create topic 
+					create subscription (or many)
+					publish to topic 
+				Direct publish (for mobile apps SDK)
+					create platform app
+					create a platform endpoint 
+					publish to platform endpoint
+			Encryption
+				In-flight with HTTPS API 
+				AT-rest KMS keys 
+				Client side encryption
+			Access control using IAM Policy 
+			SNS Access Policies (similar to S3 bucket policies)
+				useful for cross-account access to SNS topics
+				useful to allow other services(S3..)  to write to SNS topic
+			SNS + SQS: Fan Out
+				push once to SNS, receive in all SQS queues that are subscribers
+				Cross-Region Delivery
+					works with SQS queues in other regions 
+				SNS to S3 through Kinesis Data Firehose 
+			FIFO topic
+				ordering by message group id (all messages in same group are ordered)	
+				Deduplication using a Deduplication id or content based Deduplication
+				SNS FIFO + SQS FIFO: Fan Out
+			Message Filtering 
+				JSON policy to filter msgs sent to SNS topics subscription
+				if subscription doesn't have filter policy, it receives every msg
+			Standard
+				best effort msg ordering 
+				at-least once delivery
+				highest throughput 
+				subscription protocols
+					SQS, Lambda, HTTP, SMS, email, mobile app endpoint
+			FIFO 
+				Strictly preserved msg ordering 
+				Exactly once msg Delivery
+				subscription protocols
+					SQS
+		Kinesis 
+			collect, process and analyze streaming data in real-time 
+			Kinesis Data streams 
+				capture, process and store data streams
+				shards
+					data is split into no of shards 
+					must define no of shards 
+					shards are going to define streaming capacity
+				Record
+					partition key 
+						determine which shard the record will go 
+					Data blob
+						value itself 
+						upto 1MB
+				Retention 1-365 days
+				ability to reprocess (replay) Data
+				Once data is inserted in Kinesis, it can be deleted (Immutable)
+				Data that shares the same partition goes to same shard
+				producers 
+					AWS SDK, Kinesis producer Library(KPL), Kinesis Agent 
+				Cunsumers 
+					write your own 
+						Kinesis Client Library(KCL), AWS SDK 
+					Managed
+						AWS Lambda, Kinesis Data Firehose, Kinesis Data Analytics
+				Capacity Mode
+					Provisioned mode
+						choose no of shards provisioned, scale Manually or using API 
+						each shard gets 1MB/s in 
+						each shard gets 2MB/s out 
+						pay per shard provisioned per hour 
+					On-demand mode 
+						no need to provision or manage capacity
+						Default capacity provisioned 4MB/s in 
+						Scales automatically based on observed throughput peak during the last 30 days 
+						Pay per stream per hour & data in/out per GB 
+				Control access using IAM 
+				Encryption
+					in-flight using HTTPS 
+					at rest using KMS 
+					can have client side encryption
+				VPC endpoints are available for Kinesis to access within VPC 
+				monitor API calls using CloudTrail
+			Kinesis Data firehose 
+				load data streams into AWS data stores
+				fully Managed
+				send data into 
+					AWS: Redshift, S3 and OpenSearch 
+					3rd party: Splunk/mongoDB/DataDog etc 
+					custom: any http endpoint
+				pay for data go through Firehose 
+				Near-realtime
+					write data in batches
+				support
+					many data formats, conversions and transformations 
+					can write custom transformations using AWS Lambda 
+				can send failed or all data to a backup S3 Bucket
+			Kinesis Data streams vs Kinesis Data firehose
+				Data streams
+					streaming service to ingest at scale
+					write custom code(producer/consumer)
+					Real-time 
+					Manage scaling (shard spliting/merging)
+					Data storage for 1 to 365 days 
+					support replay data
+				Kinesis Data firehose
+					Load streaming data into S3/Redshift/OpenSearch/3rd party/custom HTTP
+					fully managed
+					Near real-time (buffer time min 60sec)
+					Automatic scaling 
+					No data storage
+					doesn't support replay 	
+			Kinesis Data Analytics 
+				analyze data streams with SQL or Apache Flink
+			Kinesis Video streams
+				capture, process and store video streams
+		Amazon MQ 
+			managed msg broker service for RabbitMQ and ActiveMQ (on-prem technologies)
+			doesn't scale as much as SQS,SNS 
+			runs on servers, can run in Multi-AZ with failover 
+			has both queue feature (~SQS) and topic feature (~SNS)
+			Failover 
+				use Amazon EFS (can be mount on multi-AZs)
+			Amazon MQ supports industry-standard APIs such as JMS and NMS and
+			protocols for messaging, including AMQP, STOMP, MQTT, and WebSocket.
+
+
+
+
+
+				
+
+
+
+
+
 			
+
+
+
+
+
 
 
 
