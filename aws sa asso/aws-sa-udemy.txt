@@ -1634,6 +1634,429 @@ Notes:
 			Amazon MQ supports industry-standard APIs such as JMS and NMS and
 			protocols for messaging, including AMQP, STOMP, MQTT, and WebSocket.
 
+	Containers 
+		Amazon ECR 
+			store container images
+			private repository for docker Containers
+			public repository (Amazon ECR Public Gallery gallery.ecr.aws)
+			supports image vulnerability scanning, versioning, image tags, image lifecycle.
+		Amazon Elastic Container Service (ECS)
+			amazon own container platform
+			EC2 Launch Type
+				launch containers on AWS =  launch ECS Tasks on ECS clusters 
+				you must provision & maintain infra (EC2s)
+				Each EC2 instance must run ECS Agent to register in ECS cluster
+			Fargate Launch Type
+				u do not provision infra 
+				Serverless
+				ti scale just increase no of tasks
+			IAM Roles 
+				EC2 instance profile(EC2 launch type only)
+					used by ECS agent
+					make API calls to ECS 
+					send container logs to CloudWatch
+					pull docker image from ECR
+					reference sensitive data in Secrets manager or SSM Parameter store
+				ECS Task Role 
+					allows each task to have a specific role 
+					use different roles for different ECS services you run 
+					Task Role defined in task defination
+			Load Balancer integration
+				Application Load Balancer 
+					supported and works for most usecases
+				Network Load Balancer
+					recommended only for high throughput/high perf use cases
+					or pair it with AWS private link 
+				Classic Load Balancer
+					supported but not reccomended
+					no Advanced Features
+					no Fargate
+			Data Volumes 
+				Mount EFS systems on ECS tasks 
+				Works for both ECS and Fargate launch types 
+				Tasks running in any AZ will share the same data in EFS file system
+				Fargate + EFS = Serverless
+				use cases 
+					persistent multi-AZ shared storage for Containers
+				S3 can be mounted as a file system
+			ECS Service Autoscaling 
+				uses AWS Application Autoscaling
+				ECS service avg CPU utilization
+				ECS service avg memory utilization
+				ALB request count per target 
+				Target tracking 
+					scale based on target value for specific CloudWatch metric
+				Step scaling 
+					scale based on a specified CloudWatch Alarm 
+				Scheduled scaling
+					scale based on date and time 
+				EC2 launch type 
+					Auto Scaling group scaling 
+						scale based on CPU utilization
+						Add EC2 over time 
+					ECS Cluster Capacity provider 
+						recommended
+						used to automatically provision and scale the infra for your ECS Tasks 
+						Capacity Provider paired with Auto Scaling Group
+						Add EC2 when u r missing capacity (CPUm,RAM..)
+			Solutions Architecture
+				ECS Tasks invoked by EventBridge
+
+		Amazon Elastic Kubernetes Service (EKS)
+			open source system for automatic deployment, scaling and Management of containerized app			
+			managed Kubernetes cluster in AWS 
+			supports 
+				EC2 
+					if u want to deploy a worker nodes
+				Fargate 
+					to deploy Serverless
+			Node Types 
+				managed node groups 
+					creates and manages Nodes (EC2) for u 
+					Nodes are part of an ASG managed by EFS
+					Supports on-demand or spot instances
+				Self managed groups
+					nodes created by u and registered to EKS cluster and managed by an ASG 
+					u can use prebuilt AMI - Amazon EKS optimised AMI 
+					Supports on-demand or spot instances
+				AWS Fargate 
+					no maintainance required 
+					no nodes managed 
+			Data Volumes 
+				Need to specify StorageClass manifest on ur EKS cluster 
+				Leverages container storage interface (CSI) compliant driver 
+				support for 
+					EBS,EFS, FSx for Lustre and NetApp ONTAP
+		AWS Fargate
+			Serverless container platform
+			works with ECS and EKS 
+
+		AWS App Runner 
+			easy to deploy web apps and APIs at scale
+			No infrastructure experience required
+			start with ur source code or container image 
+			automatically builds and deploys web app
+			automatically scaling, high available, load balancer, encryption 
+			VPC access point 
+			Connect to database, cache and message queue services 
+			use case 
+				web apps, APIs, microservices, rapid production deployments 
+	Serverless 
+		AWS Lambda 
+			pay per request and compute time 
+			Integrated with whole AWS suite and many programming languages
+			monitoring with CloudWatch
+			up 10GB of RAM per function
+			Increasing RAM will also improve CPU and network
+			language support 
+				Node.js 
+				Python 
+				Java 
+				C# (.NET Core)
+				Golang 
+				C#/powershell
+				Ruby 
+				Custom Runtime API(example Rust)
+				Lambda container Image
+					container image must implement Lambda Runtime API
+					ECS/Fargate is preffered
+			Lambda Limits - per Region 
+				Execution
+					Memory allocation 
+						128MB - 10GB 
+					Maximum execution time 
+						900sec(15min)
+					Environment Variables 
+						4KB 
+					Disk capacity in "function container" (in /temp)
+						512 to 10GB 
+					concurrency executions: 1000(can be increased)
+				Deployment 
+					deployment size (.zip)
+						50MB 
+					Size of uncompressed deployement (code+dependencies)
+						250MB 
+					can use /temp to load other files at startup 
+					Size of Environment Variables 
+						4KB 
+			
+			Edge funtion
+				A code that u write and attach to CloudFront distributions 
+				runs close to users to minimize latency 
+				don't have to manage any servers, deployed globally
+				usecase: customize CDN content
+				fully serverless
+				Types 
+					CloudFront functions 
+						light-weight functions written in Javascript
+						high-scale latency-sentive CDN customizations 
+						sub-ms startup times, "milions" of requests/sec
+						execution time <1ms
+						used to change "viewer" requests and responses
+							viewer request 
+								after cloudfront receives a request from viewer
+							viewer response 
+								before cloudfront forwards response to viewer
+						native feature (manage code within cloudfront)
+					Lambda@Edge 
+						Lambda functions written in NodeJS or Python
+						scales to "1000s" of requests/sec 
+						execution time 5-10sec
+						used to change "cloudfront" requests and responses
+							viewer request 
+								after cloudfront receives a request from viewer
+							viewer response 
+								before cloudfront forwards response to viewer
+							origin request 
+								before cloudfront forwards the request to origin 
+							origin response
+								after cloudfront receives the response from origin 
+						author ur function in one region, the CloudFront replicates it to all locations 
+			Lambda by default
+				lambda will launch outside of ur VPC (AWS owned VPC)
+				it cannot have access to resources in ur VPC 
+			Lambda in ur VPC 
+				must define VPC id, subnets and security groups 
+				Lambda with RDS proxy 
+					must be deployed in ur VPC, because RDS proxy is never publicly accessible
+		DynamoDB 
+			fully managed, available with replication across Multi-AZs
+			NoSQL database, not a relational db, with transaction support
+			milions of requests/sec, trilions of rows,100s of TB of storage
+			fast and consistent performance(single digit millisec)
+			Standard and Infrequent Access (IA) Table Class
+			Made of tables, each has Primary Key(must define at creation time)
+			each table has infinite no of items(=rows)
+			each item has attributes (can be added over time -can be null)
+			max size of item is 400KB 
+			data types
+				scalar types 
+					string
+					number
+					binary
+					boolean
+					null
+				Document type 
+					list
+					Map 
+				set types 
+					string set, number set,binary set 
+			u can "rapidly evolve schemas"
+			primary key = partition key + sort key(optional)
+			Read/Write Capacity Modes 
+				Provisioned Mode (Default)
+					u specify no of reads/writes per sec 
+					pay for provisioned read capacity units (RCU) and write capacity units (WCR)
+					possibility to add auto-scaling mode for RCU and WCU 
+				On-demand Mode 
+					scale automatically
+					pay for what u use, more expensive
+					great for "unpredictable" workloads and "steep spikes"
+			DynamoDB Accelerator(DAX)		
+				fully managed highly available, seamless in-memory cache for DynamoDB 
+				Help solve read congestion by caching 
+				micriosecond latency for cached data 
+				5min TLL for cache (Default)
+			Stream processing 
+				ordered stream of item level modifications (create/update/delete)
+				use cases 
+					react to changes in realtime
+					real-time usage Analytics
+					implement cross region replication 
+					invoke AWS lambda on changes in table 
+				DynamoDB streams 
+					24hr retention 
+					limited no of consumers 
+					process using AWS lambda triggers, or DynamoDB Stream Kinesis adapter 
+				Kinesis Data streams
+					1 year retention
+					high no of consumers 
+					process using AWS lambda, Kinesis data Analytics, Kinesis Data firehose, AWS Glue
+			DynamoDB Global Tables 
+				two way replication between tables
+				table accessible with low latency in multiple regions
+				Active-Active replication 
+				can read and write to tables in any region 
+				must enable DynamoDB streams
+			DynamoDB Time To Live (TTL)
+				automatically deletes items after an expiry timestamp
+				use case: web session handling 
+			Backups for Disaster Recovery 
+				continuos backups using point-in-time recovery(PITR)
+					optionally enabled for last 35 days 
+					recovery creates new table
+				On-demand backups 
+					full backups for long term retention, until explicitely deleted 
+					can be configured and managed in AWS Backup (enables cross region copy)
+					recovery creates new table
+			Integration with S3
+				export to S3 (must enable PITR)
+					works with any point of time within last 35 days 
+					doesn't affect the read capacity of table 
+					export in DynamoDB JSON or ION Format 
+				Import from S3 
+					import CSV, DynamoDB JSON or ION format
+					doesn't consume any write capacity
+					creates a new table 
+		API Gateway
+			Lambda + API Gateway: no infra to manage 
+			support for Websocket
+			Handle api versions,environments and security(Authentication & Authorization)
+			create API keys, handle request throttling
+			Swagger/Open API import to quickly define APIs 
+			Transform and validate requests and response 
+			Generate SDK and API specifications
+			Cache API responses 
+			Integrations High level
+				lambda function
+				HTTP 
+				AWS Service 
+					Expose any AWS API
+					ex:post a message to SQS
+			Endpoint Types 
+				Edge Optimized(default)
+					for global clients 
+					request are routed through CloudFront edge locations 
+					API Gateway still lives in only one region
+				Regional 
+					for clients in same region 
+					Cloud Manually combine with CloudFront
+				private
+					can only be accessed from ur VPC using an interface VPC endpoint(ENI)
+					use a resource policy to define access
+			Security
+				User Authentication
+					IAM Roles 
+					Cognito(Identity for external users)
+					Custom Authorizer(ur own logic)
+				Custom Domain Name HTTPS 
+					security through integrations with AWS certificate manager (ACM)
+					if using Edge-Optimized endpoint, then certificate must be in "us-east-1"
+					if using Regional endpoint, certificate must be in API Gateway region
+					Must setup CNAME or A-alias record in Route 53
+		AWS Step functions
+			build serverless visual workflow to orchestrate ur lambda functions 
+			features 
+				sequence
+				parallel 
+				conditions 
+				timeouts 
+				error handling 
+			can integrate with EC2, ECS, on-prem severs, API gateway, SQS etc 
+			possibility of implementing "human approval" feature
+			use cases 
+				order fulfillment 
+				data processing 
+				web Applications
+				any workflow 
+		AWS Cognito
+			give users identity to interact with our web or mobile apps 
+			Cognito User Pools 
+				create serverless database of users for ur mobile/web apps
+				simple login 
+				password reset 
+				Email & Phone no verification
+				MFA
+				Federated Identities: users from Facebook, Google, SAML 				
+				integrates with API Gateway & Application Load Balancer				
+			Cognito Identity Pools (Federated Identity)
+				get Identities for users so they can obtain temporary AWS credentials
+				Security Token Service (STS) 
+					enables you to request temporary, limited-privilege 
+					credentials for IAM users or for federated users
+				users source can be Cognito users pools, 3rd party logins etc
+				users can then access AWS services directly or through API gateway
+				IAM policies applied to credentials are defined in Cognito 
+				they can be customised based on user_id for fine grained control
+				Default IAM roles
+					for authenticated and guest users 
+				Row level security in DynamoDB
+			cognito vs IAM 
+				hundreds of users 
+				mobile Users
+				authenticate with SAML
+		Amazon S3 
+		AWS SNS & SQS 
+		AWS Kinesis Data Firehose 
+		Aurora Serverless
+		Fargate 
+	Databases in AWS 
+		RDMS 
+			SQL/OLTP 
+			RDS Aurora
+			great for joins 
+		NoSQL
+			no joins 
+			no SQL 
+			DynamoDB
+			ElasticCache 
+			DocumentDB 
+				for MongoDB 
+				used to store, query and index JSON data
+				fully managed,highly available with replication across 3 AZ 
+				grows in increments of 10GB upto 64TB 
+				scales to workloads with milions of requests per seconds				
+			Keyspaces
+				Apache Cassandra is an open-source NoSQL distributed database
+				managed apache Cassandra compatible database 
+				serverless, scalable 
+				automatically scales tables up/down based on app traffic 
+				tables are replicated 3 times across multiple AZ 
+				queries using Cassandra Query Language(CQL)
+				Single digit milisec latency at any scale, 1000s of requests/sec 
+				Capacity
+					On-demand 
+					provisioned with auto-scaling 
+				Encryption,backup,point-in-time recovery(PITR) upto 35 days 
+				use case 
+					store IoT device info, time series data 
+		Object store 
+			S3 
+		Data warehouse
+			Redshift 
+			Athena 
+			EMR 
+		Search 
+			OpenSearch
+		Graphs 
+			Neptune 
+				fully managed graph database 
+				ex:social network
+				highly available across 3 AZ with upto 15 read replicas 
+				can store upto billions of relations and query graph with milisec latency
+				great for knowledge graphs, recommendations Engine, social networking			
+		Ledger 
+			Amazon Quantum Ledger Database (QLDB)
+				book recording financial transactions
+				fully managed, serverless, highly available replication across 3 AZ 
+				used to review history of changes to app data over time 
+				Immutable system 
+					no entry can be removed or modified 
+					cryptographical verifiable 
+				2-3x better performance than common ledger blockchain frameworks,manipulate data using SQL
+				Difference with Amazon Managed Blockchain 
+					no decentralization component in QLDB 
+					in accordance with financial regulation rules 
+		Time series 
+			Amazon Timestream 
+				fully managed, serverless, fast, scalable time series database
+				store and analyze trillions of events per day 
+				1000s times faster & 1/10th cost of relational database
+				Scheduled queries, multi-measure records, SQL compatability
+				Data storage tiering 
+					recent data stored in memory
+					historical data kept in cost-optimized storage 
+				Built-in time series analytics functions 
+					identify patterns in near real-time 
+				encryption in trasit and at rest 
+				usecase 
+					IoT apps
+					operational apps 
+					real-time analytics
+				
+		
+
+
 
 
 
