@@ -2054,7 +2054,328 @@ Notes:
 					operational apps 
 					real-time analytics
 				
+	Data Analytics
+		Athena
+			Serverless query service to  analyze data in S3 
+			Use SQL to query files (built on Presto)
+			supports 
+				CSV,JSON
+				ORC,Avro and Parquet
+			pricing: 5$ per TB of data scanned
+			commonly used with AWS Quicksight for reporting/dashboards 
+			Use cases: Business Intelligence, analytics, reporting,
+				analyze abd query VPC flow logs, ELB logs, CloudTrail logs etc 
+			Perf Improvement
+				use columnar data for cost-savings(less scan)
+					Apache Parquet or ORC is recommended 
+				use Glue to convert ur data to Parquet or ORC 
+				Compress data 
+					bzip2,gzip,Iz4,snappy,zlip,zstd etc
+				partition data sets in S3 
+					for easy query on virtual colums 
+					ex: s3://bucket/pathToTable/parquet/year=1901/month=1/day=1/
+				Use larger files 
+					>128MB to minimize overhead instead of many smaller files 
+			Federated Query 
+				allows u to run query across data stored in relational,non-relational,object 
+				custom data sources(AWS or on-prem)
+				use Data Source Connector that run on AWS Lambda to run federated query 
+				store results back to S3 
+		Redshift
+			based on PostgresSQL, but its not OLTP 
+			it OLAP online analytics processing 
+			10x better performance than data warehouses, scale to PBs of data
+			Columnar storage of data (instead of rows) & parallel query engine 
+			Pay per instances provided 
+			SQL interface for queries
+			BI tools like Quicksight or Tableau integrate with it 
+			vs Athena
+				it loads data into it 
+				faster queries 
+				joins &	aggregations (thanks to indexes)
+			Leader node 
+				for query planning and results aggregation
+			Compute node 
+				for performing queries and send results to leader 
+			u provision node size in Advance
+			Snapshots & disaster recovery
+				has Multi-AZ mode for some clusters
+				snapshots are point in time backups of a cluster 
+				stored internally in S3
+				snapshots are incremental (only changes are saved)
+				automated: with retention
+				manual:retained until u delete
+				can configure to automatically copy snapshots to another region
+			Loading data to Redshift
+				Kinesis Data firehose 
+					through S3 COPY 
+				S3 using COPY command 
+					Internet 
+						without enhanced VPC routing
+					Through VPC 
+						With enhanced VPC routing
+				EC2 Instance 
+					JDBC driver 
+						better to write data in batches 
+			Redshift Spectrum 
+				Query S3 without loading 
+				lot more compute power than redshift 
+				must have redshift cluster to query 
+				query is submitted to 1000s of Redshift Spectrum nodes 
 		
+		Amazon OpenSearch
+			successor to Amazon ElasticSearch 
+			can search any field even partial matches 
+			can use as a complement to another database 
+			modes 
+				managed cluster 
+				serverless cluster
+			doesn't natively support SQL (can be enabled via plugin)
+			Ingestion from Kinesis Data firehose, AWS IoT, CloudWatch logs
+			Security 
+				Cognito & IAM 
+				KMS, TLS 
+			OpenSearch Dashboards (visualization)
+		Amazon EMR (Elastic Map Reduce)
+			creates Hadoop clusters (Big Data) to analyze and process vast amount of data 
+			made of 100s of EC2 instances 
+			bundled with Apache spark, HBase, Presto, Flink 
+			take care of all provisoning and configuration 
+			Auto-scaling and integrated with spot instances 
+			use cases
+				data processing 
+				machine learning 
+				web indexing 
+				big data 
+			Node Types 
+				Master Node 
+					manage cluster, coordinate, manage health 
+					long running
+				Core Node 
+					Run tasks and store data 
+					long running
+				Task Node(optional)
+					Just to run tasks 
+					usually spot 
+				purchasing options 
+					on-demand instances
+					reserved min 1yr 
+					spot instances 
+			cluster types
+				long-running cluster
+				transient
+					temporary cluster 
+		Amazon Quicksight
+			Serverless machine learning-powered Business Intelligence service 
+			to create interactive dashboards
+			use cases
+				Business analytics
+				Building visualization
+				Perform ad-hoc analysis
+				get Business insights using data 
+			in-memory computations using SPICE engine 
+				only if data is imported into Quicksight
+			Enterprise edition 
+				can setup Column level security(CLS)
+			Integrations 
+				RDS, Aurora, Redshift
+				Athena, S3, OpenSearch
+				Timestream
+				also 3rd party Data sources (SaaS) & Databases
+				can import data source files 
+			Dashboards & Analysis
+				Define users(standard version) & groups (Enterprise version)
+					users and groups only exist in Quicksight, "not IAM"
+				dashboard
+					is read-only snapshot of an analysis that u can share 
+					preserves configuration of analysis(filtering,parameters,contorls,sort)
+				can only share the analysis with users or groups 
+				to share a dashboard, u must first publish it 
+				users who can see dashboards can also see underlying data 
+		AWS Glue
+			managed extract transform and load (ETL) service 
+			serverless
+			use case 
+				convert data into parquet format
+			Glue Data Catalog 
+				Glue Data crawler write all metadata into Glue Data Catalog
+			Glue Job Bookmarks 
+				prevent reprocessing of old data 
+			Glue Elastic views
+				Combine and replicate data across multiple data sources using SQL
+				No custom code, Glue monitors for changes in source data, serverless
+				Leverages virtual table (materialized view)
+			Glue DataBrew
+				clean and normalize data using pre-built transformations
+			Glue Studio
+				new GUI to create, run and monitor ETL jobs 
+			Glue Streaming ETL (built on Apache Spark Structured Streaming)
+				compatable with 
+					Kinesis Data streams
+					Kafka 
+					MSK (managed kafka)
+		AWS Lake Formation 	
+			central place to have all data for analytics
+			discover,cleanse, transform and ingest data into ur Data Lake 
+			out-of-the-box source blueprints 	
+				S3,RDS,Relational & NoSQL
+			Fine grained access control for ur app (row & column level)
+			Built on top of Glue 
+			use case 
+				centralized permissions
+		Kinesis Data Analytics
+			for SQL apps
+				Real-time analysis on Data Streams & Firehose using SQL
+				Add reference data from S3 to enrish streaming data 
+				Fully managed, no servers provision 
+				Automatic scaling 
+				Pay per actual consumption rate 
+				output
+					Kinesis Data streams 
+						create streams out of real-time analytics queries
+					Kinesis Data Firehose
+						send analytics query results to destinations
+				Use cases 
+					Time series analytics
+					Real-time Dashboards
+					real-time metrics 
+			for Apache Flink 
+				Use flink (Java,Scala or SQL) to process and analyse streaming data 
+				Run any Apache Flink app on a managed cluster on AWS 
+					provisioning compute resources,parallel computations,automatic scaling 
+					app backups (implemented as checkpoints and snapshots)
+					read from Kinesis Data streams & Amazon MSK
+					Flink does not read from Firehose (use Kinesis Data analytics for SQL instead)
+		Amazon Managed Streaming for Apache Kafka (Amazon MSK)
+			Alternative to Kinesis
+			fully managed apache kafka on AWS 
+				create, update and delete clusters
+				MSK creates & manages Kafka brokers nodes & Zookeeper nodes for u 
+				Deploy MSK in ur VPC, multi-AZ(upto 3)
+				Automatic recovery from apache kafka failures 
+				data is stored on EBS volumes as long as u want
+			MSK serverless
+				run apache kafka without managing capacity
+				automatically scales compute and storage 
+			Kinesis Data streams vs Amazon MSK 
+				Kinesis
+					1MB size limit 
+					data streams with shards 
+					Shard spliting and merging
+					TLS in-flight encryption
+					KMS at rest encryption
+				MSK 
+					default 1MB, configure for higher(ex:10MB)
+					kafka topics with Partitions 
+					can only add partitions to a topic 
+					PLAINTEXT or TLS in-flight encryption
+					KMS at rest encryption
+					can keep data as long as u want
+	Machine Learning
+		Rekognition 
+			find objects,people,text,scenes in images and videos using ML 
+			Facial analysis and facial search to do user verification and people count 
+			create database of familiar faces or compare against celebrities
+			use cases 
+				labeling 
+				Content Moderation 
+					detect content that is inappropriate, unwanted, or offensive (images and videos)
+					set min confidence threshold for items that will be flagged 
+					flag sensitive content for manual review in Amazon Augumented AI (A2I)
+				text detection
+				Face detection and analysis
+				Face search and verification
+				celebrity recognition
+				Pathing (ex:sport game analysis)
+		Amazon Transcribe 
+			convert speech to text 
+			uses deep learning process called automatic speech recognition (ASR)
+			Automatically remove Personally Identifiable information(PII) using redaction 
+			supports automatic language identification for multi-lingual audio 
+		Amazon Polly 
+			Turn text to speech 
+			Lexicon 
+				customize the pronounciation of words with pronounciation lexicons 
+				Stylized words : St3ph4ne => Stephane 
+				Acronyms AWS => "Amazon Web Services"
+			Speech Synthesis Markup Language (SSML)	
+				enables more customization 
+				emphaisizes specific words or phrases 
+				using phonetic pronounciation
+				including breathing sounds, whispering 
+				using Newscaster speaking style 
+		Amazon Translate 
+			localize content such as websites and apps 
+			for international users, to easily translate large volumes of text efficiently 
+		Amazon Lex & Connect 
+			Lex 
+				powers alexa 
+				Automatic Speech recognition (ASR) to convert speech to text 
+				Natural language Understanding to recognize the intent of text, callers 
+				Helps to build chatbots and call center bots 
+			Connect 
+				Receive calls, create contact flows, cloud based virtual contact center
+				Can integrate with other CRM systems or AWS 
+				No upfront payments, 80% cheaper than call center solutions 
+		Amazon Comprehend
+			Natural language processing (NLP)
+			serverless
+			uses ML to find insights and relationships in text 
+				language of text 
+				extract key phrases, people, brands or events 
+				understand how positive or negative the text is 
+				Analyze text using tokenization and parts of speech 
+				automatically organizes a collection of text file by topic
+			use cases 
+				analyze customer interactions to find positive or negative experience
+				create and group articles by topic that Comprehend will uncover 
+		Amazon Comprehend Medical 
+			detect and returns useful info in unstructured clinical text 
+				physician notes 
+				discharge summaries 
+				test results 
+				case notes 
+			Uses NLP to detect Protected Health information(PHI) - DetectPHI API
+		Amazon SageMaker 
+			fully managed service for Developers/data scientists to build ML Models 
+		Amazon Forecast 
+			ex: predict future sales of a product
+			50% more accurate than looking at data itself 
+			reduce forcasting time from months to hours 
+		Amazon Kendra 
+			Document search service powered by ML 
+			extract answers within a Document (text,pdf,HTML,powerpoint,MS Word,FAQs)
+			knowledge indexing
+			Natural language search capability
+			ability to manually fine-tune search results(importance of data, freshness,custom) 
+		Amazon Personalize
+			personalized recommendations
+			Integrates into existing websites,apps,SMS,email marketing systems
+			implement in days 
+		Amazon Textract
+			extracts texts, handwriting and data from any scanned Documents using AI and ML 
+	
+
+
+
+
+
+
+
+
+
+
+
+			
+
+
+
+
+
+
+
+
+
 
 
 
