@@ -2354,7 +2354,191 @@ Notes:
 			implement in days 
 		Amazon Textract
 			extracts texts, handwriting and data from any scanned Documents using AI and ML 
-	
+	AWS Monitoring & Audit 
+		CloudWatch Metrics 
+			cloudwatch provides metrics for every service 
+			metric is variable to monitor(CPUUtilization,networking)
+			Metrics belongs to namespaces (every service have a namespace)
+			Dimension is attribute of metric (instance_id,environment etc)
+			upto 30 dimensions per metric 
+			Metrics have timestamps
+			can create CloudWatch dashboards of metrics 
+			can create custom metrics (for RAM)
+			Metric Streams 
+				stream CloudWatch metrics to destination of ur choice 
+				with near-real-time, low latency
+				can filter metrics to only stream subset of metrics
+		CloudWatch Logs 
+			Log groups 
+				arbitary name, usually represnts app name 
+			Log stream 
+				instances within app/log files/containers 
+			can define log expiration policy (never,1 to 10yrs)
+			encrypted by default
+			can setup KMS encryption with ur own keys 
+			CloudWatch Logs Insights
+				query logs 
+				can save queries and add them to CloudWatch Dashboards
+			S3 Export 
+				batch export 
+				upto 12hrs to complete 
+			Logs Subscription 
+				stream real-time log events from CloudWatch
+				Subscription filter
+					filter log events 
+				Cross-Account Subscription
+					send log events to resources in different account
+			Logs for EC2 
+				need to run CloudWatch Agent on EC2 
+				EC2 must have IAM permissions to send logs 
+				Agent can run on on-premise also 
+				CloudWatch Logs Agent 
+					old version
+					can only send to CloudWatch Logs 
+				CloudWatch Unified Agent
+					new version
+					collect aditional system level metrics such as 
+						RAM,CPU,Disk Metrics,Netstat,Processes,Swap space
+					Centralize configuration using SSM Parameter Store 
+		CloudWatch Alarms 
+			to trigger Notifications for any metric 
+			states 
+				OK 
+				INSUFFICIENT_DATA 
+				ALARM
+			period 
+				length of time in seconds to evaluate metric 
+			Alarm Targets 
+				stop,terminate,reboot or recover an EC2 instance
+				Trigger Auto Scaling Action 
+				send Notification to SNS 
+			Composite Alarms 
+				monitors multiple alarms 
+				AND and OR conditions 
+			EC2 Instance Recovery 
+				Instance check = check EC2 VM 
+				System status = check underlying hardware
+				Same private,public,Elastic IP,metadata,placement group
+		Amazon EventBridge
+			Schedule:
+				Cron jobs
+			Event pattern 
+				event rules to react to service doing something
+				ex:root signin event, send a Notification
+			Trigger Lambda or send messages to SNS/SQS 
+			Event Bus 
+				default
+				partner 
+				custom 
+					to send events from ur app 
+				can be accessed by other AWS accounts using Resource-based policies
+			can Archive events indefinitely or set period 
+			can replay archived events 
+			Schema Registry 
+				EventBridge can analyze events from ur bus and infer the schema 
+				Schema Registry allows u to download the code for ur app, that will know 
+				in Advance how data is Structured in event bus 
+				Schema can be versioned 
+			Resource based policy 
+				manage permissions to event bus 
+				ex:allow deny events from another account/region 
+		CloudWatch Container Insights 
+			collect,aggregate, summurize logs and metrics from containers 
+			available on 
+				Elastic Container Service 
+				Elastic Kubernetes Service
+				Kubernetes on EC2 
+				Fargate
+		CloudWatch Lambda Insights
+			monitoring and troubleshooting for serverless app running on lambda
+			collects
+				CPU,Memory,Disk,Network
+				Cold starts and lambda worker shutdowns 
+		CloudWatch Contributor Insights
+			Analyze log data and create time series that display Contributor Data 
+				metrics about top N-Contributors
+				no of unique contributors and their usage 
+			Works for any AWS generated logs 
+			helps u find top talkers and who or what is impacting system perf 
+		CloudWatch Application insights
+			automated dashboards that show potential problems with monitoring apps 
+			apps running on EC2 with select technologies only 
+				Java,.NET,Microsoft IIS, Database
+			can use other AWS services (add those also in dashboards)
+			Enhanced Visibility to ur app health
+			Findings and alerts are sent to EventBridge and SSM OpsCenter 
+		Amazon CloudTrail 
+			provides governance,compliance and audit for ur AWS account
+			enabled by default
+			get history of events/API calls made within AWS account by
+				Console
+				SDK 
+				CLI 
+				AWS services 
+			can put logs into CloudWatch or S3 
+			trail can be applied to All Regions(default) or single region 
+			if a resource is deleted in AWS, investigate CloudTrail first
+			CloudTrail Events 
+				Management Events 
+					Operations performed on resources in AWS 
+					by default logged 
+					can separate read events from write events 
+				Data Events 
+					by default not logged 
+					S3 object level activity,can separate read events from write events 
+					AWS lambda execution activity
+				Insights Events 
+					to detect unusual activity in ur account
+					example
+						inaccurate resource provisioning 
+						hitting service limits 
+						Burst of IAM actions 
+					continuously analyzes write events 
+			Events Retentions 
+				stored for 90 days in CloudTrail
+				for more period, log to S3 
+			Intercept API calls
+				API calls are logs in CloudTrail
+				same are logged in EventBridge as an event 
+				can send Notifications to SNS 
+		AWS Config 
+			auditing and recording compliance of AWS resources
+			records configurations and changes over time 
+			Questions that can be solved 
+				is there unrestricted SSH access to my security groups 
+				does my bucket has public Access
+				ALB configuration changes over time 
+			can receive alerts to any changes 
+			per-region service 
+			can store configuration data in S3 
+			Config rules 
+				AWS has over 75 config rules 
+				can create custom rule 
+					ex:if each ec2 instance is t2.micro
+				Rules can triggered or evaluated 
+					for each config change 
+					at regular intervals 
+			pricing 
+				$0.003 per configuration recorded per region 
+				$0.001 per config rule evaluated per region
+			Remediations 
+				Automate remediation for non-compliant resources using SSM Automation Documents 
+				can create custom Automation Documents 
+				can set retries if resource is not-compliant after auto Remediations
+			Notifications
+				EventBridge to trigger Notification when resource is non-compliant
+				can send configuration changes and compliance state Notifications to SNS 
+				
+
+				
+
+
+
+
+
+
+
+
 
 
 
