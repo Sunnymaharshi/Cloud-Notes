@@ -2529,7 +2529,129 @@ Notes:
 				EventBridge to trigger Notification when resource is non-compliant
 				can send configuration changes and compliance state Notifications to SNS 
 				
+	IAM Advanced
+		AWS Organizations 
+			Global service
+			manage multiple AWS accounts
+			main account is Management account
+			other accounts are member accounts
+			member accounts can only be part of one Organization
+			Consolidated Biling across all accounts - Single payment method 
+			pricing benifits from aggregated usages 
+			Shared reserved instances and savings plans discounts across all accounts
+			API is availabile to automate AWS account creation 
+			Organization Units (OU)
+				sales OU 
+				finance OU
+				prod OU
+				dev OU etc 
+			Security
+				Service Control Policies(SCP)
+					IAM policies applied to OU or Accounts to restrict users and Roles
+					do not apply to Management account(Admin power) 
+					Must have explicit allow 
+					Block lists and allow lists strategies 
+		IAM Conditions 
+			aws:SourceIp
+			aws:RequestedRegion
+			ec2:ResourceTag
+			aws:MultiFactorAuthPresent 
+			aws:PrincipalOrgID
+				to restrict access to accounts of AWS Organization
+		IAM roles vs Resource Based Policies
+			Cross Account
+				attach resource based policy to resource
+					u doesn't giveup any permissions 
+					ex:user in Acc A needs to scan a DynamoDB in Acc A and write it in S3 bucket in Acc B  
+					must use resource based policies 
+				OR using IAM role as proxy 
+					When u assume a role(user,app or service)
+					u giveup ur original permissions and take permissions assigned to role
+			Amazon EventBridge
+				when a rule runs, it needs permissions on targets 
+				Resource based policies
+					SNS,SQS,CloudWatch Logs,API Gateway..
+				IAM Role 
+					Kinesis Streams, Systems Manager Run Command, ECS task..
+		IAM Permission Boundaries 
+			only for users and roles(not groups)
+			to set max permissions an IAM entity get 
+			In permission bourdary 
+				if user is allowed full access to S3,EC2 
+				if create user permission added through IAM policy to user 
+				still user can't create users because of IAM Boundaries policies
+		***Explicit Deny >>> Explicit Allow 
+		AWS IAM Identity Center (successor to AWS Single Sign-On)
+			One Login for all ur
+				AWS accounts in AWS Organization
+				Business cloud applications (salesforce,Box,Mircosoft 365)
+				SAML2.0-enabled apps 
+				EC2 Windows Instances
+			Identity providers 
+				Built-in identity store in IAM Identity Center 
+				3rd party: Active Directory, OneLogin, Okta 
+			Fine grained permissions and Assignments 
+				Multi-Account permissions
+					permission sets 
+						a collection of one or more IAM policies assigned 
+						to users and groups to define AWS access
+				Application Assignments
+					SSO access to many SAML2.0 Business apps 
+					provide required URLs,certificates and metadata 
+				Attribute-Based Access Control(ABAC)
+					fine-grained permissions based on users attributes 
+					stored in Identity Center Identity Store
+					ex:cost center,title,locale 
+					use case: define access once then Modify AWS access by changing attributes 
+		Microsoft Active Directory
+			found on any Windows Server with AD Domain services 
+			Database of objects 
+				user accs, computers, printers, file shares, security groups 
+			centralized security management, create account, assign permissions 
+			objects are organized in trees 
+			group of trees is forest 
+		AWS Directory Services 
+			AWS Managed Microsoft AD 
+				create ur own AD in AWS, manage users locally,supports MFA 
+				Establish "Trust" connections with ur on-premise AD 
+					login can check in AWS AD for user if user is not found in On-prem AD
+					vice versa 
+			AD Connector 
+				Directory Gateway (proxy) to redirect to on-premise AD 
+				supports MFA 
+				users are managed on on-prem AD 
+			Simple AD 
+				AD-Compatible managed directory on AWS 
+				Cannot be joined with on-premise AD 
+			Active Directory setup	
+				connect to an AWS Managed Mircosoft AD 
+					can easily connect 
+				Connect to Self-Managed Directory
+					Create Two-Way Trust Relationship using AWS Managed Mircosoft AD
+					OR
+					Create an AD Connector (proxy)
+		AWS Control Tower 
+			easy way to setup and govern a secure and compliant multi-account AWS environment 
+			based on best practices 
+			Uses AWS Organizations to create accounts
+			benifits
+				Automate setup of environment in a few Clicks 
+				Automate on going policy management using gaurdrails 
+				Delete policy violation and remediate them 
+				Monitor Compliance through interactive dashboards
+			Guardrails 
+				Preventive Gaurdrail
+					using Service Control Policies(SCPs)
+					ex:restrict regions across all ur accounts 
+				Detective Guardrail 
+					using AWS Config 
+					ex:identify untagged resources 
+				
+			
 
+
+
+			
 				
 
 
