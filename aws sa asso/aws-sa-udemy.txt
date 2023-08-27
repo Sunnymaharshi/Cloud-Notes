@@ -2647,7 +2647,263 @@ Notes:
 					using AWS Config 
 					ex:identify untagged resources 
 				
+	Security 
+		Encryption
+			In-flight (SSL)
+				SSL certificate helps with encryption(HTTPS)
+			Server-side encryption At-rest 
+				AWS Key Management Service (KMS)
+					Able to Audit KMS Key usage using CloudTrail
+					available through API calls(SDK,CLI)
+					Key Types 
+						Symmetric(AES-256)
+							Single encryption key used to encrypt and Decrypt
+							AWS Services using KMS use Symmetric keys 
+							u never get access to KMS key unencrypted
+						Asymmetric(RSA & ECC key pairs)
+							Public key (encrypt) and Private Key(decrypt) pair
+							used for encrypt/decrypt or sign/verify operations 
+							public key is downloadable, but can't access private key unencrypted
+							Use case 
+								encryption outside of AWS by users who can't call KMS API 
+					KMS Key types 
+						AWS Owned keys (free)
+							SSE-S3,SSE-SQS,SSE-DDB etc (default)
+						AWS Managed Keys (free)
+							aws/service-name
+							ex:aws/rds,aws/ebs
+						Customer Managed keys 
+							created in KMS 
+							$1 per month
+						Customer Managed Keys imported (must be Symmetric)
+							$1 per month
+						+ Pay for API call to KMS ($0.003/1000 calls)
+					Automatic Key Rotation 
+						AWS managed KMS key 
+							automatic every year 
+						Customer managed KMS key 
+							must be enabled
+							automatic every year
+						imported KMS key 
+							only manual rotation is possible using Alias 
+					Copying Snapshot across regions 
+						re-encrypt snapshot using new KMS key 
+						restore snapshot with new KEY 
+						same KMS key cannot live in two regions 
+					KMS Key Policies
+						similar to S3 bucket policies 
+						Difference:u can't control access without them 
+						Default
+							created if u don't provide a policy 
+							complete access to the key to root user 
+						Custom KMS Key Policy 
+							define users,roles that can access the Key
+							define who can administer key 
+							use case 
+								cross acc access for KMS key 
+							
+					KMS Multi-region keys 
+						has same key ID,key material, automatic rotation 
+						No need to re-encrypt or making cross-Region API calls 
+						are not global (primary+replicas)
+						use case 
+							global client side encryption
+							encryption on Global DynamoDB, Global Aurora
+					S3 replication 
+						unencrypted objects and objects with SSE-S3 are replicated by default
+						Objects with SSE-C(customer provided key) are never replicated 
+						for objects with SSE-KMS 
+							need to enable option 
+							specify KMS key to encrypt target bucket 
+							adapt KMS key policy for target key 
+							IAM role with kms:Decrypt for source KMS key and kms:Encrypt for target KMS key 
+							might get KMS throtling errors, can ask for Service Quotas increase 
+							can use Multi-region keys but they treated as 
+							independent keys (objects are still decrypted and then encrypted)
+					AMI Sharing process Encrypted via KMS 
+						In source acc, AMI is encrypted with KMS key 
+						must modify image attribute to launch permission which responds 
+						to target AWS account 
+						Must share KMS key used to encrypt AMI with target acc 
+						IAM role/user in target acc must have permissions to DescribeKey, ReEncrypted 
+						CreateGrant,Decrypt 
+						when launching EC2 instance from AMI, optionally the target acc 
+						can specify new KMS key in it's own acc to re-encrypt the volumes 						
+			Client-side encryption
+		SSM Parameter store 
+			secure storage for configuration and secrets 
+			Optional seamless encryption using KMS 
+			Serverless, scalable, durable, easy SDK 
+			Version tracking of configurations/secrets
+			Security through IAM 
+			Notifications with EventBridge
+			Integration with CloudFormation 
+			keys are stored in Hierarchy 
+			can reference secrets from Secrets Manager 			
+			Standard
+				no of parameters per acc 10,000
+				max size of value 4KB 
+				no parameter policies 
+				no additional charges 
+				free storage 
+			Advanced 
+				no of parameters per acc 100,000
+				max size of value 8KB 
+				parameter policies available
+				additional charges 
+				$0.05 per advanced parameter per month 
+			Parameter policies(for advanced parameters)
+				can assign TTL to a parameter (expiration date)
+				to force updating or deleting sensitive data 
+				can assign multiple policies 
+				types 
+					Expiration
+					ExpirationNotification 
+					NoChangeNotification
+		AWS Secrets Manager 
+			can store secrets 
+			can force rotation of secrets every X days 
+			Automatic generation of secrets on rotation (uses lambda)
+			Integration with Amazon RDS (MySQL,PostgreSQL,Aurora) and other services 
+			Secrets are encrypted using KMS 
+			mostly used for RDS integration
+			Multi-Region secrets 
+				primary and replicas 
+				can promote replica to standalone secret 
+		AWS Certificate Manager (ACM)
+			provision,manage and deploy TLS certificates(HTTPS/SSL)
+			supports both public and private TLS certifiactes 
+			free of charge for public certificates
+			Automatic TLS certifiacte renewal 
+			Integrations with 
+				Elastic Load Balancer (CLB,ALB,NLB)
+				CloudFront Distributions 
+				APIs on API Gateway 
+			Cannot use ACM with EC2
+			Requesting Public certifiactes
+				list domain names to included in certificate	
+					fully qualified domain name 
+						corp.example.com
+					Wildcard domain 
+						*.example.com 
+				Validation method 
+					DNS validation 
+						preffered for automation perposes
+						leverage CNAME record to DNS config 
+					Email validation 
+						will send emails to contact address in WHOIS database 
+			Import public certificates
+				can generate cert outside ACM and import it 
+				no automatic renewal, must import new cert before expiry 
+				ACM sends daily expiration events starting 45 days prior to expiration 
+					no of days can be configured 
+					events appear in EventBridge
+				AWS Config has a managed Rule name acm-certificate-expiration-check 
+				to check for expiring certificate 
+		AWS Web Application Firewall (WAF)
+			protects web application from common web expoits (Layer 7)
+			Layer 7 is HTTP(vs Layer 4 TCP/UDP)
+			Deploy 
+				Application Load Balancer 
+				API Gateway
+				CloudFront
+				AppSync GraphQL API 
+				Cognito User pool 
+			not possible for Network Load balancer(NLB) cause it is Layer 4
+			Define Web Access Control List (ACLs)
+				IP Set
+					upto 10,000 IP Addresses
+					use multiple rules for more IPs 
+				HTTP headers,body or URI strings protects from common attack 
+					SQL injection and cross-site Scripting (XSS)
+			WAF is regional except for CloudFront
+			rule group 
+				reusable set of rules u can add to ACLs 
+			Fixed IP while using WAF with Load Balancer
+				WAF doesn't support Network Load balancer
+				Global Accelerator for fixed IP and WAF on ALB 
+		AWS Shield 
+			protect from DDoS(Distributed denial of service) attack 
+			Standard
+				Free that is activated for every AWS customer 
+				protects from SYN/UDP Floods,Reflection attacks,and other layer 3/4 attacks 
+			Shield Advanced
+				$3000 per month 
+				protect against attack on Amazon EC2,ELB,CloudFront, AWS Global Accelerator and Route 53
+				24/7 access to AWS DDoS response team (DRP)
+				automatic application layer DDoS mitigation creates, evaluates and deploys 
+				AWS WAF rules to mitigate layer 7 attacks 
+		AWS Firewall Manager 
+			manage rules across all accounts in AWS Organization
+			Security Policy 
+				common set of security rules 
+				WAF rules (ALB,API gateway,CloudFront)
+				AWS Shield Advanced(ALB,CLB,NLB,Elastic Ip,CloudFront)
+				Security groups for EC2,ALB,ENI resources in VPC 
+				AWS Network Firewall (VPC level)
+				Amazon Route 53 Resolver DNS Firewall
+				Policies are created a Regional level 
+			Rules applied to new resources as they created 
+		Amazon GaurdDuty 
+			Intelligent threat discovery to protect ur AWS acc 
+			uses Machine learning alogs, anomaly detection, 3rd party data 
+			no need to install software
+			input data 
+				CloudTrail Event Logs 
+					unusual API calls, unauthorized deployments
+					CloudTrail Management Events 
+					CloudTrail S3 Data Events 
+				VPC Flow Logs 
+					unusual internet traffic, unusual IP 
+				DNS logs 
+					compromised EC2 instances sending encoded data within DNS queries 
+				Optional Features 
+					EKS Audit logs,RDS,Aurora,EBS,Lambda,S3 data events 
+			Can setup EventBridge rules to be notified in case of Findings
+			Can protect against "CryptoCurrency attacks" (dedicated finding for it)
+		Amazon Inspector 
+			Automated Security Assessments 
+			Only for EC2,Container Images,Lambda funtions
+			For EC2 Instances 
+				Leveraging AWS System Manager (SSM) agent 
+				Analyze against unintended network accessibility 
+			For Container images push to ECR 
+			For Lambda functions
+				identify software vulnerabilities in function code and dependencies 
+			Reporting and integration with AWS Security Hub 
+			Send findings to Amazon EventBridge
+		Amazon Macie 
+			fully managed data security and data privacy service
+			uses ML and pattern matching to discover and protect ur sensitive data in AWS 
+			helps identify and alert u to sensitive data, such as personally identifiable information (PII)
+		Quiz 
+			You have created a Customer-managed CMK in KMS that you use to encrypt both S3 buckets and EBS snapshots.
+			Your company policy mandates that your encryption keys be rotated every 3 months. What should you do?
+				Rotate the KMS CMK manually. Create a new KMS CMK and use Key Aliases to reference the new KMS CMK.
+				Keep the old KMS CMK so you can decrypt the old data
+			You have generated a public certificate using LetsEncrypt and uploaded it to the ACM so you can use and 
+			attach to an Application Load Balancer that forwards traffic to EC2 instances.
+			As this certificate is generated outside of AWS, it does not support the automatic renewal feature. 
+			How would you be notified 30 days before this certificate expires so you can manually generate a new one?
+				Configure EventBridge for Daily Expiration Events from ACM to invoke SNS notifications to your email
 			
+
+
+			 
+
+
+			
+
+				
+
+
+
+				
+
+
+
+
+
 
 
 
