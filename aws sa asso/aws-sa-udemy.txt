@@ -2887,18 +2887,275 @@ Notes:
 			How would you be notified 30 days before this certificate expires so you can manually generate a new one?
 				Configure EventBridge for Daily Expiration Events from ACM to invoke SNS notifications to your email
 			
+	Networking - VPC 
+		Private IP 
+			can only allow certain values 
+			10.0.0.0/8 in big networks 
+			172.16.0.0/12 aws default VPC in that range 
+			192.168.0.0/16 home networks 
+		All rest of the IP addresses on Internet are Public 
+		Default VPC 
+			all new AWS accounts have default VPC 
+			New EC2 instances are launched into the default VPC if no subnet is specified 
+			has internet connectivity and all EC2 instances inside it have public IPv4 addresses 
+			also get public and private IPv4 DNS names 
+		VPC 
+			can have max 5 per region 
+			Max CIDR per VPC is 5, each CIDR 
+				min size is /28 (16 IPs)
+				max size is /16 (65535 IPs)
+			VPC is private so only private IPv4 ranges are allowed 
+			VPC should not overlap with ur other networks
+		Subnet IPv4 
+			AWS reserves 5 IPs (first 4 and last 1) in each subnet 
+			cannot use reserved IPs 
+			ex:10.0.0.0/24 reserved IPs are 
+				network address 10.0.0.0
+				reserved by AWS for VPC router 10.0.0.1
+				reserved by AWS for mapping to Amazon-provided DNS 10.0.0.1
+				reserved by AWS for future use 10.0.0.1
+				AWS doesn't not support broadcast in VPC so it is reserved 10.0.0.255
+			if u need 29 IPs for EC2 instances 
+				can't choose /27 (32 IPs,32-5=27<29)
+				choose /26 (64 IPs,64-5=59>29)
+		Internet Gateway (IGW)
+			allows resources ex:EC2 in a VPC connect to internet 
+			scales horizontally and is highly available and redundant 
+			must be created separately from a VPC 
+			1 VPC can only attached to 1 IGW and vice versa 
+			*IGWs on their own do not allow Internet access 
+			route tables must be edited 
+		Bastion Hosts
+			to SSH into our private EC2 instances 
+			bastion is in public subnet which is then connected to all private subnets 
+			Bastion Host security group must allow inbound from internet on port 22 
+			from restricted CIDR (ex:public CIDR of ur corporation)
+			Security group of EC2 instances must allow security group of private IP of Bastion Host 
+		NAT Instance 
+			NAT - Network Address Translation 
+			allows EC2 Instances in private subnet to connect to Internet 
+			Must be launched in public subnet 
+			Must disable EC2 setting Source/destination check 
+			Must have Elastic IP attached to it 
+			Route Tables must be configured to route traffic from private subnets to NAT instance 
+			Pre-configured Amazon Linux AMI availbale 
+				reached end of standard support on 2020 
+			Not Highly available 
+			internet bandwidth depends on EC2 instance type 
+			must manage security groups & rules 
+				inbound 
+					allow http/https traffic coming from private subnet 
+					all ssh from home networks 
+				outbound 
+					allow http/https traffic to internet 
+		NAT Gateway 
+			AWS-managed NAT, high-bandwidth, high availability, no administration 
+			pay per hour usage and bandwidth
+			NATGW is created in specific AZ, uses Elastic IP 
+			can't be used by EC2 Instance in same subnet (only from other subnet)
+			Require Internet Gateway (private subnet=>NATGW=>IGW)
+			5Gbps of bandwidth with autoscaling upto 100Gbps 
+			no security groups to manage/required
+			resilient within single AZ 
+			must create multiple NAT gateways in multiple AZs for fault-tolerance 
+			there is no cross-AZ failover needed because if AZ goes down it doesn't need NAT 
+		Network Access Control List (NACL)
+			stateless
+			request is evaluated at NACL before going to security groups 
+			if request is comming from EC2, request is evaluated at security groups then NACL 
+			firewall which control traffic from and to 	subnets 
+			One NACL per subnet, new subnets are assigned the default NACL 
+			NACL Rule 
+				have number(1-32766),high precedence with low number 
+				last rule is an asterisk(*) and denies a request if no rule match 
+			newly created NACL will deny everything 
+			NACL are create way of blocking a specific IP address at subnet level 
+			Default NACL 
+				Accepts everything inbound/outbound with subnets it's associated with 
+			Ephemeral Ports 
+				for any two endpoints to connect, they must use ports 
+				Clients connect to defined port and expect a response on an Ephemeral port 
+			NACL with Ephemeral ports 
+			Security Groups vs NACLs 
+				Security Groups
+					instance level 
+					allow rules only 
+					stateful 
+					all rules are evaluated 
+					applies to instance when specified by someone
+				NACL 
+					subnet level 
+					support both allow and deny rules 
+					stateless
+					rule are evaluated in order (low to hight priority no), first match wins 
+					automatically applies to all EC2 Instances in subnet that its associated with 
+		VPC Peering 
+			privately connect two VPCs using AWS Network
+			must not have overlapping CIDRs
+			not transitive 
+			must update route tables in each VPC subnets to ensure EC2 instances can communicate 
+			within or across AWS accounts/region 
+			can reference a security group in a peered VPC (works across accounts - same region)
+		VPC Endpoints (AWS PrivateLink)
+			every AWS service is publically exposed (public url)
+			VPC endpoints (powered by AWS PrivateLink) allow u to connect AWS services using a private network
+			instead of public internet
+			redundant and scale horizontally 
+			removes the need of IGW,NATGW,... to access AWS Services 
+			In case of Issues 
+				check DNS setting resolution in ur VPC 
+				Check route tables 
+			Types 
+				Interface Endpoints 
+					powered by PrivateLink
+					provisions an ENI (private IP) as an entry point 
+					must attach a security group
+					supports most AWS services 
+					$ per hour + $ per GB of data processed 
+					preffered if access is required from on-premise (Site-Site VPN or Direct Connect)
+					a different VPC or different region
+				Gateway Endpoints 
+					provisions a gateway and must be used as target in route table 
+					doesn't use security groups 
+					supports both S3 and DynamoDB
+					Free
+		VPC Flow Logs 
+			capture information about IP traffic going into ur interfaces 
+				VPC flow Logs
+				subnet flow logs 
+				Elastic Network Interface (ENI) flow logs 
+			more & troubleshoot connectivity issues 
+			logs can go to S3, CloudWatch logs,and Kinesis Data firehose
+			captures network info from AWS managed interfaces too
+				ELS,RDS,ElastiCache,Redshift,workspaces,NATGW,Transit Gateway
 
+		AWS Site-to-Site VPN 
+			Virtual Private Gateway(VGW)
+				VPN concentrator on the AWS side of VPN connection 
+				VGW is created and attached to VPC from which u want to create site-to-side VPN 
+				can customize ASN (Autonomous System Number)
+			Customer Gateway
+				software app or physical device on customer side of VPN connection 
+			Customer Gateway Device(on-prem)
+				what IP to use 
+					public internet-routable Ip for ur customer gateway device 
+					if it's behind a NAT device that's enabled for NAT traversal (NAT-T) use
+					public ip of NAT device 
+			Enable route propagation for virtual private gateway in route table that is associated with ur subnets 
+			if needed to ping ur EC2 from on-prem, make sure to add ICMP protocol on inbound of security group 
+		AWS VPN CloudHub 
+			provide secure communication between multiple sites, if u have multiple VPN connections 
+			low-cost hub-and-spoke mode for primary or secondary network connectivity between different locations
+			to set it up,connect multiple VPN connections on same VGW, setup dynamic routing and configure route tables 
+		
+		Direct Connect 
+			provides dedicated private connection from a remote network to ur VPC 
+			dedicated connection must be setup between ur DC and AWD Direct Connect Location 
+			need to setup Virtual Private Gateway in ur VPC 
+			access public resources and private (EC2) on same connection
+			use case 
+				increase bandwidth throughput 
+				more consistent network experience
+				Hybrid Environments (on-prem + cloud)
+			supports both IPv4 and IPv6 
+			Direct Connect Gateway
+				if u want to setup direct connect to one or more VPC in many different regions (same account)
+				must use Direct Connect Gateway 
+			Connection Types 
+				Dedicated Connections 
+					1Gbps,10Gbps and 100 Gbps capacity 
+					physical ethernet port dedicated to a customer 
+					request made to AWS first the completed by AWS Direct Connect Partners 
+				Hosted Connection
+					50Mbps,500Mbps to 10Gbps 
+					connection requests are made via AWS Direct Connect Partners
+					capacity is added or removed on demand 
+					1,2,5,10 Gbps availabile at select AWS Direct Connect Partners
+				Lead times are after longer than 1 month to establish new connection 
+			Encryption 
+				Data in transit is not encrypted but private 
+				AWS Direct Connect + VPN provide IPsec-encrypted private connection 
+			Resiliency 
+				high Resiliency
+					one connection for multiple locations (one connection in each location)
+				max Resiliency 
+					separate connections terminating on separate devices in more than one location 
+					multiple location each having separate connections on separate devices 
+		Site-to-Site VPN as backup for Direct Connect, vice versa 
 
-			 
-
-
+		Transit Gateway 
+			for transitive peering between thousands of VPC and on-prem, hub-and-spoke(star) connection 
+			regional resource, can work cross region 
+			can share to cross-account using resource access manager (RAM)
+			can peer transit gateways across regions 
+			route tables 
+				limit which VPCs can talk to other VPCs 
+			works with Direct Connect Gateway and VPN connections 
+			*supports IP multicast (not supported by any other AWS service)
+			Site-to-Site VPN ECMP 
+				equal cost multi path(ECMP) routing
+				to allow forward a packet over multiple best path 
+				use case 
+					create multiple Site-to-Site VPN connections to increase bandwidth of ur connection with AWS 
+			can share Direct Connect to multiple accounts 
+		VPC Traffic Mirroring 
+			to capture and inspect network traffic in ur VPC 
+			route the traffic to security appliances u manage 
+			capture traffic 
+				from - ENIs 
+				to - ENI or Network Load Balancer 
+			capture all packet or of ur interest 
+			source and target can be in same or different VPC (VPC Peering)
+			use cases 
+				content inspection, threat monitoring 
+				troubleshooting
+		IPv6 for VPC 
+			provides 3.4x10^38 unique IPs 
+			every IP is public and Internet-routable (no private range)
+			IPv4 cannot be disabled for ur VPC 
+		Egress only Internet Gateway
+			used for IPv6 only
+			similar to NAT Gateway but for IPv6 
+			must update route tables 
+		Classic Link 
+			connect EC2-Classic EC2 instances privately to ur VPC 
+		for EC2 Use private IP instead of public IP for good savings and better network performance
+		AWS Network Firewall
+			protect entire VPC
+			from layer 3 to layer 7 protection 
+			any direction, u can inspect 
+				VPC to VPC 
+				outbound to internet 
+				inbound from internet 
+				to/from Direct Connect & Site-to-Site VPN 
+			internally it uses AWS Gateway Load Balancer 
+			rules can be centrally managed cross-account by AWS Firewall Manager to apply to many VPCs
+			supports 1000s of rules 
+				IP & Port 
+				protocol 
+				stateful domain list groups 
+				general pattern matching using regex 
+			Traffic Filtering 
+				allow,drop or alert for the traffic that matches the rules 
+			Active flow inspection to protect network threats with intrusion-prevention capabilities 
+		Quiz 	
+			You have attached an Internet Gateway to your VPC, but your EC2 instances still 
+			don't have access to the internet. What is NOT a possible issue?
+				The Security Group does not allow traffic in
+				Security groups are stateful and if traffic can go out, then it can go back in.
+			How can you capture information about IP traffic inside your VPCs?
+				Enable VPC Flow Logs 
+			A web application hosted on a fleet of EC2 instances managed by an Auto Scaling Group.
+			You are exposing this application through an Application Load Balancer. 
+			Both the EC2 instances and the ALB are deployed on a VPC with the following CIDR 192.168.0.0/18.
+			How do you configure the EC2 instances' security group to ensure only the ALB can access them on port 80
+				Add an Inbound rule with port 80 and ALB security group as source 
+				Referencing by security groups in rules is an extremely powerful rule
 			
 
-				
 
 
 
-				
 
 
 
@@ -2907,76 +3164,3 @@ Notes:
 
 
 
-			
-				
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				
-
-
-
-
-
-			
-
-
-
-
-
-
-
-
-
-
-
-
-			
-
-
-
-
-
-
-
-					 	 	
-
-
-					
-					
-					
-					
-					
-			
