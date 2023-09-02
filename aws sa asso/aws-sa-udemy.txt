@@ -3151,16 +3151,295 @@ Notes:
 			How do you configure the EC2 instances' security group to ensure only the ALB can access them on port 80
 				Add an Inbound rule with port 80 and ALB security group as source 
 				Referencing by security groups in rules is an extremely powerful rule
-			
+	
+	Disaster Recovery 
+		RPO (Recovery Point objective)
+		RTO (Recovery Time objective)
+		Strategies
+			Backup & Restore 
+				High RPO
+				High RTO 
+			Pilot Light 
+				small version of app is always running 
+				useful for critical core 
+				low RTO 
+				low RPO 
+			Warm Standby 
+				full system is up and running, but at minimum size 
+			Multi Site/Hot Site 
+				Very low RTO (minutes or seconds)
+				very expensive 
+				full production scale is running AWS and On-premise 
+		Backup 
+			EBS Snapshots, RDS automated backups/Snapshots 
+			Regular pushes to S3/S3 IA/Glacier, Life cycle policy, cross region replication
+			from on-premise:Snowball or Storage Gateway 
+		High Availability
+			Use Route 53 to migrate DNS over from Region to Region 
+			RDS Multi-AZ, ElastiCache Multi-AZ, EFS S3 
+			Site-to-Site VPN as a recovery for Direct Connect 
+		Replication 
+			RDS Replication(Cross Region),AWS Aurora + Global databases
+			Data replication from on-prem to RDS 
+			Storage Gateway 
+		Automation 
+			CloudFormation/Elastic Beanstalk to recreate a wholenew environment
+			Recover/Reboot EC2 instances with CloudWatch if alarm fails 
+			AWS lambda functions for customised automations 
+		Chaos 
+			Netflix has simian-army randomly terminating EC2 
+	Migrations 
+		Database Migration Service (DMS)
+			quickly and securely migrate databases to AWS, resilient, self healing
+			source database remains availabile during migration 
+			supports 
+				Homogeneous migrations 
+					oracle to oracle etc 
+				Heterogeneous migrations
+					Microsoft SQL Server to Aurora
+			Continuous Data Replication using CDC (Change Data Capture) 
+			must create EC2 instance to perform replication tasks 
+			AWS Schema Conversion Tool (SCT)
+				convert ur database schema from one engine to another 
+				no need to use SCT if u are migrating the same DB engine 
+			Multi-AZ Deployment
+				DMS provisions and maintains a synchronously stand replica in a different AZ 
+				Advantages 
+					provides data redundency 
+					Eliminates I/O freezes
+					Minimum latency spikes 
+		RDS & Aurora MySQL Migrations 
+			RDS MySQL to Aurora 
+				take RDS MySQL snapshot and restore as MySQL Aurora DB 
+				Or 
+				create Aurora Read replica from RDS MySQL 
+				when it's completed promote it as it's own DB cluster 
+				this takes time and cost 
+			External MySQL to Aurora MySQL
+				use Percona XtraBackup utility to create a file backup in Amazon S3 
+				Create Aurora MySQL DB from Amazon S3 
+				Or 
+				create Aurora MySQL DB 
+				use mysqldump utility to migrate MySQL into Aurora 
+				slower than S3 method
+			Use DMS if both databases are up and running
+		RDS & Aurora PostgreSQL Migrations 
+			RDS PostgreSQL to Aurora PostgreSQL
+				take RDS PostgreSQL snapshot and restore as PostgreSQL Aurora DB 
+				Or 
+				create Aurora Read replica from RDS PostgreSQL 
+				when it's completed promote it as it's own DB cluster 
+				this takes time and cost 
+			External PostgreSQL to Aurora PostgreSQL
+				create a backup and put it in Amazon S3 
+				Import it using aws_s3 Aurora extension
+			Use DMS if both databases are up and running
+		
+		On-premise strategy with AWS 
+			can download Amazon Linux 2 AMI as a VM(.iso format)
+				use it in VMWare,VirtualBox, Microsoft Hyper-V 
+			VM Import/Export
+				Migrate existing apps to EC2 
+				create DR repository strategy for on-premise VMs 
+				Can export back VMs from EC2 to on-premise 
+			AWS Application Discovery Service 
+				Gather info about ur on-premise servers to plan a migration 
+				server untilization and dependency mappings 
+				Track with AWS Migration Hub 
+			AWS Database Migration Service (DMS)
+				replicate on-prem=>AWS, AWS=>AWS, AWS=>on-prem 
+			AWS Server Migration Service (SMS)
+				Incremental replication of on-premise live servers to AWS 
+		AWS Backup 
+			fully managed service 
+			centrally manage and automate backups across AWS Services
+			supported services 
+				EC2/EBS 
+				S3
+				RDS/Aurora/DynamoDB
+				DocumentDB/Neptune 
+				EFS/FSx(Lustre & Windows File System)
+				Storage Gateway(volume gateway)
+			supports cross-region backups 
+			supports cross-account backups 
+			supports PITR(point-in-time recovery) for supported services 
+			On-demand and Scheduled Backups 
+			Tag-based backup policies
+			create backup policies known as Backup Plans 
+			Backup Plans
+				Backup frequency 
+				Backup window 
+				Transition to Cold Storage 
+				Retention Period 
+			Backup Vault Lock 
+				Enforce WORM (Write Once Read Many) state for all backups u store in Vault 
+				even root user cannot delete backups when enabled 
+		AWS Application Discovery Service 
+			Plan migration projects by gathering info about on-premise data centers 
+			Server uitlization data and dependency mapping are important for migrations 
+			Agentless Discovery (AWS Agentless Discovery Connector)
+				VM inventory, configuration and performance history such as CPU,memory and disk usage 
+			Agent based Discovery (AWS Application Discovery Agent)
+				System configuration,system performance,running processes, and details of network connections between systems 
+			Resulting Data can be viewed within AWS Migration Hub 
+		AWS Application Migration Service (MGN)
+			Lift and shift 
+			converts ur physical virtual and cloud based servers to run natively in AWS 
+			Supports wide range of platforms,OS and databases 
+			Minimum downtime,reduced costs 
+		VMWare cloud on AWS 
+			extend on-prem VMWare cloud to AWS 
+			use case 
+				migrate VMWare vSphere workloads to AWS 
+				run workloads across VMWare vSphere-based private, public and hybrid cloud Environments
+				have a disaster recovery strategy 
+		Quiz 
+			AWS DataSync supports the following locations, EXCEPT
+				Amazon EBS 
+	Solution Architectures
+		Compute and Networking
+			EC2 Enhanced Networking(SR-IOV)
+				higher bandwidth, higher PPS (packet per sec),low latency 
+				option1: Elastic Network Adapter(ENA) upto 100Gbps
+				option2: Intel 82599 VF upto 10Gbps - Legacy 
+			Elastic Fabric Adapter (EFA)
+				Improved ENA for High Performance Computing(HPC) 
+				only works for Linux 
+				great for inter-node communications,tightly coupled workloads
+				Leverages Message Passing Interface(MPI) standard
+				Bypasses underlying Linux OS to provide low-latency,reliable transport 
+		Automation and Orchestration 
+			AWS Batch 
+				supports multi-node parallel jobs, which enables u to run single jobs that span multiple EC2 instances 
+				easily schedule jobs and launch EC2 intances 
+			AWS ParallelCluster 
+				open-source cluster management to deploy HPC on AWS 
+				configure with TEXT files 
+				Automate creation of VPC,subnet, cluster type and instance types 
+				can enable Elastic Fabric Adapter (EFA) on cluster for improved network performance
+			Quiz 
+				You are working on a Serverless application where you want to process objects uploaded to an S3 bucket. 
+				You have configured S3 Events on your S3 bucket to invoke a Lambda function every time an object has 
+				been uploaded. You want to ensure that events that can't be processed are sent to a Dead Letter Queue (DLQ) 
+				for further processing. Which AWS service should you use to set up the DLQ?
+					Lambda function
+	Other Services 
+		CloudFormation
+			declarative way of outlining ur AWS infrastructure
+			Infrastructure as code 
+			Cost 
+				East resources within stack is tagged with an identifier so can easily see how much a stack costs 
+				can estimate cost of resources using CloudFormation Template 
+				Savings strategy 
+					can automate deletion of Templates at any time and recreate at specific time u want 
+			Productivity 
+				automatic generation of Diagram for ur templates 
+			Don't re-invent the wheel 
+				leverage existing templates on web 
+				leverage Documentation 
+			CloudFormation Stack Designer 
+				graphical view of stack resources and their relations   
 
-
-
-
-
-
-
-
-
-
-
-
+		Amazon Simple Email Service (SES)
+			send emails globally at scale 
+			allow inbound/outbound emails 
+			dashboard, performance insights, anti-spam feedback 
+			supports DoaminKeys identified Mail (DKIM) and Sender Policy framework(SPF)
+			Flexible IP deployment: shared, dedicated and customer owned IPs
+			send emails using ur apps 
+				AWS Console 
+				APIs
+				SMTP 
+		Amazon Pinpoint 
+			Scalable 2 way (outbound/inbound) marketing communication service 
+			support email,SMS,push,voice and in-app messaging 
+			can segment and personalize messages with right content to customers 
+			Use case 
+				run campiagns by sending marketing bulk transactional SMS messages 
+			vs Amazon SNS and Amazon SES 
+				In SNS and SES, u manage each message's audience, content and delivery schedule 
+				In Pinpoint, u create message templates,delivery schedules, highly-targeted segments and full campaigns 
+		Systems Manager 
+			SSM Session Manager 
+				allows to start a secure shell on ur EC2 and on-premise servers 
+				No SSH access,bastion hosts or SSH keys needed 
+				No port 22 needed (better security)
+				supports Linux,MacOS and windows 
+				Send session log data to S3 or CloudWatch Logs 
+			Run Command 
+				execute a script or a command 
+				run command across multiple instances 
+				No need for SSH 
+				send notifications to SNS about command status 
+				can be invoked using EventBridge
+			Patch Manager 
+				Automate patching managed instances 
+				OS updates, applications updates, security updates 
+				Supports EC2 and on-premise servers
+				support linux,macos,windows 
+				Path on-demand or on a schedule using Maintenance Windows
+				Scan instances and generate patch compliance report 
+			Maintenance Windows 
+				Schedule when to perform operation on instances 
+				schedule,duration,set of registered instances and set of registered tasks 
+			Automation 
+				simplifies common maintenance  and deployment tasks of EC2 instances and other AWS resources
+				ex:restart instances, create AMI,EBS snapshots 
+				Automation Runbook 
+					SSM documents to define actions performed on EC2 instances or AWS resources 
+				Can be triggered using 
+					manual 
+						Console,CLI or SDK 
+					EventBridge
+					Maintenance Windows 
+					AWS Config for rules remediations 
+		Cost Explorer 
+			Visualize,understand and manage ur AWS costs and usage overtime 
+			create custom reports 
+			cost saving plan 
+			Forecast usage 
+		Amazon Elastic Transcoder 
+			convert media files in S3 into media files in formats required by consumer playback devices 
+		AWS Batch 
+			batch processing at any scale 
+			dynamically launch EC2 instances or Spot Instances 
+			provisions right amount of compute/memory
+			submit or schedule batch jobs 
+			defined as Docker images and run on ECS
+		Amazon AppFlow 
+			securely transfer data between SaaS apps and AWS 
+			Source 
+				salesforce,SAP,Zendesk,Slack and ServiceNow 
+			Destinations 	
+				S3,Redshift or non-AWS such as SnowFlake and salesforce
+			frequency
+				on schedule,in response to events or on-demand 
+			Data transformations
+				filtering and validation 
+			Encrypted 
+				over public internet or privately over AWS PrivateLink 
+		AWS Amplify 
+			set of tools and services that helps u develop and deploy scalable full stack web and mobile apps
+			Authentication, Storage, API, CI/CD, PubSub, Analytics, AI/ML Predictions, Monitoring
+			Connect source code from GitHub,AWS CodeCommit,BitBucket,GitLab or upload Directly 
+	
+	Trusted Advisor 
+		provide recommendations on 5 categories 
+			Cost optimization 
+			Performance
+			Security
+			Fault Tolerance 
+			Service Limits 
+		Support Plans
+			Basic & Developer Support Plan 
+				S3 Bucket Permissions 
+				Security Groups 
+				IAM use 
+				MFA on root account 
+				EBS public snapshots 
+				RDS public snapshots 
+				Service limits 
+			Business & Enterprise Support Plan 
+				full checks available on 5 categories 
+				can set CloudWatch alarms when reaching limits 
+				Programatic access using AWS support API 
