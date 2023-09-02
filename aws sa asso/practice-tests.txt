@@ -1207,7 +1207,26 @@ Quiz
                 You need to cache objects.
             Redis does not support multi-threading
     
+    A company is storing an access key (access key ID and secret access key) in a text file on a custom AMI. 
+    The company uses the access key to access DynamoDB tables from instances created from the AMI. 
+    The security team has mandated a more secure solution
+        Create an IAM role with permissions to access the table, and launch all instances with the new role.
+
+    A Solutions Architect is designing a critical business application with a relational database that runs 
+    on an EC2 instance. It requires a single EBS volume that can support up to 16,000 IOPS
+        EBS Provisioned IOPS SSD
+            provides sustained performance for mission-critical low-latency workloads. 
+            EBS General Purpose SSD can provide bursts of performance up to 3,000 IOPS and have a 
+            maximum baseline performance of 10,000 IOPS for volume sizes greater than 3.3 TB. 
+            The 2 HDD options are lower cost, high throughput volumes
     
+    An organization is building an Amazon Redshift cluster in their shared services VPC. The cluster will 
+    host sensitive data. How can the organization control which networks can access the cluster?
+        Define a cluster security group for the cluster that allows access from the allowed networks. 
+    
+    
+    
+
 
 
 
