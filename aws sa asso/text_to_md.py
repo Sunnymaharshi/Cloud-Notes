@@ -17,7 +17,7 @@ for filename in glob.glob('*.txt'):
                     hashes = 1
                 md_line = (hashes)*'#' + ' ' + (tabs*8)*'&nbsp;' + text.strip() + "\n"
                 md_text += md_line
-        md_file = filename.split('.')[0]+'.md'
+        md_file = 'README.md'
         
 
         if not os.path.isdir(os.path.join(os.getcwd(), filename.split('.')[0])):
