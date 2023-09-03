@@ -19,7 +19,7 @@ for filename in glob.glob('*.txt'):
                 by_space = len(re.findall(r'\s\s\s\s',text))
                 by_tab = len(re.findall(r'\t',text))
                 tabs = by_space if by_space>by_tab else by_tab
-                size = 7-tabs
+                size = 7-tabs*2
                 md_line = text.strip() 
                 md_line = change_font(md_line,size,tabs)
                 md_text += md_line + "<br>"
