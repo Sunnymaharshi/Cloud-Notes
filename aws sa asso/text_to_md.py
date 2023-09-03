@@ -1,7 +1,7 @@
 import os, glob,re
 def change_font(text,size=3,tabs=1):
     enclose = ''
-    if size>=3:
+    if size>=5:
         enclose = "**"
     if size<3:
         size = 3
