@@ -1,11 +1,11 @@
 import os, glob,re
-def change_font(text,size=3):
+def change_font(text,size=3,tabs=1):
     enclose = ''
     if size>=3:
         enclose = "**"
     if size<3:
         size = 3
-    return f"<font size='{str(size)}'>{enclose+text+enclose}</font>".replace('\"','**')
+    return f"<font size='{str(size)}'>{(tabs*8)*'&nbsp;' + enclose+text+enclose}</font>".replace('\"','**')
 for filename in glob.glob('*.txt'):
     with open(os.path.join(os.getcwd(), filename), 'r') as f:
         md_text = ""
@@ -20,8 +20,8 @@ for filename in glob.glob('*.txt'):
                 by_tab = len(re.findall(r'\t',text))
                 tabs = by_space if by_space>by_tab else by_tab
                 size = 7-tabs
-                md_line = (tabs*8)*'&nbsp;' + text.strip() 
-                md_line = change_font(md_line,size)
+                md_line = text.strip() 
+                md_line = change_font(md_line,size,tabs)
                 md_text += md_line + "<br>"
         md_file = 'README.md'
         
