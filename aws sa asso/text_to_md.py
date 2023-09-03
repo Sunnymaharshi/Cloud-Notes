@@ -3,8 +3,8 @@ def change_font(text,size=3,tabs=1):
     enclose = ''
     # if size>=5:
     #     enclose = "**"
-    if size<3:
-        size = 3
+    if size<4:
+        size = 4
     return f"<font size='{str(size)}'>{(tabs*8)*'&nbsp;' + enclose+text+enclose}</font>"
 for filename in glob.glob('*.txt'):
     with open(os.path.join(os.getcwd(), filename), 'r') as f:
