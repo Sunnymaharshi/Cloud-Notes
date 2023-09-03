@@ -20,9 +20,9 @@ for filename in glob.glob('*.txt'):
                 by_tab = len(re.findall(r'\t',text))
                 tabs = by_space if by_space>by_tab else by_tab
                 size = 7-tabs
-                md_line = (tabs*8)*'&nbsp;' + text.strip() + "\n"
+                md_line = (tabs*8)*'&nbsp;' + text.strip() 
                 md_line = change_font(md_line,size)
-                md_text += md_line
+                md_text += md_line + "\n"
         md_file = 'README.md'
         
 
