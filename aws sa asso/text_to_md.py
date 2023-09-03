@@ -1,8 +1,8 @@
 import os, glob,re
 def change_font(text,size=3,tabs=1):
     enclose = ''
-    if size>=5:
-        enclose = "**"
+    # if size>=5:
+    #     enclose = "**"
     if size<3:
         size = 3
     return f"<font size='{str(size)}'>{(tabs*8)*'&nbsp;' + enclose+text+enclose}</font>".replace('\"','**')
