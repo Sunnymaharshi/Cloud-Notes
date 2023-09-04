@@ -1224,45 +1224,44 @@ Quiz
     host sensitive data. How can the organization control which networks can access the cluster?
         Define a cluster security group for the cluster that allows access from the allowed networks. 
     
+AWS partner readiness 
+    A company is transitioning its Amazon EC2 MariaDB to Amazon RDS. database requirements are at least 40GiB 
+    amd 1000 IOPS.most cost effective storage 
+        334GiB of general purpose SSD storage for RDS instance 
+            3 IOPS per GiB 
+            334*3 = 1002 IOPS 
     
+    A large international company has a management account in AWS Organization and over 50 individual accounts for each 
+    country they operate in. Each of the country accounts has at least 4 VPCs set up for divisional operations, there is 
+    high amount of trust across accounts and communication among all of VPCs should be allowed. each of individual 
+    VPCs throughout entire global organization will need to access an account and a VPC that provide shared services
+    to all other accounts how can member accounts access the shared services VPCs with LEAST operational overhead?
+        create a Network Load Balancer across AZs in shared services VPCs. Create service consumer roles in IAM 
+        and set endpoint connection acceptance to automatically accept. create consumer endpoints in each division VPC 
+        and point to Network Load Balancer
+        private link is more appropriate than VPC peering
+        VPC peering is lot of work since there are many VPCs 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    What is required to achieve gigabit network throughput on EC2? u already selected 10GB instances with enhanced networking 
+    and ur workload is already network bound, but u r not seeing 10gigabit speed 
+        use a placement group for ur instances so instances are physically near each other in same AZ 
     
+    for Auto Scaling group, scaling should be done by specifying the scaling metric and threshold values for CloudWatch alarms 
+        Step Scaling 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    online ordering system using Auto Scaling Group of EC2 instances deployed across multiple AZs with Application load balancer 
+    to better handling various digital devices u r planning to implement a new routing system where requests which have url of 
+    server/api/android are forwarded to one specific target group name "android target group" requests with server/api/ios to 
+    "ios-target-group"
+        path conditions to define rules that forwards requests based on url in request 
+        ALB has this feature 
+    
+    NGO wants to implement a IOT solution that capture the images,videos of various species in forests across the countries 
+    data captured are preprocessed for tagging and compression before uploaded to AWS. IOT devices uses unreliable internet connection
+        upload data using DataSync Services when internet is available
+    
+    You are in charge of provisioning access to users in online retail company u work for. u noticed that admin users who have access 
+    to EC2 instances using their IAM user names are moving between different projects and hence it is getting difficult to 
+    manage access. best way to allow and deny access when users move between projects 
+        create a new role which will be assumed by IAM user. attach a policy allowing access to modify Amazon EC2. remove 
+        IAM role from Admin user once they move out 
