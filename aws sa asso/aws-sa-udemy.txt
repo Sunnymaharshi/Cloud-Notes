@@ -1564,7 +1564,7 @@ Notes:
 						upto 1MB
 				Retention 1-365 days
 				ability to reprocess (replay) Data
-				Once data is inserted in Kinesis, it can be deleted (Immutable)
+				Once data is inserted in Kinesis, it can't be deleted (Immutable)
 				Data that shares the same partition goes to same shard
 				producers 
 					AWS SDK, Kinesis producer Library(KPL), Kinesis Agent 

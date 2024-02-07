@@ -1,0 +1,86 @@
+Notes 
+    Domain 
+        MX Records
+            for incoming and outgoing mails 
+        SPF (Sender Policy Framework)
+            can have only one record 
+            can add trusted domain who can send mails to our domain 
+        DKIM Records 
+            public key for domain 
+            check public key and private key 
+        DMARC Policies 
+            Domain based Message Authentication and reporting and conformance 
+    Google Workspace Editions
+        Includes in all editions
+            Gmail and Calendar
+            Groups for Business 
+            Chat and chat spaces 
+            Drive storage and Docs editors
+            Video Conferencing with Meet 
+            Directory Management 
+            Sites 
+            Tasks 
+            Additional Google Services 
+        Business Starter 
+            Includes all the above 
+            1-300 users
+            Email,document, photo storage per user 
+                30GB
+        Business Standard 
+            + Google Cloud Search for internal search and assist 
+            across google services only 
+            1-300 users
+            Email,document, photo storage per user 
+                2TB pooled
+        Business Plus 
+            inlcludes all the above + Business Standard
+            + google Vault for eDiscovery and information governance 
+            1-300 users
+            Email,document, photo storage per user 
+                5TB pooled
+        99.9% uptime,24/7 phone support in all editions 
+    
+    Frontline edition
+        Collaboration tools for unlimited users with 2GB per user 
+    Enterprise
+        all includes 
+            Gmail and Calendar
+            Groups for Business 
+            Chat and chat spaces 
+            Drive storage and Docs editors
+            Video Conferencing with Meet 
+            Directory Management 
+            Sites 
+            Tasks 
+            Additional Google Services
+            google Vault for eDiscovery and information governance 
+        Enterprise Essentials 
+            Inlcudes all above
+            + Google Cloud Search for internal search and assist 
+                across google services only 
+            Unlimited users
+            Email,document, photo storage per user 
+                1TB
+        Enterprise Standard 
+            Inlcudes all above
+            + Google Cloud Search for internal search and assist 
+                across google services only 
+            Unlimited users
+            Email,document, photo storage per user 
+                As much as u want
+        Enterprise Plus 
+            Inlcudes all above
+            + Google Cloud Search for internal search and assist 
+                across google services and third party services
+            + Index third party data using Cloud Search 
+            + AppSheet Core 
+            Unlimited users
+            Email,document, photo storage per user 
+                As much as u want
+
+
+
+
+
+
+
