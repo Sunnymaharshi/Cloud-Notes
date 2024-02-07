@@ -1,2 +1,186 @@
 Notes:
-    
+    IAM
+        Users
+            long term credentials
+        Groups
+        Roles
+            short term credentials
+            use STS (Security Token Service)
+            EC2 Instance roles
+                uses EC2 metadata service
+                one role at a time per Instance
+            Service Roles 
+                API Gateway
+                Code Deploy etc
+            Cross Account Roles 
+        Policies
+            JSON doc
+                Effect(Allow) 
+                Action(Attach volume) 
+                Resource(arn:aws:ec2:*:*:instance/*)
+                Conditions
+                Policy variables 
+            DENY >>> Allow
+            if you want to explicity allow few, use NotAction instead of DENY.
+            IAM Access Advisor 
+                see permissions granted and when last accessed 
+            IAM Access Analyzer 
+                analyze resources that are shared with external entity 
+            Types
+                AWS Managed
+                Customer Managed
+                Inline policies 
+        Resource Based Policies
+            S3 Bucket
+            SQS Queues etc
+        IAM Roles vs Resource Based Policies
+            When u(user,application or service) assume a role, u giveup ur original permissions and 
+            take permissions assigned to the role 
+            When using a resource based policy, the principal doesn't have to giveup any permissions
+        IAM Permission Boundaries
+            supported for users and roles (not groups)
+            allows u to set max permissions an IAM entity can get 
+        IAM Access Analyzer
+            to find which resources are shared externally
+            define Zone of Trust (AWS Acc or AWS Org)
+            Access outside zone of trust => findings 
+            Policy Validation 
+                grammar and best practices 
+                security warningg, errors and suggestions 
+                actionable recommendations 
+            Policy Generation 
+                generates policy based on access activity
+                CloudTrail logs is reviewed to generate policy with fine-grained permissions and 
+                appropriate actions and services 
+                reviews CloudTrail logs upto 90 days 
+        STS (Security Token Service)
+            to assume a role 
+            define IAM Role within ur acc or cross-acc 
+            define which principals can access this Role 
+            Use STS to retrieve credentials and 
+            impersonate the IAM Role u have access to (AssumeRole API)            
+            temporary credentials can be valid between 15min to 12hrs
+            can revoke active sessions and credentials for a role by adding policy 
+            using a time statement - AWSRevokeOlderSessions 
+            For granting access to 3rd party 
+                3rd party AWS Acc ID 
+                An External ID (secret btw u and 3rd party)
+                    to uniquely associate the role btw u and 3rd party
+                    must be provided when difining the trust and when assuming the role 
+                    must be choosen by 3rd party
+            Session Tags 
+                tags that u pass when u assume a role 
+                to have condition in policy 
+            AssumeRole API
+                access a role within ur account or cross-account 
+            AssumeRoleWithSAML API 
+                return credentials for user logged with SAML 
+            AssumeRoleWithWebIdentity API 
+                return credentials for user logged with IdP
+                ex: Amazon Congnito, login with amazon, facebook, goolge or any OpenID Connect 
+                AWS recommends to use Cognito Instead
+            GetSessionToken API 
+                for MFA, from a user or AWS account root user 
+            GetFederationToken API 
+                obtain temporary credentials for fred user, 
+                usually a proxy app that give the creds to distributed app inside a corporate network 
+        Identity Federation 
+            give users outside of AWS permissions to access AWS resources in ur account 
+            from Identity Providers
+                SAML 2.0 
+                Custom Identity Broker 
+                Web Identity Federation with(out) AWS Cognito
+                Single Sign-On (SSO)
+            SAML 2.0 Federation
+                Security Assertion Markup language 2.0 
+                supports integration with Microsoft Active Directory Federations Services (ADFS)
+                or any SAML 2.0 - compatible IdPs with AWS 
+                Access to AWS Console, CLI and AWS API 
+                    using temporary credentials
+                    need to setup trust btw AWS IAM and SAML 2.0 Identity provider (both ways)
+                uses STS API (AssumeRoleWithSAML API)
+                old way, Amazon SSO Federation is new managed and simpler way
+            Custom Identity Broker Application
+                use only if Identity provider is not compatible with SAML 2.0
+                Identity Broker must define appropriate IAM Role 
+                use STS API (AssumeRole or GetFederationToken)
+            Web Identity Federation
+                Without Cognito 
+                    3rd party Identity provider 
+                    ex: Amazon, google, facebook etc 
+                With Cognito 
+                    create IAM Roles using Cognito with least privilege needed 
+                    build trust between OIDC IdP and AWS 
+                    3rd party <=> Cognito <=> STS 
+                    supports anonymous users 
+                    supports MFA 
+                    data synchronization 
+        ADFS (Active Directory Federation Services)
+            SSO accross applications
+            SAML accross 3rd party 
+        AWS Directory Services 
+            AWS Managed Microsoft AD 
+                create ur own AD in AWS 
+                manage users locally 
+                supports MFA 
+                establish trust connections with on-prem AD (if u have)
+                    must establish Direct Connect (DX) or VPN connection
+                    three kinds of forest trust 
+                        aws=>on-prem
+                        on-prem=>AWS 
+                        aws<=>on-prem 
+                    forest trust is different than synchronization (replication is not supported)
+                if u want replication
+                    create replica of ur AD in EC2 
+                    establish trust btw AWS Managed Microsoft AD and EC2                     
+            AD Connector 
+                Directory Gateway (proxy) to redirect to on-prem AD 
+                supports MFA 
+                users are managed only on on-prem AD 
+                no caching capability 
+                no trust setup 
+                must have VPN or Direct Connect (DX)   
+                doesn't work with SQL Server, doesn;t do seamless joining, can't share directory             
+            Simple AD 
+                AD-compatible managed directory on AWS 
+                cannot be joined with on-prem AD 
+                supports joining EC2 instances, manage users and groups 
+                doesn't support MFA, RDS, SQL Server, AWS SSO 
+                small:500,large:5000 users 
+                no trust relationship 
+        AWS Organizations 
+            OrganizationAccountAccessRole 
+                Automatically added to all new member accounts created with AWS Organizations
+                grants full admin permissions in the member account to management account
+                used to perform admin tasks in member accounts 
+                can be assumed by IAM users in Management account 
+                must create manually if you invite an existing member account 
+            Feature Modes
+                Consolidated billing features 
+                    single payment method
+                    pricing benefits from aggregated usage 
+                All Features (Default):
+                    includes consolidated billing features and SCP (Service Control Policies)
+                    Invited accounts must approve enabling all features 
+                    can apply SCP to prevent member accounts from leaving the org 
+                    can't go back to Consolidated Billing Features only 
+            Reserved Instances 
+                for billing purposes, consolidated billing feature treats all accounts in org as one account 
+                payer account (management account) of an org can turn off Reserved Instance discount and Savings Plans
+                discount sharing for any accounts in that org including the payer account.
+            Moving Accounts 
+                moving to new org 
+                remove the member account from old org 
+                send an invite to member account from new org 
+                accept invite to new org from member account
+                
+
+
+
+
+
+
+
+
+        
+
