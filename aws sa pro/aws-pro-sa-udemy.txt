@@ -173,7 +173,138 @@ Notes:
                 remove the member account from old org 
                 send an invite to member account from new org 
                 accept invite to new org from member account
+            Service Control Policies (SCP)
+                define allowlist and blocklist IAM actions 
+                Applied at Org Unit(OU) or Account level 
+                SCP doesn't apply to Management Account
+                SCP applied to all users and roles in the account, including Root user 
+                SCP doesn't affect Service-linked roles
+                    service-linked roles enable other AWS Services to integrate with AWS Organizations
+                    can't be restricted by SCPs 
+                Must have explicit Allow (does not allow anything by Default)
+            AI Services Opt-out Policies
+                Some AI services may use ur content for continuous improvement of Amazon AI/ML services 
+                create an Opt-out policy that enforces this setting accross all member accounts and AWS regions 
+                can opt-out all AI services or selected services 
+            Backup Policies 
+                to create backup plans that define how to backup AWS resources
+                gives granular control over backing up ur resources (ex:backup frequency, time window, backup region)
+                can be attached to Organization Root, Specific OU or individual member account
+                Immutable backup plans, appear in member accounts view only
+        IAM Identity Center 
+            successor to AWS Single Sign-On (SSO)
+            AWS accounts in AWS Org
+            Business cloud applications (Salesforce,Microsoft 365)
+            SAML 2.0 enabled applications
+            EC2 instances
+            Identity Providers 
+                Built-in Identity store in Identity Center 
+                3rd party: Active Directory,OneLogin etc
+            Fine-grained permissions and Assignments 
+                multi-account permissions, manage access across AWS accounts in your AWS Org 
+                Permission Sets 
+                    a collection of one or more IAM Policies assigned to users and groups to define AWS Access
+                Application Assignments
+                    SSO access to many SAML 2.0 enabled applications 
+                    provide required urls, certificates and metadata 
+                Attribute Based Access Control (ABAC)
+                    Fine grained permissions based on users attributes stored in IAM Identity Center Identity Store 
+                    define permissions once, then modify AWS access by changing attributes 
+        AWS Control Tower
+            easy way to setup and govern a secure and compliant multi-account AWS environment based on Best Practices 
+            benefits
+                automate setup of ur environment in a few clicks
+                automate ongoing policy management using gaurdrails 
+                detect policy violations and remediate them 
+                monitor compliance through interactive dashboards 
+            runs on Top of AWS Orgs 
+                Automatically setups AWS Orgs to organize accounts and implement SCPs
+            Account Factory 
+                automates account provisioning and deployments 
+                enables u to create pre-approved baselines and configuration options for AWS accounts in ur Org 
+                uses AWS Catalog to provision new AWS Accounts 
+            Guardrail
+                Detect and remediate policy violations
+                Preventive 
+                    using SCPs 
+                    ex: Disallow creation of Access Key for root user
+                Detective 
+                    using AWS Config 
+                    ex: Detect whether MFA is enabled for Root user 
+                Levels 
+                    Mandatory 
+                        Automatically enabled and enforced by Control Tower 
+                        ex: disallow public read access to log Archive account 
+                    Strongly Recommended 
+                        Based on AWS best practices(optional)
+                        ex:enable encryption for EBS volumes attached to EC2 
+                    Elective 
+                        commonly used by enterprises (optional)
+                        ex:disallow delete action without MFA in S3 buckets 
+        AWS Resource Access Manager 
+            share AWS resources that u own with other AWS accounts
+            share with any account or with ur Org 
+            Avoid resource duplication 
+            VPC Subnets 
+                allow to launch all resources in same Subnets 
+                must be from same AWS Org 
+                cannot share security groups and Default VPC 
+            AWS Transit Gateway 
+            Route 53 (Resolver Rules, DNS Firewall Rule Groups)
+            Licence Manager configurations
+            and Other AWS resources
+    Security 
+        CloudTrail 
+            provides governance, compliance and audit for your AWS Account
+            enabled by Default
+            get history of events/API calls made within AWS Account
+            can put logs into CloudWatch logs or S3 
+            A Trail can be applied to all regions(default) or single region 
+            Events Types
+                Management Events 
+                    operations that are performed on resources in ur AWS Acc 
+                    by default logged 
+                    can separate read events from write events
+                Data Events
+                    by default not logged 
+                    ex:S3 object-level activity, AWS Lambda function execution activity (API Invoke)
+            CloudTrail Insights 
+                enable CloudTrail Insights to detect unusual activity in ur account
+                it analyzes normal management events to create baseline
+                and continuously analyzes write events to detect unusual patterns 
+            CloudTrail Events Retention 
+                events are stored for 90 days in CloudTrail
+                to keep events beyond this period, log them to S3.
+            Organizational Trail 
+                it is created in management account  
+                any events happened in all member accounts are logged
+        Key Management Service (KMS)
+            Key Types 
+                Symmetric (AES-256 keys)
+                    single encryption key that is used to encrypt and decrypt
+                    all AWS Services use Symmetric KMS Keys 
+                    u never get access to KMS key unencrypted (must call KMS API to use)
+                Asymmetric (RSA & ECC key pairs)
+                    Public (Encrypt) and Private (Decrypt) pair
+                    used for Sign/Verify operations
+                    can download public key but u can't access Private key unencrypted
+                    usecase:encryption outside AWS by users who can't call KMS API 
+            Types of KMS Keys 
                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
