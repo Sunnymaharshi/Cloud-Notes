@@ -290,7 +290,154 @@ Notes:
                     can download public key but u can't access Private key unencrypted
                     usecase:encryption outside AWS by users who can't call KMS API 
             Types of KMS Keys 
-                
+                Customer Managed Keys 
+                    create, manage and use, can enable or disable
+                    can have rotation policy 
+                    can add key policy(resource policy) & audit in CloudTrail
+                AWS Managed Keys 
+                    used by AWS service (s3,ebs,redshift etc)
+                    managed by AWS, auto rotates every year 
+                    view key policy and audit in CloudTrail
+                AWS Owned Keys 
+                    created and managed by AWS, used by some AWS services to protect ur resources
+                    used in multiple AWS accounts, they are not in ur AWS account
+                    u can't view, use, track or audit 
+            KMS Key Material Origin 
+                Identifies source of the key material in KMS Key 
+                can't be changed after creation
+                KMS (AWS_KMS) - default
+                    AMS KMS creates and manages the key material in its own key store 
+                External
+                    u import key material into KMS 
+                    u responsible for securing and managing the key material outside of AWS 
+                    must be 256-bit Symmetric Key 
+                    can't be used with custom Key Store (CloudHSM)
+                    manual key rotation (auto not supported)
+                Custom Key Store (AWS_CLOUDHSM)
+                    AWS KMS creates the key material in a custom key store (CloudHSM Cluster)
+                    integrate KMS with CloudHSM cluster as a custom Ley Store 
+                    cryptographis operations are performed in HSMs 
+                    usecases
+                        u need direct control over HSMs 
+                        KMS Keys needs to be stored in dedicated HSMs 
+            KMS Multi-Region Keys
+                set of identical keys in different AWS Regions that can be used interchangeably
+                encrypt in one region decrypt in other region 
+                no need to re-encrypt or make cross-region API calls
+                Multi-region keys have same key ID, key material etc 
+                Not global, primary + replicas
+                each multi-region key is managed independently 
+                only one primary key at a time, replica can be promoted to primary 
+        SSM Parameter Store
+            secure storage for configuration and secrets 
+            optional seamless encryption with KMS 
+            version tracking 
+            can store parameters with hierarchy (folders)
+            Parameter Types
+                Standard 
+                    10K per AWS account and region 
+                    max 4KB size for value 
+                    no parameter policies
+                    free 
+                Advanced
+                    100K per AWS account and region
+                    max 8KB size for value 
+                    Parameter Policies
+                        allow to assign time-to-live(TTL) (expiry date)
+                        can assign multiple policies at a time
+                    0.05$ per parameter per month 
+        AWS Secrets Manager 
+            to store secrets (ex:passwords,API keys)
+            can force rotation of secrets every X days
+                automate generation of new secrets on rotation (uses Lambda)
+            control access to secrets using Resource-based Policy
+            Sharing accross Accounts 
+                allow other acc user to decrypt via Secrets Manager Service
+                share secret using Resource-based Policy
+        SSM Parameter Store vs AWS Secrets Manager
+            Secret Manager 
+                $$$
+                automatic rotation of secrets with AWS Lambda
+                KMS encryption is Mandatory
+                can integrate with CloudFormation 
+            SSM Parameter Store
+                $
+                simple API 
+                No secret rotation (can enable rotation using Lambda triggered by EventBridge)
+                KMS encryption is optional
+                can integrate with CloudFormation 
+                can pull Secrets Manager secret using SSM Parameter Store API 
+        RDS Security
+            KMS encryption at rest for underlying EBS volumes/snapshots 
+            Transparent Data Encryption (TDE) for Oracle and SQL Server 
+            SSL encryption to RDS is possible for all DB 
+            IAM authentication for MySQL, PostgreSQL and MariaDB 
+            Authorization still happens at RDS level (not IAM)
+            can copy un-encrypted RDS snapshot to encrypted one 
+            CloudTrail can't be used to track queries made with RDS 
+        SSL/TLS 
+            Secure Sockets Layer (SSL) used to encrypt connections 
+            Transport Layer Security (TLS) is newer version 
+            nowadays, TLS certificates are mainly used, people still asume them as SSL 
+            Server Name Indication (SNI)
+                solves problem of loading multiple SSL certificates onto one web server(to server multiple websites)
+                it's a newer protocol and requires the client to indicate the hostname of target 
+                server in initial SSL handshake 
+                server will then find correct certificate or return default one.
+                Only works for ALB & NLB, CloudFront. 
+                Doesn't work for CLB (classic load balancer)
+            Man in the Middle Attacks (MIMA)
+                Prevent 
+                    use HTTPS 
+                    use DNS that has DNSSEC 
+        AWS Certificate Manager 
+            to host public SSL certificates in AWS 
+            Buy ur own and upload them using CLI 
+            or Have ACM provision and renew public SSL certificates for u (free)
+            ACM loads SSL certs on 
+                Load Balancers (including one created by Elastic Beanstalk)
+                CloudFront distributions 
+                APIs on API Gateways 
+            Possibility of creating public certificates 
+                must verify public DNS 
+                must be issued by a trusted public certificate authority (CA)
+            Possibility of creating private certificates 
+                for ur internal applications
+                u create ur own CA 
+                ur apps must trust ur private CA 
+            Certificate renewal 
+                Automatically done if generated provisioned by ACM 
+                any manually uploaded certs must be renewed manually and re-uploaded 
+            ACM is a regional service 
+                u need to issue a SSL cert in each region where ur application deployed 
+                u can't copy certs accross regions 
+        CloudHSM 
+            KMS => AWS manages software for encryption 
+            CloudHSM => AWS only provisions encryption hardware 
+            dedicated hardware (HSM=Hardware Security Module)
+            u manage ur own encryption keys entirely (not AWS)
+            supports both Symmetric and Asymmetric encryption (SSL/TLS keys)
+            must use CloudHSM Client Software
+            usecase:SSE-C (server side encryption, Customer managed) encryption
+            High Availability 
+                add CloudHSM clusters across Multiple AZs 
+            
+            
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
