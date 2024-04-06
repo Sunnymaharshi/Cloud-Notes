@@ -421,6 +421,206 @@ Notes:
             usecase:SSE-C (server side encryption, Customer managed) encryption
             High Availability 
                 add CloudHSM clusters across Multiple AZs 
+        S3 Security
+            Encryption
+                SSE-S3: encrypts S3 objects using keys handled & managed by AWS 
+                SSE-KMS: leverage KMS to manage encryption keys 
+                    key usage appears in CloudTrail
+                    objects made public can't be read 
+                SSE-C: manage your own encryption keys 
+                Glacier: All data is AES-256 encrypted, key under AWS control
+                Encryption in Transit(SSL/TLS)
+                    HTTP: not encrypted
+                    HTTPS: encrypted
+                        Mandatory for SSE-C 
+            Security
+                User based 
+                    IAM Policies
+                Resource based 
+                    Bucket policies
+                        bucket wide rules from the S3 console
+                        grant access to another account(allow Cross-Account)
+                        to grant public access to bucket
+                        force object to be encrypted at upload 
+                        Optional Conditions on:
+                            SourceIP, VpcSourceIp
+                            Source VPC, Source VPC Endpoint 
+                            CloudFront Origin Identity
+                            MFA
+                    Object Access Control List(ACL)
+                        finer grain 
+                    Bucket Access Control List(ACL)
+                        less common 
+            S3 Pre-Signed URLs
+                can generate URLs using SDK or CLI 
+                for downloads 
+                    easy, can use CLI 
+                for uploads 
+                    hard, must use SDK 
+                valid for default of 3600sec 
+                users given a pre-signed URL inherit the permissions of person who generated the URL for GET/PUT 
+            VPC Endpoint Gateway for S3 
+                to access bucket from private instance in a VPC 
+            S3 Object Lock 
+                Write Once Read Many (WORM)
+                block object version deletion for a specific amount of time 
+            Glacier Vault Lock 
+                WORM 
+                lock the policy for future edits (can no longer be changed)
+                for compliance and data retention 
+            S3 Access Points 
+                can grant (Read/Write) access to prefix (/com/finance/*)
+                simplify security management
+                each access point has it's own DNS name 
+                Multi-Region Access Points 
+                    provide a global endpoint that span S3 buckets in multiple regions 
+                    Dynamically route requests to nearest S3 bucket
+                    Bi-directional S3 bucket replication rules are created to keep data in Sync across regions 
+                    Failover controls 
+                        allows to shift requests across S3 buckets in different AWS regions within minutes 
+            S3 Object Lambda 
+                to change object before it is retrieved by caller application
+        AWS Shield 
+            protects from DDoS attacks 
+            Standard
+                protects against DDoS for ur website and applications for all the customers 
+                at no additional costs 
+                free and activated for every AWS customer
+                protects from layer 3 or layer 4 attacks                 
+            Advanced
+                24/7 premium DDoS protection
+                protect against attacks on EC2, ELB, CloudFront, Global Accelerator and Route 53
+                protect against higher fee during usage spikes due to DDoS         
+            CloudFront and Route 53 
+                Availability protection using global edge network
+                Combined with Shield, provides DDoS attack mitigation at the edge 
+        AWS WAF 
+            filter specific requests based on rules
+            protects web app from common web exploits (Layer 7)
+            Deploy on API Gateway (rules running at regional or edge level)
+            Deploy on CloudFront (rules run globally on edge locations)
+            Deploy on AppSync (protect ur GraphQL APIs)
+            not for DDoS protection
+            Define Web ACLs 
+                rules can include IP addresses, HTTP headers, HTTP body, or URI stings 
+                protects from common attack - SQL injection and Cross-Site Scripting (XSS) 
+                Size contraints, Geo match 
+                Rate based rules 
+            Rule Actions 
+                Count, Allow, Block or Captcha 
+            Managed Rules 
+                library of over 190 managed rules 
+                ready-to-use rules managed by AWS and AWS Marketplace Sellers 
+                Baseline Rule Groups 
+                    general protection from common threats 
+                Usecase specific rule Groups
+                IP Reputation Rule Groups
+                    block requests based on source 
+                Bot Control Managed Rule Group 
+            Logging 
+                can send logs to 
+                    CloudWatch
+                    S3
+                    Kinesis Data Firehose 
+        AWS Firewall Manager 
+            manage rules in all accounts of an Org 
+            Security Policy 
+                WAF rules (ALB,API Gateways,CloudFront)
+                AWS Shield Advanced (ALB,CLB,NLB,ElasticIP,CloudFront)
+                Security groups (EC2,ALB and ENI resources in VPC)
+                AWS Network Firewall (VPC level)
+                Amazon Route53 DNS Firewall
+                policies created at region level 
+            Rules are applied to new resources as they are created across all future accounts in Org
+        Amazon Inspector 
+            automated security assessments 
+            EC2 Intances 
+                leverages AWS System Manager (SSM) agent 
+                analyze against unintended network accessibility 
+                analyze the running OS against know vulnerabilities
+            Container Images push to ECR 
+            Lambda Functions 
+                identifies software vulnerabilities in function code and package dependencies
+            Reporting & integration with AWS Security Hub 
+            Send fundings to Amazon EventBridge
+        AWS Config 
+            helps with auditing and recording compliance of AWS resources 
+            record configurations and changes over time     
+            Config Rules 
+                AWS managed config rules (over 75)
+                can make custom config rules (must define in Lambda function)
+                    evaluate if each EC2 instance is t2.micro 
+                rules can be evaluated/triggered
+                    for each config change 
+                    regular time intervals 
+                trigger Amazon EventBridge if rule is non-compliant (chain with lambda)
+                can have auto remediations through SSM Automations 
+                    can stop instances 
+        AWS Managed Logs 
+            Load balancer access logs (to S3)
+            CloudTrail logs (to S3 and CloudWatch logs) 
+            VPC Flow logs (to S3 and CloudWatch logs and Kinesis Data Firehose) 
+            Route53 access logs (to CloudWatch logs) 
+            S3 access logs (to S3) 
+            CloudFront access logs (to S3) 
+            AWS Config (to S3) 
+        Amazon GuardDuty 
+            Inteligent Threat discovery to protect ur account 
+            uses ML algos,anomaly detection,3rd party data 
+            Input data 
+                CloudTrail Event logs 
+                    management events 
+                    S3 Data events 
+                VPC Flow Logs 
+                DNS logs 
+                and some Optional features
+            can setup EventBridge rules to notify in case of findings
+            *can Protect CryptoCurrency attacks 
+            Delegated Administrator
+                Org member can be designated to be GuardDuty Delegated Administrator
+                have full permissions to enable and manage GuardDuty for all accounts in Org 
+        AWS Security Hub 
+            central security tool to manage security across several AWS accounts and automate security checks
+            Integrated dashboards showing current security and compliance status 
+            Automatically aggregate alerts in predefined or personal findings formats from 
+            various Services and Partner tools
+            must enable AWS Config 
+        Amazon Detective
+            quickly finds the root cause of security issues 
+            using ML and graphs 
+            Automatically collects and process events from VPC Flow logs,CloudTrail,GuardDuty
+            and create a unified view 
+            produces visualizations with details and context to get to root cause 
+
+        Questions 
+            An EC2 instance in a public subnet is trying to access an Amazon S3 bucket. 
+            This EC2 instance often starts and stops. You would like to restrict access 
+            to that EC2 instance only. How can you do it?
+                Attach an Elastic IP to the EC2 instance and create an S3 bucket policy with 
+                a condition limiting access to the EC2 elastic IP
+                since SourceIP doesn't work with private IP 
+            You want an easy way to deploy and manage WAF Rules, Security Groups, AWS Shield, .etc. 
+            in all those accounts instead of managing them one by one.
+                AWS Firewall Manager 
+            Which of the following IAM Condition key you can use to restrict access only from a specific AWS Organization?
+                aws:PrincipalOrgID 
+    
+
+
+
+
+
+
+
+                    
+
+
+
+
+
+            
+
+             
             
             
 
