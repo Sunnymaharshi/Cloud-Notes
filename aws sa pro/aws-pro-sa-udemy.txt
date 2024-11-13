@@ -605,6 +605,90 @@ Notes:
             Which of the following IAM Condition key you can use to restrict access only from a specific AWS Organization?
                 aws:PrincipalOrgID 
     
+    Compute and Load Balancing 
+        EC2
+            EC2 Instance Types 
+                R:for apps that needs lot of RAM - in-memory caches 
+                C:for apps that needs good CPU - compute/databases
+                M:for apps that are balanced - general/webapp
+                I:for apps that need good local I/O(instance storage) - database
+                G:for apps that need a GPU - video redering/ML
+                T2/T3:burstable instances (upto capacity)
+                T2/T3:unlimited - unlimited burst 
+            Placement Groups 
+                Cluster 
+                    clusters instances into a low-latency group in single AZ 
+                    Great Network - 10Gbps between instances
+                Spread 
+                    spreads instances across underlying hardware (max 7 per placement group per AZ)
+                Partition 
+                    spreads instances across many different partitions (which rely on different sets of racks) within AZ 
+                    Scales to 100s of EC2 instances per group 
+                    7 partitions per AZ
+                    usecase:Hadoop,Cassandra,Kafka
+                Move in/out 
+                    stop instance
+                    use CLI to modify instance Placement Group
+                    start instance
+            Instance Launch Types
+                On-Demand Instances
+                Spot Instances 
+                Reserved Instances (min 1yr)
+                    Reserved
+                    Convertable Reserved Instances
+                        flexible instances 
+                    Highest to lowest discount: All upfront, Partial Upfront and no Upfront
+                Dedicated Instances 
+                    no other customers will share your hardware 
+                Dedicated Hosts 
+                    book an entire physical server, control instance placement
+                    great for software licences that operate at core or CPU socket level 
+                    can define host affinity so that instance reboots are kept on same host 
+            EC2 Graviton
+                Graviton processors deliver best price performance 
+                Supports many Linus OS,Amazon Linux 2,Redhat,SUSE,Ubuntu
+                Not available for Windows
+                Graviton2 
+                    40% better price performance over comparable 5th gen x86-based instances
+                Graviton3 
+                    upto 3x better performance than Graviton2
+        Auto Scaling Group (ASG)
+            Dynamical Scaling Policies
+                Target Tracking Scaling 
+                    usecase:to keep avg ASGroup CPU to stay at around 40%
+                Simple/Step Scaling 
+                    when CloudWatch alarm triggered (like CPU>70%) add 2 instances 
+                Scheduled Actions 
+                    Anticipate Scaling based on know usage patterns 
+            Predictive Scaling 
+                continuously forecast load and schedule scaling ahead
+            Spot Fleet support
+                mix of Spot instances and On-demand Instances
+            Life-cycle hooks 
+                perform action before an instance is in service or before it is terminated 
+            To upgrade an AMI 
+                must update the launch configuration/template
+                then terminate the instances manually(CloudFormation can help)
+                or use EC2 instance Refresh for Auto Scaling 
+            Instance Refresh
+                updates launch template and then re-create all EC2 instances
+                set minimum healthy percentage, so that it won't terminate all instances at once 
+                can specify warm-up time(how long until the instance is ready to use)
+            Health Checks 
+                EC2 Status Checks
+                ELB Health Checks(HTTP)
+                ASGroup first terminates unhealthy one then lauches new instance 
+            
+                
+                
+
+        
+
+
+
+                
+
+
 
 
 
