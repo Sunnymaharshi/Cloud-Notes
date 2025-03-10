@@ -678,7 +678,33 @@ Notes:
                 EC2 Status Checks
                 ELB Health Checks(HTTP)
                 ASGroup first terminates unhealthy one then lauches new instance 
-            
+        Spot Instances
+            upto 90% discount compared to on-demand 
+            define max spot price 
+                get instance while current spot price < max spot price 
+                if current spot price > max spot price can choose to
+                stop or terminate instance with 2 minutes grace period 
+            usage 
+                batch jobs, data analysis or workloads that are resilient to failures
+                not good for critical jobs or databases 
+        Spot Fleets 
+            set of Spot instances + (optional) on-demand Instances
+            try to meet target capacity with price constraint 
+                define possible launch pools 
+                    instance type,OS, availability zone
+                    can have multiple launch pools 
+            spot fleet stops launching instances when reaching capacity or max cost 
+            strategy to allocate spot instances 
+                lowestPrice 
+                    low cost, short workloads
+                diversified 
+                    availability,long workload 
+                capacity optimized 
+                priceCapacity Optimized 
+            automatically request spot instances with lowest price
+        
+           
+
                 
                 
 

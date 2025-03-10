@@ -1,0 +1,39 @@
+You are working as a Security Engineer for a company that’s hosting their applications on AWS. They’re using AWS Organization with multiple AWS accounts. You have been tasked to create an approved AMIs for developers, those AMIs must be have all the security patches installed with no security vulnerabilities. Which AWS service can help you automate the creation of those AMIs and publish them to other AWS accounts?
+    EC2 Image Builder 
+A company would like to implement a chatbot that will convert speech-to-text and recognize the customers' intentions. What service should it use?
+    Amazon Lex -  building conversational interfaces into any application using voice and text. Lex provides the advanced deep learning functionalities of automatic speech recognition (ASR) for converting speech to text, and natural language understanding (NLU) to recognize the intent of the text, to enable you to build applications with highly engaging user experiences and lifelike conversational interactions.
+An online medical company that allows you to book an appointment with doctors using through a phone call is using AWS to host their infrastructure. They are using Amazon Connect and Amazon Lex to receive calls and create a workflow, book an appointment, and pay. According to the company’s policy, all calls must be recorded for review. But, there is a requirement to remove any Personally Identifiable Information (PII) from the call before it's saved. What do you recommend to use which helps in removing PII from calls?
+    Amazon Transcribe
+You are looking to set up a hub and spoke model between your data centers and multiple VPC, with minimal management and the ability to quickly add new VPC in the future. What do you suggest?
+    Setup VPN connections between the data center and each VPC. Setup dynamic BGP route management
+You have set up a Direct Connect connection between your on-premises data center and AWS. You would like to access Amazon S3 from your on-premise data center. Which of the following methods allow you to access Amazon S3 from your on-premises data center over a Direct Connect connection?
+    Access Amazon S3 using either Public VIF or S3 VPC Interface Endpoint over a Private VIF
+
+Your company has created a REST API that it will sell to hundreds of customers as a SaaS. Your customers are on AWS and are using their own VPC. You would like to allow your customers to access your SaaS without going through the public internet while ensuring your infrastructure is not left exposed to network attacks. What do you recommend?
+    Create a PrivateLink
+You have on-premises data center that is connected to AWS over Direct Connect connection. You want to connect this DX connection with VPCs in different AWS regions, and with a VPN connection for an office in Africa. Which of the following resource can help you make this connection?
+    Transit Gateway 
+You want to scale up an AWS Site-to-Site VPN connection throughput, established between your on-premises data and AWS Cloud, beyond a single IPsec tunnel's maximum limit of 1.25 Gbps. What should you do?
+    Transit Gateway 
+Which AWS service allows you to protect and control traffic in your VPC from layer 3 to layer 7?
+    AWS Network Firewall 
+You are using a MongoDB NoSQL database on-premise and you would like to migrate your application to the cloud and start using DynamoDB on AWS. What kind of migration is this?
+    Refactor 
+You are using a MongoDB NoSQL database on-premise and you would like to migrate your application to the cloud and start using DocumentDB on AWS, which is a managed database on AWS with MongoDB API compatibility. What kind of migration is this?
+    Replatform
+You are using a Storage Gateway Tape Gateway for backing up your tapes to the AWS cloud. There has been a need to recover a specific file in a specific tape. How do you suggest doing it?
+    Recover the entire tape and recover the file
+You need to migrate a large 200TB database over to AWS and have decided to migrate from MySQL to PostgreSQL in the process. There's a 200Mbps Direct Connect connection established between your DC and AWS. What do you recommend to do this the fastest way?
+    Create a DMS instance with SCT enabled. Perform a one-time extract and use Snowball to send it to S3. Perform CDC replication using DMS after the data has been imported into PostgreSQL. 
+You would like to migrate an on-premise ElasticSearch cluster into AWS. What do you recommend?
+    Create an OpenSearch cluster on AWS. Export the ElasticSearch index and transfer them into Amazon S3. Import the index from S3 into Amazon OpenSearch Service
+Which service allows you to collect running processes and map out network traffic between your servers before starting a migration?
+    Application Discovery Services (ADS) with the agent-based discovery
+You have many of EC2 instances spread across 100s of AWS accounts in an AWS Organization. You have been tasked to reduce costs by right sizing those EC2 instances according to their workloads. The analysis must include CPU, RAM, Network, Disk, etc. What you do to achieve this?
+    Install CloudWatch Agent on EC2 instances and use AWS Compute Optimizer
+You are deploying a Lambda function using CodeDeploy and would like to ensure it's properly working after some traffic has started to shift to it. To make sure it's working, you want to make sure the number of requests made on your DynamoDB instance remains stable. How do you suggest achieving this?
+    Create a CloudWatch Alarm and link it to CodeDeploy
+You would like to make sure a DynamoDB table created using CloudFormation does not get deleted on stack deletion. What do you recommend?
+    Use a Deletion Policy for Retain
+You would like to ensure new employees have limited access to AWS and can only launch pre-defined CloudFormation stacks. How should you implement this?
+    Service Catalog
