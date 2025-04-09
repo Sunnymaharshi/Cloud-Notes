@@ -1,0 +1,30 @@
+Serverless Thumbnail creation
+    New image in S3
+        trigger AWS Lambda Function
+            Creates a Thumbnail
+            pushes new Thumbnail to s3 
+            pushes image metadata in DynamoDB 
+Serverless CRON Job
+    Amazon EventBridge
+        trigger every 1 hour the AWS Lambda Function
+            perform task 
+Decrease FSx Volume Size
+    If you take a backup, you can only restore to a same size
+    You can only increase the amount of storage capacity for a file system; 
+    you cannot decrease storage capacity
+    Instead, create a new FSx (smaller), use DataSync to sync data and then migrate your app over
+FSx for Lustre – Data Lazy Loading
+    Any data processing job on Lustre with S3 as an input data source can be started without Lustre 
+    doing a full download of the dataset first
+    only the data that is actually processed is loaded, meaning you can decrease your costs and latency
+CloudFront – Restrict Access to Application Load Balancers and Custom Origins
+    Prevent direct access to your ALB or Custom Origins (only access through CloudFront)
+    First, configure CloudFront to add a Custom HTTP Header to requests it sends to the ALB
+    Second, configure the ALB to only forward requests that contain that Custom HTTP Header
+    Keep the custom header name and value secret!
+Convert RDS to Aurora
+    RDS DB Instance => snapshot => restore to Aurora DB instance 
+    or RDS DB Instance => Aurora Read Replica => promote to Aurora DB Instance 
+
+
+    

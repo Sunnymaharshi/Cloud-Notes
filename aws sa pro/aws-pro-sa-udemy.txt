@@ -689,6 +689,7 @@ Notes:
                 not good for critical jobs or databases 
         Spot Fleets 
             set of Spot instances + (optional) on-demand Instances
+            automatically request spot instances with lowest price
             try to meet target capacity with price constraint 
                 define possible launch pools 
                     instance type,OS, availability zone
@@ -700,75 +701,1255 @@ Notes:
                 diversified 
                     availability,long workload 
                 capacity optimized 
+                    pool with optimal capacity for the number of instances
                 priceCapacity Optimized 
-            automatically request spot instances with lowest price
+                    pools with highest capacity available, 
+                    then select the pool with the lowest price 
+        Docker
+            apps are packaged in containers that can be run on any OS
+        Amazon Elastic Container Service (Amazon ECS)
+            Amazon’s own container platform
+            Run Microservices
+                Run multiple Docker containers on the same machine
+                Easy Service Discovery features to enhance communication
+                Direct integration with Application Load Balancer and Network Load Balancer
+                Auto Scaling capability
+            Run Batch Processing / Scheduled Tasks
+                Schedule ECS tasks to run on On-demand / Reserved / Spot instances
+            Migrate Applications to the Cloud
+                Dockerize legacy applications running on-premises
+                Move Docker containers to run on Amazon ECS
+            ECS Cluster
+                logical grouping of EC2 instances
+            ECS Service
+                defines how many tasks should run and how they should be run
+            Task Definitions
+                metadata in JSON form to tell ECS how to run a Docker container 
+                (image name, CPU, RAM, …)
+            ECS Task
+                an instance of a Task Definition, a running Docker container(s)
+            ECS IAM Roles
+                EC2 Instance Profile
+                    used by the EC2 instance 
+                    (e.g., make API calls to ECS, send, logs, …)
+                ECS Task IAM Role
+                    allow each task to have a specific role 
+                    (e.g., make API calls to S3, DynamoDB, …)
+            ALB Integration
+                Dynamic Port Mapping
+                Allows you to run multiple instances of the same application 
+                on the same EC2 instance
+                The ALB finds the right port on your EC2 Instances
+                Use cases
+                    Increased resiliency even if running on one EC2 instance
+                    Maximize utilization of CPU / cores
+                    Ability to perform rolling upgrades without impacting app uptime
         
-           
+            Security & Networking
+                You can inject secrets and configurations as Environment Variables into running Docker containers
+                Integration with SSM Parameter Store and Secrets Manager
+                ECS Tasks Networking
+                    none
+                        no network connectivity, no port mappings
+                    bridge
+                        uses Docker’s virtual container-based network
+                    host
+                        bypass Docker’s network, uses the underlying host network interface
+                    awsvpc
+                        Every tasks launched on the instance gets its own ENI and a private IP address
+                        Simplified networking, enhanced security, Security Groups, monitoring, VPC Flow Logs
+                        Default mode for Fargate tasks
+            Service Auto Scaling
+                Automatically increase/decrease the desired number of tasks
+                ECS Service Auto Scaling (task level) ≠ EC2 Auto Scaling (EC2 instance level)
+                Fargate Auto Scaling is much easier to setup (because Serverless)
+                Target Tracking
+                    scale based on target value for a specific CloudWatch metric
+                Step Scaling
+                    scale based on a specified CloudWatch Alarm
+                Scheduled Scaling
+                    scale based on a specified date/time (predictable changes)
+            Spot Instances
+                ECS Classic (EC2 Launch Type)
+                    underlying EC2 instances as Spot Instances (managed by an ASG)
+                    Good for cost savings, but will impact reliability
+                AWS Fargate
+                    Specify minimum of tasks for on-demand baseline workload
+                    Add tasks running on FARGATE_SPOT for cost-savings (can be reclaimed by AWS)
+            Amazon ECS Anywhere
+                run containers on Customer-managed infrastructure (on-premises, VMs, …)
+                Allows customers to deploy native Amazon ECS tasks in any environment
+                Fully-managed Amazon ECS Control Plane
+                ECS Container Agent and SSM Agent needs to be installed
+                "EXTERNAL" Launch Type
+                Use cases
+                    Meet compliance, regulatory, and latency requirements
+                    Run apps outside AWS Regions and closer to their other services
+                    On-premises ML, video processing, data processing, …
 
-                
-                
+        Amazon ECR - Elastic Container Registry
+            Store and manage Docker images on AWS
+            Private and Public repository (Amazon ECR Public Gallery https//gallery.ecr.aws)
+            Access is controlled through IAM
+            Supports image vulnerability scanning, versioning, image tags, image lifecycle etc 
+            Cross Region Replication
+                ECR private registry supports both cross-Region and cross-account replication
+            Image Scanning
+                Manual Scan or Scan on Push
+                Basic Scanning
+                    Common CVE
+                Enhanced Scanning
+                    Leverages Amazon Inspector (OS & Programming Language vulnerabilities)
+                Scan results can be retrieved from within the AWS console
+        AWS Fargate
+            Amazon’s own Serverless container platform
+            Works with ECS and with EKS
+            You do not provision the infrastructure(no EC2 instances to manage)
+            To scale, just increase the number of tasks. Simple! No more EC2 instances
+        Amazon Elastic Kubernetes Service (Amazon EKS)
+            Amazon’s managed Kubernetes (open source)
+            Kubernetes is cloud-agnostic (can be used in any cloud – Azure, GCP…)
+            supports EC2 if you want to deploy worker nodes or Fargate to deploy serverless containers
+            For multiple regions, deploy one EKS cluster per region
+            Node Types
+                Managed Node Groups
+                    Creates and manages Nodes (EC2 instances) for you
+                    Nodes are part of an ASG managed by EKS
+                    Supports On-Demand or Spot Instances
+                Self-Managed Nodes
+                    Nodes created by you and registered to the EKS cluster and managed by an ASG
+                    You can use prebuilt AMI - Amazon EKS Optimized AMI
+                    Supports On-Demand or Spot Instances
+                AWS Fargate
+                    No maintenance required; no nodes managed
+            Data Volumes
+                Need to specify StorageClass manifest on your EKS cluster
+                Leverages a Container Storage Interface (CSI) compliant driver
+                supports Amazon EBS, Amazon EFS (works with Fargate), Amazon FSx for Lustre, 
+                Amazon FSx for NetApp ONTAP
+            Amazon EKS Anywhere 
+                Create and operate Kubernetes clusters created outside AWS                
+                Leverage the Amazon EKS Distro (AWS’ bundled release of Kubernetes) 
+                Reduce support costs and avoid maintaing redundant 3rd party tools 
+                Install using the EKS Anywhere Installer 
+                Optionally use the EKS Connector to connect the EKS Anywhere clusters to AWS 
+                    Fully Connected & Partially Disconnected
+                        you can connect to Amazon EKS Anywhere clusters to AWS,and leverage the EKS console
+                    Fully Disconnected 
+                        must install the EKS Distro and leverage open-source tools to manage your clusters
+        AWS App Runner
+            Fully managed service that makes it easy to deploy web applications and APIs at scale
+            No infrastructure experience required
+            Start with your source code or container image
+            Automatically builds and deploy the web app
+            Automatic scaling, highly available, load balancer, encryption
+            VPC access support
+            Connect to database, cache, and message queue services
+            Use cases web apps, APIs, microservices, rapid production deployments
+        AWS Lambda
+            Language Support (runtimes)
+                Node.js (JavaScript)
+                Python
+                Java 
+                C# (.NET Core) / Powershell
+                Ruby
+                Custom Runtime API (community supported, example Rust or Golang)
+            Lambda Container Image
+                The container image must implement the Lambda Runtime API
+                ECS / Fargate is preferred for running arbitrary Docker images
+            Limits to know
+                RAM 
+                    128 MB to 10,240 MB (10 GB)
+                CPU 
+                    is linked to RAM (cannot be set manually)
+                    2 vCPUs are allocated at 1,769 MB of RAM
+                    6 vCPUs are allocated at 10,240 MB of RAM
+                Timeout
+                    up to 15 minutes
+                /tmp Storage – 10,240 MB
+                Deployment Package
+                    50 MB (zipped) , 250 MB (unzipped) including layers 
+                Concurrent Executions
+                    1000 (soft limit that can be increased)
+                Container Image Size
+                    10 GB
+                Invocation Payload (request/response)
+                    6 MB (sync), 256 KB (async)
+            Concurrency and Throttling
+                Concurrency limit
+                    up to 1000 concurrent executions
+                Can set a "reserved concurrency" at the function level (=limit)
+                Each invocation over the concurrency limit will trigger a "Throttle"
+                Can request a quota increase in AWS Service Quotas
+            CodeDeploy 
+                can help you automate traffic shift for Lambda aliases
+                Feature is integrated within the SAM framework
+                Linear
+                    grow traffic every N minutes until 100% 
+                    Linear10PercentEvery3Minutes 
+                    Linear10PercentEvery10Minutes 
+                Canary try X percent then 100% 
+                    Canary10Percent5Minutes 
+                    Canary10Percent30Minutes
+                AllAtOnce immediate 
+                Can create Pre & Post Traffic hooks to check the health of the Lambda function
+            Logging, Monitoring and Tracing
+                CloudWatch
+                    AWS Lambda execution logs are stored in AWS CloudWatch Logs
+                    AWS Lambda metrics are displayed in AWS CloudWatch Metrics (successful 
+                    invocations, error rates, latency, timeouts, etc…)
+                    Make sure your AWS Lambda function has an execution role with an IAM 
+                    policy that authorizes writes to CloudWatch Logs
+                X-Ray
+                    It’s possible to trace Lambda with X-Ray
+                    Enable in Lambda configuration (runs the X-Ray daemon for you)
+                    Use AWS SDK in Code
+                    Ensure Lambda Function has correct IAM Execution Role
+    load balancer on AWS
+        Classic Load Balancer (CLB) (v1 - old generation) – 2009 – CLB
+            HTTP, HTTPS, TCP, SSL (secure TCP)
+            Health Checks can be HTTP (L7) or TCP (L4) based including with SSL
+            Supports only one SSL certificate 
+                The SSL certificate can have many SAN (Subject Alternate Name), 
+                but the SSL certificate must be changed anytime a SAN is added / edited / removed
+                Better to use ALB with SNI (Server Name Indication) if possible 
+                Can use multiple CLB if you want distinct SSL certificates
+        Application Load Balancer (ALB) (v2 - new generation) – 2016 – ALB 
+            HTTP, HTTPS, WebSocket
+            Application load balancers is Layer 7 (HTTP)
+            Load balancing to multiple HTTP applications across machines(target groups)
+            Load balancing to multiple applications on the same machine (ex containers)
+                great fit with ECS, has dynamic port mapping
+            Support for HTTP/2 and WebSocket
+            Support redirects (from HTTP to HTTPS for example)
+            Routing Rules for path, headers, query string
+            Target Groups
+                EC2 instances (can be managed by an Auto Scaling Group) – HTTP 
+                ECS tasks (managed by ECS itself) – HTTP 
+                Lambda functions – HTTP request is translated into a JSON event
+                IP Addresses – must be private IPs
+            Health checks are at the target group level
+        Network Load Balancer(NLB) (v2 - new generation) – 2017 – NLB 
+            TCP, TLS (secure TCP), UDP
+            Network load balancers (Layer 4)
+            Forward TCP & UDP traffic to your instances
+            Handle millions of request per seconds
+            Less latency ~100 ms (vs 400 ms for ALB)
+            NLB has one static IP per AZ, and supports assigning Elastic IP
+                helpful for whitelisting specific IP
+            NLB are used for extreme performance, TCP or UDP traffic
+            Not included in the AWS free tier
+            Target Groups
+                EC2 instances
+                IP Addresses – must be private IPs
+                Application Load Balancer
+            Zonal DNS Name
+                Resolving Regional NLB DNS name returns the IP addresses for all NLB nodes in all enabled AZs
+                    my-nlb-1234567890abcdef.elb.us-east-1.amazon.aws.com
+                NLB has DNS names for each of its nodes
+                Use to determine the IP address of each node
+                us-east-1a.my-nlb-1234567890abcdef.elb.us-east1.amazon.aws.com
+                Used to minimize latency and data transfer costs
+                You need to implement app specific logic
 
-        
+        Gateway Load Balancer – 2020 – GWLB 
+            Operates at layer 3 (Network layer) – IP Protocol - IP packets
+            Deploy, scale, and manage a fleet of 3rd party network virtual appliances in AWS
+            Example Firewalls, Intrusion Detection and Prevention Systems, Deep Packet Inspection 
+            Systems, payload manipulation etc 
+            Combines the following functions
+                Transparent Network Gateway
+                    single entry/exit for all traffic
+                Load Balancer
+                    distributes traffic to your virtual appliances
+            GENEVE (Generic Network Virtualization Encapsulation)
+                is a network virtualization protocol, also known as an overlay tunnel protocol, 
+                defined by the IETF to create and manage virtual networks over physical network infrastructure
+            Uses the GENEVE protocol on port 6081
+            Target Groups
+                EC2 instances
+                IP Addresses – must be private IPs
+        Cross-Zone Load Balancing
+            With Cross Zone Load Balancing
+                each load balancer instance distributes evenly across all registered instances in all AZ
+            Without Cross Zone Load Balancing
+                Requests are distributed in the instances of the node of the Elastic Load Balancer
+            Classic Load Balancer
+                Disabled by default 
+                No charges for inter AZ data if enabled 
+            Application Load Balancer
+                Always on (can’t be disabled)
+                No charges for inter AZ data 
+            Network Load balancer  
+                Disabled by default 
+                You pay charges ($) for inter AZ data if enabled
+            Gateway Load Balancer 
+                Disabled by Default
+                You pay charges ($) for inter AZ data if enabled
+        Sticky Sessions (Session Affinity)
+            same client is always redirected to the same instance behind a load balancer
+            works for Classic Load Balancers & Application Load Balancers
+            The “cookie” used for stickiness has an expiration date you control
+            Use case make sure the user doesn’t lose his session data
+            Enabling stickiness may bring imbalance to the load over the backend EC2 instances
+        Request Routing Algorithms
+            Least Outstanding Requests
+                The next instance to receive the request is the instance that has the lowest number 
+                of pending/unfinished requests
+                Works with Application Load Balancer and Classic Load Balancer (HTTP/HTTPS)
+            Round Robin
+                Equally choose the targets from the target group
+                Works with Application Load Balancer and Classic Load Balancer (TCP)
+            Flow Hash
+                Selects a target based on the protocol, source/destination IP address, 
+                source/destination port, and TCP sequence number
+                Each TCP/UDP connection is routed to a single target for the life of the connection
+                Works with Network Load Balancer
+    API Gateway
+        Helps expose Lambda, HTTP & AWS Services as an API
+        API versioning, authorization, traffic management (API keys, throttles), 
+        huge scale, serverless, req/resp transformations, OpenAPI spec, CORS
+        Limits to know
+            29 seconds timeout
+            10 MB max payload size 
+        Deployment Stages
+            API changes are deployed to “Stages” (as many as you want)
+            Use the naming you like for stages (dev, test, prod)
+            Stages can be rolled back as a history of deployments is kept
+        Integrations
+            HTTP
+                Expose HTTP endpoints in the backend 
+                Example internal HTTP API on premise, Application Load Balancer…
+                Why? Add rate limiting, caching, user authentications, API keys, etc… 
+            Lambda Function
+                Invoke Lambda function 
+                Easy way to expose REST API backed by AWS Lambda
+            AWS Service
+                Expose any AWS API through the API Gateway?
+                Example start an AWS Step Function workflow, post a message to SQS
+                Why? Add authentication, deploy publicly, rate control… 
+        Endpoint Types
+            Edge-Optimized (default) 
+                For global clients
+                Requests are routed through the CloudFront Edge locations (improves latency)
+                The API Gateway still lives in only one region
+            Regional 
+                For clients within the same region
+                Could manually combine with CloudFront (more control over the caching 
+                strategies and the distribution) 
+            Private 
+                Can only be accessed from your VPC using an interface VPC endpoint (ENI)
+                Use a resource policy to define access
+        Caching API responses
+            Caching reduces the number of calls made to the backend
+            Default TTL (time to live) is 300 seconds (min 0s, max 3600s)
+            Caches are defined per stage
+            Possible to override cache settings per method
+            Clients can invalidate the cache with header 
+                Cache-Control max-age=0 (with proper IAM authorization)
+            Able to flush the entire cache (invalidate it) immediately
+            Cache encryption option
+            Cache capacity between 0.5GB to 237GB
+        Security
+            Load SSL certificates and use Route53 to define a CNAME
+            Resource Policy (~S3 Bucket Policy) 
+                control who can access the API
+                Users from AWS accounts, IP or CIDR blocks, VPC or VPC Endpoints
+            IAM Execution Roles for API Gateway at the API level
+                To invoke a Lambda Function, an AWS service… 
+            CORS (Cross-origin resource sharing)
+                Browser based security
+                Control which domains can call your API
+        Authentication
+             IAM based access (AWS_IAM)
+                Good for providing access within your infrastructure
+                Pass IAM credentials in headers through Sig V4
+            Lambda Authorizer (formerly Custom Authorizer)
+                Use Lambda to verify a custom OAuth / SAML / 3rd party authentication
+            Cognito User Pools
+                Client authenticates with Cognito
+                Client passes the token to API Gateway
+                API Gateway knows out-of-the-box how to verify to token
+        Usage Plans & API Keys
+            If you want to make an API available as an offering ($) to your customers
+            Usage Plan
+                who can access one or more deployed API stages and methods
+                how much and how fast they can access them
+                uses API keys to identify API clients and meter access
+                configure throttling limits and quota limits that are enforced on individual client
+            API Keys
+                alphanumeric string values to distribute to your customers
+                Ex WBjHxNtoAb4WPKBC7cGm64CBibIb24b4jt8jJHo9
+                Can use with usage plans to control access
+                Throttling limits are applied to the API keys
+                Quotas limits is the overall number of maximum requests
+            429 Too Many Requests
+                Account level throttling across all APIs in a region
+                Clients must implement retry mechanisms
+        WebSocket API
+            Two-way interactive communication between a user’s browser and a server
+            Server can push information to the client
+            This enables stateful application use cases
+            WebSocket APIs are often used in real- time applications such as chat 
+            applications, collaboration platforms, multiplayer games, and financial trading platforms.
+            Works with AWS Services (Lambda, DynamoDB) or HTTP endpoints
+        Private APIs
+            Can only be accessed from your VPC by using an VPC Interface Endpoint
+            Each VPC Interface Endpoint can be used to access multiple Private APIs
+            API Gateway Resource Policy
+            Allow or deny access to API from selected VPCs and VPC Endpoints, including across AWS accounts
+            aws:SourceVpc and aws:SourceVpce
+    AWS AppSync
+        AppSync is a managed service that uses GraphQL
+        GraphQL makes it easy for applications to get exactly the data they need.
+        This includes combining data from one or more sources
+            NoSQL data stores, Relational databases, HTTP APIs…
+            Integrates
+                DynamoDB, Aurora, Elasticsearch & others
+            Custom sources with AWS Lambda
+        Retrieve data in real-time with WebSocket or MQTT on WebSocket
+        For mobile apps
+            local data access & data synchronization
+        It all starts with uploading one GraphQL schema
+        Cognito Integration
+            Perform authorization on Cognito users based on the groups they belong to
+            In the GraphQL schema, you can specify the security for Cognito groups
+    Route 53
+        Record Types
+            A 
+                maps a hostname to IPv4
+            AAAA
+                maps a hostname to IPv6
+            CNAME
+                maps a hostname to another hostname
+                The target is a domain name which must have an A or AAAA record
+                Can’t create a CNAME record for the top node of a DNS namespace (Zone 
+                Apex)
+                Example: you can’t create for example.com, but you can create for www.example.com
+            NS
+                Name Servers for the Hosted Zone
+                Control how traffic is routed for a domain
+        CNAME vs.Alias
+            CNAME
+                Points a hostname to any other hostname. (app.mydomain.com => blabla.anything.com)
+                ONLY FOR NON ROOT DOMAIN (aka. something.mydomain.com) 
+            Alias
+                Points a hostname to an AWS Resource (app.mydomain.com => blabla.amazonaws.com) 
+                Works for ROOT DOMAIN and NON ROOT DOMAIN (aka mydomain.com) 
+                Free of charge 
+                Native health check
+                You cannot set an ALIAS record for an EC2 DNS name
+        Records TTL (Time To Live)
+            High TTL – e.g., 24 hr
+                Less traffic on Route 53
+                Possibly outdated records
+            Low TTL – e.g., 60 sec.
+                More traffic on Route 53 ($$)
+                Records are outdated for less time
+                Easy to change records
+            Except for Alias records, TTL is mandatory for each DNS record
+        Routing Policies
+            Simple
+                Typically, route traffic to a single resource
+                Can’t be associated with Health Checks
+            Weighted
+                Control the % of the requests that go to each specific resource
+                Can be associated with Health Checks
+                Use cases: load balancing between regions, testing new application versions…
+            Latency-based
+                Redirect to the resource that has the least latency close to us
+                Super helpful when latency for users is a priority 
+                Latency is based on traffic between users and AWS Regions
+            Geolocation
+                This routing is based on user location
+                Should create a “Default” record (in case there’s no match on location)
+            Geoproximity
+                Route traffic to your resources based on the geographic location of users and resources
+                Ability to shift more traffic to resources based on the defined bias
+                To change the size of the geographic region, specify bias values
+                    To expand (1 to 99) – more traffic to the resource
+                    To shrink (-1 to -99) – less traffic to the resource
+                Resources can be
+                    AWS resources (specify AWS region)
+                    Non-AWS resources (specify Latitude and Longitude)
+                You must use Route 53 Traffic Flow to use this feature
+            Failover
+                Active-Passive
+            Multi-Value
+                Use when routing traffic to multiple resources
+                Multi-Value is not a substitute for having an ELB
+            IP-based Routing
+                Routing is based on clients’ IP addresses
+                You provide a list of CIDRs for your clients
+                Example: route end users from a particular ISP to a specific endpoint
+        Traffic flow
+            Simplify the process of creating and maintaining records in large and complex configurations
+            Visual editor to manage complex routing decision trees
+            Configurations can be saved as Traffic Flow Policy
+        Hosted Zones
+            A container for records that define how to route traffic to a domain and its subdomains
+            Public Hosted Zones
+                contains records that specify how to route traffic on the Internet (public domain names)
+            Private Hosted Zones
+                contain records that specify how you route traffic within one or more VPCs (private domain names)
+        Good to Know
+            For internal private DNS (Private Hosted Zone), you must enable the VPC settings 
+            enableDnsHostnames and enableDnsSupport
+        DNS Security Extensions (DNSSEC)
+            A protocol for securing DNS traffic, verifies DNS data integrity and origin
+            Protects against Man in the Middle (MITM) attacks
+            Route 53 supports both DNSSEC for Domain Registeration and DNSSEC Signing
+            Works only with Public Hosted Zones
+        Route 53 with 3rd Registrar
+            You can buy the domain out of AWS and use Route 53 as the DNS provider
+            Update the NS records on the 3rd party Registrar
+        Health Checks
+            HTTP Health Checks are only for public resources
+            Health Checks are integrated with CW metrics
+            Calculated Health Checks
+                Combine the results of multiple Health Checks into a single Health Check
+                You can use OR, AND, or NOT
+                Specify how many of the health checks need to pass to make the parent pass
+            Private Hosted Zones
+                Route 53 health checkers are outside the VPC 
+                They can’t access private endpoints (private VPC or on-premises resource)
+                You can create a CloudWatch Metric and associate a CloudWatch Alarm, then create a Health Check that checks the alarm itself
+        Hybrid DNS
+            By default, Route 53 Resolver automatically answers DNS queries for
+                Local domain names for EC2 instances 
+                Records in Private Hosted Zones 
+                Records in public Name Servers
+            resolving DNS queries between VPC (Route 53 Resolver) and your networks (other DNS Resolvers)
+            Networks can be
+                VPC itself / Peered VPC
+                On-premises Network (connected through Direct Connect or AWS VPN)
+        Resolver Endpoints
+            Inbound Endpoint
+                DNS Resolvers on your network can forward DNS queries to Route 53 Resolver
+                Allows your DNS Resolvers to resolve domain names for AWS resources (e.g., EC2 instances) 
+                and records in Route 53 Private Hosted Zones
+                ex: on-prem to AWS 
+            Outbound Endpoint
+                Route 53 Resolver conditionally forwards DNS queries to your DNS Resolvers
+                Use Resolver Rules to forward DNS queries to your DNS Resolvers
+                ex: AWS to on-prem 
+                Resolver Rules
+                    Control which DNS queries are forwarded to DNS Resolvers on your network
+                    Conditional Forwarding Rules
+                        Forward DNS queries for a specified domain and all its subdomains 
+                        to target IP addresses
+                    System Rules
+                        Selectively overriding the behavior defined in Forwarding Rules 
+                        (e.g., don’t forward DNS queries for a subdomain acme.example.com)
+                    Auto-defined System Rules
+                        Defines how DNS queries for selected domains are resolved 
+                        (e.g., AWS internal domain names, Privated Hosted Zones)
 
+    AWS Global Accelerator
+        Leverage the AWS internal network to route to your application
+        2 Anycast IP are created for your application
+        The Anycast IP send traffic directly to Edge Locations
+        The Edge locations send the traffic to your application
+        Works with 
+            Elastic IP
+            EC2 instances
+            ALB, NLB, public or private
+        Consistent Performance
+            Intelligent routing to lowest latency and fast regional failover
+            No issue with client cache (because the IP doesn’t change)
+            Internal AWS network
+        Health Checks
+            Global Accelerator performs a health check of your applications
+            Helps make your application global (failover less than 1 minute for unhealthy)
+            Great for disaster recovery (thanks to the health checks)
+        Security
+            only 2 external IP need to be whitelisted
+            DDoS protection thanks to AWS Shield
+        AWS Global Accelerator vs CloudFront
+            They both use the AWS global network and its edge locations around the world
+            Both services integrate with AWS Shield for DDoS protection.
+            CloudFront 
+                Improves performance for both cacheable content (such as images and videos) 
+                Dynamic content (such as API acceleration and dynamic site delivery)
+                Content is served at the edge
+            Global Accelerator
+                Improves performance for a wide range of applications over TCP or UDP 
+                Proxying packets at the edge to applications running in one or more AWS Regions.
+                Good fit for non-HTTP use cases, such as gaming (UDP), IoT (MQTT), or Voice over IP
+                Good for HTTP use cases that require static IP addresses
+                Good for HTTP use cases that required deterministic, fast regional failover
+    AWS Outposts
+        AWS Outposts are "server racks" that offers the same AWS infrastructure, services, APIs & tools
+        to build your own applications on-premises just as in the cloud
+        AWS will setup and manage "Outposts Racks" within your on-premises infrastructure 
+        and you can start leveraging AWS services on-premises
+        You are responsible for the Outposts Rack physical security
+        Benefits
+            Low-latency access to on-premises systems
+            Local data processing
+            Data residency
+            Easier migration from on-premises to the cloud
+            Fully managed service
+    AWS WaveLength
+        WaveLength Zones are infrastructure deployments embedded within the telecommunications providers
+        datacenters at the edge of the 5G networks
+        Brings AWS services to the edge of the 5G networks
+        Example: EC2, EBS, VPC…
+        Ultra-low latency applications through 5G networks
+        Traffic doesn’t leave the Communication Service Provider’s (CSP) network
+        High-bandwidth and secure connection to the parent AWS Region
+        No additional charges or service agreements
+        Use cases: Smart Cities, ML-assisted diagnostics, Connected Vehicles, Interactive Live Video Streams,
+        AR/VR, Real-time Gaming, …
+    AWS Local Zones
+        Places AWS compute, storage, database, and other selected AWS services closer to end users to run 
+        latency-sensitive applications
+        Extend your VPC to more locations – "Extension of an AWS Region"
+        Compatible with EC2, RDS, ECS, EBS, ElastiCache, Direct Connect …
+    Storage
+        EBS - Elastic Block Storage
+            Network drive you attach to ONE instance only
+            Linked to a specific availability zone (transfer: snapshot => restore) 
+            Volumes can be resized 
+            Make sure you choose an instance type that is EBS optimized to enjoy maximum throughput
+            Volume Types
+                gp2 / gp3 (SSD)
+                    General purpose SSD volume that balances price and performance for a 
+                    wide variety of workloads
+                o1 / io2 Block Express
+                    Highest-performance SSD volume for mission-critical low- latency or 
+                    high-throughput workloads
+                st1 (HDD) 
+                    Low cost HDD volume designed for frequently accessed, throughput- intensive workloads
+                sc1 (HDD)
+                    Lowest cost HDD volume designed for less frequently accessed workloads
+            Only gp2/gp3 and io1/io2 can be used as boot volumes
+            Snapshots
+                Incremental – only backup changed blocks
+                EBS backups use IO, and you shouldn’t run them while your application is handling a lot of traffic 
+                Snapshots will be stored in S3 (but you won’t directly see them)
+                Not necessary to detach volume to do snapshot, but recommended
+                Can copy snapshots across region (for DR)
+                Can make Image (AMI) from Snapshot
+                EBS volumes restored by snapshots need to be pre-warmed (use the Fast Snapshot Restore FSR feature or fio/dd command to read the entire volume)
+            Amazon Data Lifecycle Manager
+                Automate the creation, retention, and deletion of EBS snapshots and EBS-backed AMIs
+                Schedule backups, cross-account snapshot copies, delete outdated backups, …
+                Uses resource tags to identify the resources (EC2 instances, EBS volumes)
+                Can’t be used to manage snapshots/AMIs created outside DLM
+                Can’t be used to manage instance-store backed AMIs
+                Amazon Data Lifecycle Manager vs. AWS Backup
+                    Use Data Lifecycle Manager
+                        when you want to automate the creation, retention, and deletion of EBS Snapshots
+                    Use AWS Backup
+                        to manage and monitor backups across the AWS services you use,including EBS volumes, 
+                        from a single place 
+            Multi-Attach – io1/io2 family
+                Attach the same EBS volume to multiple EC2 instances in the same AZ
+                Each instance has full read & write permissions to the volume
+                Use case:
+                    Achieve higher application availability in clustered Linux applications (ex: Teradata)
+                    Applications must manage concurrent write operations
+                Must use a file system that’s cluster-aware (not XFS, EXT4, etc…)
+        Local EC2 Instance Store
+            Physical disk attached to the physical server where your EC2 is
+            Very High IOPS (because physical) 
+            Disks up to 7.5 TiB (can change over time), stripped to reach 60TiB (can change over time…)
+            Block Storage (just like EBS) 
+            Cannot be increased in size 
+            Risk of data loss if hardware fails
+        Instance Store vs EBS
+            Instance store is physically attached to the machine (ephemeral/non-persistent storage)
+            EBS is a network drive (persistent)
+            Pros:(for instance store)
+                Better I/O performance (EBS gp2 has a max IOPS of 16000, io1 of 64000, io2 
+                Block Express of 256000)
+                Good for buffer / cache / scratch data / temporary content
+                Data survives reboots
+            Cons:
+                On stop or termination, the instance store is lost
+                You can’t resize the instance store
+                Backups must be operated by the user
+        EFS – Elastic File System
+            Managed NFS (network file system) that can be mounted on many EC2
+            EFS works with EC2 instances in multi-AZ, & on–premises (DX & VPN)
+            Highly available, scalable, expensive (3x gp2), pay per GB used
+            Use cases: content management, web serving, data sharing, WordPress
+            Compatible with Linux based AMI (not Windows), POSIX-compliant
+            Uses NFSv4.1 protocol
+            Uses security group to control access to EFS
+            Encryption at rest using KMS
+            POSIX file system (~Linux) that has a standard file API
+            File system scales automatically, pay-per-use, no capacity planning
+            EFS Scale
+                1000s of concurrent NFS clients, 10 GB+ /s throughput
+                Grow to Petabyte-scale network file system, automatically
+            Performance Mode (set at EFS creation time)
+                General Purpose (default) – latency-sensitive use cases (web server, CMS, etc…)
+                Max I/O – higher latency, throughput, highly parallel (big data, media processing)
+            Throughput Mode
+                Bursting – 1 TB = 50MiB/s + burst of up to 100MiB/s
+                Provisioned – set your throughput regardless of storage size, ex: 1 GiB/s for 1 TB storage
+                Elastic – automatically scales throughput up or down based on your workloads
+                    Up to 3GiB/s for reads and 1GiB/s for writes
+                    Used for unpredictable workloads
+            Storage Classes
+                Storage Tiers (lifecycle management feature – move file after N days)
+                Standard
+                    for frequently accessed files
+                Infrequent access (EFS-IA)
+                    cost to retrieve files, lower price to store.
+                Archive
+                    rarely accessed data (few times each year), 50% cheaper
+                Implement lifecycle policies to move files between storage tiers
+            Access Points
+                Easily manage applications access to NFS environments
+                Enforce a POSIX user and group to use when accessing the file system
+                Restrict access to a directory within the file system and optionally specify a 
+                different root directory
+                Can restrict access from NFS clients using IAM policies
+            File System Policies
+                Resource-based policy to control access to EFS File Systems (same as S3 bucket policy)
+                By default, it grants full access to all clients
+            Cross-Region Replication
+                Replicate objects in an EFS file system to another AWS Region
+                Setup for new or existing EFS file systems
+                Provides RPO and RTO of minutes
+                Doesn’t affect the provisioned throughput of the EFS file system
+                Use cases: meet your compliance and business continuity goals
+        S3 - Simple Storage Service 
+            Object storage, serverless, unlimited storage, pay-as-you-go 
+            Good to store static content (image, video files) 
+            Access objects by key, no indexing facility 
+            Not a filesystem, cannot be mounted natively on EC2
+            Replication (Versioning enabled)
+                Cross Region Replication (CRR)
+                Same Region Replication (SRR)
+                Combine with Lifecycle Rules
+                Helpful to reduce latency, disaster recovery, security
+            Event Notifications
+                S3:ObjectCreated, S3:ObjectRemoved, S3:ObjectRestore, S3:Replication…
+                Object name filtering possible (*.jpg)
+                Use case: generate thumbnails of images uploaded to S3
+                Can create as many “S3 events” as desired
+                Advanced filtering
+                    options with JSON rules (metadata, object size, name...)
+                Multiple Destinations 
+                    ex Step Functions, Kinesis Streams / Firehose…
+                EventBridge Capabilities 
+                    Archive, Replay Events, Reliable delivery
+            Multi-Part upload
+                recommended for files > 100MB, must use for files > 5GB
+                Can help parallelize uploads (speed up transfers)
+            S3 Transfer Acceleration
+                Increase transfer speed by transferring file to an AWS edge location which will forward 
+                the data to the S3 bucket in the target region
+                Compatible with multi-part upload
+            S3 Byte-Range Fetches
+                Parallelize GETs by requesting specific byte ranges
+                Better resilience in case of failures
+            S3 Analytics – Storage Class Analysis
+                Recommendations for Standard and Standard IA
+                    Does NOT work for One-Zone IA or Glacier
+                Report is updated daily
+                24 to 48 hours to start seeing data analysis    
+                Visualize data in Amazon QuickSight
+                Good first step to put together Lifecycle Rules (or improve them)
+            S3 Storage Lens
+                Understand, analyze, and optimize storage across entire AWS Organization
+                Discover anomalies, identify cost efficiencies, and apply data protection best 
+                practices across entire AWS Organization (30 days usage & activity metrics)
+                Default dashboard or create your own dashboards
+                Can be configured to export metrics daily to an S3 bucket (CSV, Parquet)
+                default dashboard
+                    Visualize summarized insights and trends for both free and advanced metrics
+                    Default dashboard shows Multi-Region and Multi-Account data
+                    Preconfigured by Amazon S3
+                Metrics 
+                    Summary
+                    Cost-Optimization
+                    Data-Protection
+                    Access-management
+                    Event Metrics
+                    Performance Metrics 
+                    Activity Metrics
+                    Detailed Status Code Metrics
+        Amazon FSx
+            Launch 3rd party high-performance file systems on AWS
+            FSx for Lustre
+                Lustre is a type of parallel distributed file system, for large-scale computing
+                name Lustre is derived from Linux and cluster
+                for Machine Learning, High Performance Computing (HPC)
+                Video Processing, Financial Modeling, Electronic Design Automation
+                Seamless integration with S3
+                    Can "read S3" as a file system (through FSx)
+                    Can write the output of the computations back to S3 (through FSx)
+                Can be used from on-premises servers (VPN or Direct Connect)
+                Scratch File System
+                    Temporary storage
+                    Data is not replicated (doesn’t persist if file server fails)
+                    High burst (6x faster, 200MBps per TiB)
+                    Usage: short-term processing, optimize costs
+                Persistent File System
+                    Long-term storage
+                    Data is replicated within same AZ 
+                    Replace failed files within minutes
+                    Usage: long-term processing, sensitive data
+            FSx for NetApp ONTAP
+                File System compatible with NFS, SMB, iSCSI protocol
+                Move workloads running on ONTAP or NAS to AWS
+                Point-in-time instantaneous cloning
+            FSx for Windows File Server
+                Supports SMB protocol & Windows NTFS
+                Microsoft Active Directory integration, ACLs, user quotas
+                Can be mounted on Linux EC2 instances
+                Can be accessed from your on-premises infrastructure (VPN or Direct Connect)
+                Data is backed-up daily to S3
+            FSx for OpenZFS
+                Managed OpenZFS file system on AWS
+                File System compatible with NFS (v3, v4, v4.1, v4.2)
+                Point-in-time instantaneous cloning
+        AWS DataSync
+            Move large amount of data to and from
+                On-premises / other cloud to AWS (NFS, SMB, HDFS, S3 API…) – needs agent
+                AWS to AWS (different storage services) – no agent needed
+            Can synchronize to
+                Amazon S3 (any storage classes – including Glacier)
+                Amazon EFS
+                Amazon FSx (Windows, Lustre, NetApp, OpenZFS...)
+            Replication tasks can be scheduled hourly, daily, weekly
+            File permissions and metadata are preserved (NFS POSIX, SMB…)
+            One agent task can use 10 Gbps, can setup a bandwidth limit
+        AWS Data Exchange
+            Find, subscribe to, and use third-party data in the cloud
+            Once subscribed to a data product, you can use the AWS Data Exchange API to load data directly
+            into Amazon S3 and then analyze it with variety of AWS analytics and machine learning services
+            for Redshift
+                query in an Amazon Redshift data warehouse in minutes
+            for APIs
+                Find and subscribe to third-party APIs with a consistent access using AWS SDKs
+                Consistent AWS-native authentication and governance
+        AWS Transfer Family
+            fully-managed service for file transfers into and out of Amazon S3 or Amazon EFS 
+            using the FTP protocol
+            Supported Protocols
+                AWS Transfer for FTP (File Transfer Protocol (FTP))
+                AWS Transfer for FTPS (File Transfer Protocol over SSL (FTPS))
+                AWS Transfer for SFTP (Secure File Transfer Protocol (SFTP))
+            Integrate with existing authentication systems (Microsoft Active Directory,
+            LDAP, Okta, Amazon Cognito, custom)
+            Usage: sharing files, public datasets, CRM, ERP, …
+            Endpoint Types
+                Public Endpoint
+                VPC Endpoint with Internal Access
+                VPC Endpoint with Internet-facing Access
+        Amazon CloudFront
+            Content Delivery Network (CDN)
+            Improves read performance, content is cached at the edge
+            Protect against Network and Application layer attacks
+            Integration with AWS Shield, AWS WAF, and Route 53
+            Can expose external HTTPS and can talk to internal HTTPS backends
+            Supports WebSocket protocol
+            Origins
+                S3 Bucket
+                    For distributing files
+                    Enhanced security with CloudFront Origin Access Control (OAC)
+                    OAC is replacing Origin Access Identity (OAI)
+                    CloudFront can be used as an ingress (to upload files to S3)
+                S3 Bucket configured as a website
+                    First, enable Static Website hosting on the bucket
+                MediaStore Container & MediaPackage Endpoint
+                    To deliver Video On Demand (VOD) or live streaming video using AWS Media Services
+                Custom Origin (HTTP)
+                    EC2 instance
+                    Elastic Load Balancer (CLB or ALB)
+                    API Gateway (for more control… otherwise use API Gateway Edge)
+                    Any HTTP backend you want
+            Origin Groups
+                To increase high-availability and do failover
+                one primary and one secondary origin
+                Origins can be cross AWS Regions
+            Geo Restriction
+                Allow list
+                    Allow your users to access your content only if they're in one of the countries 
+                    on a list of approved countries.
+                Block list
+                    Prevent your users from accessing your content if they're in one of the countries
+                    on a blacklist of banned countries.
+                Note: the geo header CloudFront-Viewer-Country is in Lambda@Edge
+            Price Classes
+                Price Class All
+                    all regions – best performance
+                Price Class 200
+                    most regions, but excludes the most expensive regions
+                Price Class 100
+                    only the least expensive regions
+            Signed URL
+                Signed URL with expiration to control access to content in CloudFront
+                The Signed URL are generated by an API call into CloudFront as a trusted signer
+            CloudFront Signed URL vs S3 Pre-Signed URL
+                CloudFront Signed URL
+                    Allow access to a path, no matter the origin
+                    Account wide key-pair, only the root can manage it
+                    Can filter by IP, path, date, expiration
+                    Can leverage caching features
+                S3 Pre-Signed URL
+                    Issue a request as the person who pre-signed the URL
+                    Uses the IAM key of the signing IAM principal
+                    Limited lifetime
+            Custom Error Pages
+                Return an object to the viewer (e.g., .html) when your origin returns an 
+                HTTP 4xx or 5xx status code to CloudFront
+                Use Error Caching Minimum TTL to specify how long CloudFront caches the custom error pages
+            Customization At The Edge
+                Edge Function
+                    A code that you write and attach to CloudFront distributions
+                    Runs close to your users to minimize latency
+                    Doesn’t have any cache, only to change requests/responses
+                    Types 
+                        CloudFront Functions
+                        Lambda@Edge
+                    Use cases
+                        Manipulate HTTP requests and responses
+                        Implement request filtering before reaching your application
+                        User authentication and authorization
+                        Generate HTTP responses at the edge
+                        A/B Testing
+                        Bot mitigation at the edge
+                CloudFront Functions
+                    Lightweight functions written in JavaScript
+                    for high-scale, latency-sensitive CDN customizations
+                    Sub-ms startup times, millions of requests/second
+                    RuN at "Edge Locations"
+                    process based isolation
+                    Used to change Viewer requests and responses
+                        Viewer Request – after CloudFront receives a request from a viewer
+                        Viewer Response – before CloudFront forwards the response to the viewer
+                    Native feature of CloudFront (manage code entirely within CloudFront)
+                    use cases 
+                        Cache key normalization
+                        Header manipulation
+                        URL rewrites or redirects
+                        Request authentication & authorization
+                            Create and validate user-generated tokens (e.g., JWT) to allow/deny requests
+                CloudFront Lambda@Edge
+                    Lambda functions written in NodeJS or Python
+                    Scales to 1000s of requests/second
+                    Runs at the nearest "Regional Edge Cache"
+                    VM-based isolation
+                    Used to change CloudFront requests and responses
+                        Viewer Request – after CloudFront receives a request from a viewer
+                        Origin Request – before CloudFront forwards the request to the origin 
+                        Origin Response – after CloudFront receives the response from the origin 
+                        Viewer Response – before CloudFront forwards the response to the viewer
+                    use cases
+                        Longer execution time (several ms)
+                        Adjustable CPU or memory
+                        Your code depends on a 3rd libraries (e.g., AWS SDK to access other AWS services)
+                        Network access to use external services for processing
+                        File system access or access to the body of HTTP requests
+                    ex: 
+                        Loading content based on User-Agent
+                        Route to Different Origin
+        Amazon ElastiCache
+            managed Redis or Memcached
+            Caches are in-memory databases with really high performance, low latency
+            Helps make your application stateless
+            AWS takes care of OS maintenance / patching, optimizations, setup, configuration, 
+            monitoring, failure recovery and backups
+            Using ElastiCache involves heavy application code changes
+            Redis vs Memcached
+                REDIS
+                    Multi AZ with Auto-Failover
+                    Read Replicas to scale reads and have high availability
+                    Persistent, Data Durability
+                        Append Only File (AOF), backup and restore features
+                MEMCACHED
+                    Multi-node for partitioning of data (sharding)
+                    Non persistent
+                    Backup and restore (Serverless)
+                    Multi-threaded architecture
+        DynamoDB
+            NoSQL database, fully managed, massive scale
+            Similar to Apache Cassandra (can migrate to DynamoDB)
+            No disk space to provision, max object size is 400 KB
+            Supports CRUD (Create Read Update Delete)
+            Read: eventually or strong consistency 
+            Supports transactions across multiple tables (ACID support)
+            Backups available, point in time recovery
+            Table classes: Standard and Infrequent Access (IA)
+            Basics 
+                DynamoDB is made of tables
+                Each table has a Primary Key (must be decided at creation time)
+                Each table can have an infinite number of items (= rows)
+                Each item has attributes (can be added over time – can be null)
+                Maximum size of a item is 400KB
+                Data types supported are:
+                    Scalar Types: String, Number, Binary, Boolean, Null
+                    Document Types: List, Map
+                    Set Types: String Set, Number Set, Binary Set
+            Primary Keys
+                Option 1: Partition Key only (HASH)
+                    Partition key must be unique for each item 
+                    Partition key must be “diverse” so that the data is distributed
+                Option 2: Partition Key + Sort Key
+                    The combination must be unique
+                    Data is grouped by partition key
+                    Sort key == range key
+                    Example: users-games table
+                    user_id for the partition key
+                    game_id for the sort key
+                    Example good sort key: timestamp
+            Indexes
+                Object = partition key + optional sort key + attributes
+                LSI – Local Secondary Index
+                    Keep the same primary key
+                    Select an alternative sort key
+                    Must be defined at table creation time
+                GSI – Global Secondary Index
+                    Change the partition key and optional sort key
+                    Can be defined after the table is created
+                You can only query by PK + sort key on the main table & indexes
+            Important Features
+                TTL
+                    automatically expire row after a specified epoch date
+                DynamoDB Streams
+                    react to changes to DynamoDB tables in real time
+                    Can be read by AWS Lambda, EC2…
+                    24 hours retention of data
+                Global Tables (cross region replication)
+                    Active Active replication, many regions 
+                    Must enable DynamoDB Streams 
+                    Useful for low latency, DR purposes
+            Amazon Kinesis Data Streams for DynamoDB
+                You can use Kinesis Data Streams to capture item-level changes in DynamoDB
+                Custom and longer data retention period (> 24 hours in DynamoDB Streams)
+            DAX (DynamoDB Accelerator)
+                Seamless cache for DynamoDB, no application re-write 
+                Writes go through DAX to DynamoDB 
+                Micro second latency for cached reads & queries 
+                Solves the Hot Key problem (too many reads) 
+                5 minutes TTL for cache by default 
+                Up to 10 nodes in the cluster 
+                Multi AZ (3 nodes minimum recommended for production) 
+                Secure (Encryption at rest with KMS, VPC, IAM, CloudTrail…)
+        Amazon OpenSearch (ex ElasticSearch)
+            provide search and indexing capability
+            Two modes
+                Managed cluster 
+                Serverless cluster
+            OpenSearch Dashboards(ex Kibana)
+                Provide real-time dashboards on top of the data that sits in OpenSearch
+            Logstash:
+                Log ingestion mechanism, use the "Logstash Agent"
+                Alternative to CloudWatch Logs (you decide on retention and granularity)
+            Use cases:
+                Log Analytics
+                Real Time application monitoring
+                Security Analytics
+                Full Text Search 
+                Clickstream Analytics
+                Indexing
+        RDS
+            Engines: PostgreSQL, MySQL, MariaDB, IBM DB2, Oracle, SQL Server
+            Managed DB: provisioning, backups, patching, monitoring
+            Launched within a VPC, usually in private subnet, control network access using 
+            security groups (important when using Lambda)
+            Storage by EBS, can increase volume size with auto-scaling
+            Backups: automated with point-in-time recovery. Backups expire
+            Snapshots: manual, can make copies of snapshots cross region
+            RDS Events: get notified via SNS for events (operations, outages…)
+            Multi AZ & Read Replicas
+                Multi-AZ
+                    Standby instance for failover in case of outage
+                Read Replicas
+                    Increase read throughput. Eventual consistency. 
+                    Can be cross-region
+                    Distributing Reads across Replicas
+                        Amazon Route 53
+            Security
+                KMS encryption at rest for underlying EBS volumes / snapshots
+                Transparent Data Encryption (TDE) for Oracle and SQL Server
+                SSL encryption to RDS is possible for all DB (in-flight)
+                IAM authentication for MySQL, PostgreSQL and MariaDB
+                Authorization still happens within RDS (not in IAM)
+                Can copy an un-encrypted RDS snapshot into an encrypted one
+                CloudTrail cannot be used to track queries made within RDS
+            IAM Authentication
+                IAM database authentication works with MariaDB, MySQL and PostgreSQL
+                You don’t need a password, just an authentication token obtained through 
+                IAM & RDS API calls
+                Auth token has a lifetime of 15 minutes
+                Benefits
+                    Network in/out must be encrypted using SSL
+                    IAM to centrally manage users instead of DB
+                    Can leverage IAM Roles and EC2 Instance profiles for easy integration
+            RDS for Oracle
+                Backups
+                    RDS Backups for backups & restore to Amazon RDS for Oracle
+                    Use Oracle RMAN (Recovery Manager) for backups & restore to-non RDS
+                Real Application Clusters (RAC)
+                    RDS for Oracle does NOT support RAC 
+                    RAC is working on Oracle on EC2 Instances because you have full control
+                RDS for Oracle supports Transparent Data Encryption (TDE) to encrypt data 
+                before it’s written to storage
+                DMS works on Oracle RDS
+            RDS for MySQL
+                You can use the native mysqldump to migrate a MySQL RDS DB to non-RDS
+                The external MySQL database can run either on-premises in your data center, or
+                on an Amazon EC2 instance
+            RDS Proxy for AWS Lambda
+                When using Lambda functions with RDS, it opens and maintains a database connection
+                This can result in a "TooManyConnections" exception
+                With RDS Proxy, you no longer need code that handles cleaning up idle connections
+                and managing connection pools
+                Supports IAM authentication or DB authentication, auto-scaling
+                The Lambda function must have connectivity to the Proxy 
+        Aurora
+            DB Engines: PostgreSQL-compatible & MySQL-compatible
+            Storage: automatically grows up to 128 TB, 6 copies of data, multi-AZ
+            Read Replicas: up to 15 RR, reader endpoint to access them all
+            Cross Region RR: entire database is copied (not select tables)
+            Load / Offload data directly from / to S3: efficient use of resources
+            Backup, Snapshots & Restore: same as RDS
+            Endpoints
+                Endpoint = Host Address + Port
+                Cluster Endpoint (Writer Endpoint)
+                    Connects to the current primary DB instance in the Aurora cluster
+                    Used for all write operations in the DB cluster (inserts, updates, deletes, and queries)
+                Reader Endpoint
+                    Provides load-balancing for read only connections to all Aurora Replicas 
+                    in the Aurora cluster
+                    Used only for read operations
+                Custom Endpoint
+                    Represents a set on DB instances that you choose in the Aurora cluster
+                    Used when you want to connect to different subsets of DB instances with
+                    different capacities and configurations 
+                Instance Endpoint
+                    Connects to a specific DB instance in the Aurora cluster
+                    Used when you want to diagnosis and fine tune a specific DB instance
+            Aurora Logs
+                Error log
+                Slow query log
+                General log
+                The audit log
+        Troubleshooting RDS & Aurora Performance
+            Performance Insights
+                find issues by waits, SQL statements, hosts and users
+            CloudWatch Metrics
+                CPU, Memory, Swap Usage
+            Enhanced Monitoring Metrics
+                at host level, process view, per-second metric
+            Slow Query logs
+        Aurora Serverless
+            Automated database instantiation and auto - scaling based on actual usage 
+            Good for infrequent, intermittent or unpredictable workloads 
+            No capacity planning needed 
+            Pay per second, can be more cost -effective
+            Data API 
+                Access Aurora Serverless DB with a simple API endpoint (no JDBC connection needed)
+                Secure HTTPS endpoint to run SQL statements
+                No persistent DB connections management
+                Users must be granted permissions to Data API and Secrets Manager
+        RDS Proxy for Aurora
+            Ability to create an additional read-only endpoint that connects to Aurora Read Replicas only
+        Global Aurora
+            Aurora Cross Region Read Replicas
+                Useful for disaster recovery
+                Simple to put in place
+            Aurora Global Database (recommended)
+                1 Primary Region (read / write) 
+                Up to 5 secondary (read-only) regions, replication lag is less than 1 second
+                Up to 16 Read Replicas per secondary region Helps for decreasing latency
+                Promoting another region (for disaster recovery) has an RTO of < 1 minute
+                Ability to manage the RPO in Aurora for PostgreSQL
+                Write Forwarding
+                    Enables Secondary DB Clusters to forward SQL statements that perform 
+                    write operations to the Primary DB Cluster 
+                    Data is always changed first on the Primary DB Cluster, then replicated 
+                    to the Secondary DB Clusters 
+                    Primary DB Cluster always has an up-to-date copy of all data 
+                    Reduces the number of endpoints to manage
 
-
-                
-
-
-
-
-
-
-
-
-
-                    
-
-
-
-
-
-            
-
-             
-            
-            
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
+    Service Communication
+        AWS Step Functions
+            Build serverless visual workflow to orchestrate your Lambda functions
+            Represent flow as a JSON state machine
+            Features: sequence, parallel, conditions, timeouts, error handling…
+            Maximum execution time of 1 year
+            Possibility to implement human approval feature
+            If you chain Lambda functions using Step Functions, be mindful of the 
+            added latency to pass the calls.
+            Optimized Integrations
+                Can invoke a Lambda function
+                Run an AWS Batch job
+                Run an ECS task and wait for it to complete
+                Insert an item from DynamoDB
+                Publish message to SNS, SQS
+                Launch an EMR, Glue, or SageMaker jobs
+                Launch another Step Function workflow…
+            AWS SDK Integrations
+                Access 200+ AWS services from your State Machine
+            You can invoke a Step Function Workflow (State Machine) using
+                AWS Management Console
+                AWS SDK (StartExecution API call)
+                AWS CLI (start-execution)
+                AWS Lambda (StartExecution API call)
+                API Gateway
+                EventBridge
+                CodePipeline
+                Step Functions
+            Tasks
+                Lambda Tasks:
+                    Invoke a Lambda function 
+                Activity Tasks:
+                    Activity worker (HTTP), EC2 Instances, mobile device, on premise DC
+                    They poll the Step functions service
+                Service Tasks:
+                    Connect to a supported AWS service 
+                    Lambda function, ECS Task, Fargate, DynamoDB, Batch job, SNS topic, SQS queue
+                Wait Task:
+                    To wait for a duration or until a timestamp
+            Standard vs. Express Workflows 
+                standard workflow
+                    max duration 1 year
+                express workflow 
+                    max duration 5 minutes 
+            Express Workflow
+                Synchronous Express Workflows
+                    Wait until the Workflow completes, then return the result
+                    Examples: orchestrate microservices, handle errors, retries, parallel tasks
+                Asynchronous Express Workflows
+                    Doesn’t wait for the Workflow to complete
+                    Examples: Workflows that don’t require immediate response, messaging, …
+            Error Handling
+                You can enable error handling, retries, and add alerting to Step Function State Machine
+                Example: set up EventBridge to alert via email if a State Machine execution fails
+        Amazon SQS
+            Serverless, managed queue, integrated with IAM
+            Can handle extreme scale, no provisioning required
+            Used to decouple services
+            Message size of max 256 KB (use a pointer to S3 for large messages)
+            Can be read from EC2 (optional ASG), Lambda
+            SQS could be used as a write buffer for DynamoDB 
+            SQS FIFO
+                receive messages in order they were sent
+                300 messages/s without batching, 3000 /s with batching                            
+            If a consumer fails to process a message within the Visibility Timeout… 
+            the message goes back queue!
+            We can set a threshold of how many times a message can go back to the queue
+            Dead Letter Queue (DLQ)
+                After the MaximumReceives threshold is exceeded, the message goes into a 
+                Dead Letter Queue (DLQ)
+                DLQ of a FIFO queue must also be a FIFO queue
+                DLQ of a Standard queue must also be a Standard queue
+                Make sure to process the messages in the DLQ before they expire:
+                    Good to set a retention of 14 days in the DLQ
+                Redrive to Source
+                    Feature to help consume messages in the DLQ to understand what is wrong with them 
+                    When our code is fixed, we can redrive the messages from the DLQ back into the source
+                    queue (or any other queue) in batches without writing custom code
+            Solution Architecture - Idempotency
+                Messages can be processed twice by consumer (in case of failures, timeouts, etc)
+                To hedge against that problem, implement idempotency at the consumer level
+                Means the same action done twice by the consumer won’t duplicate the effect
