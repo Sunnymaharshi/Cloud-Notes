@@ -3404,3 +3404,118 @@ Notes:
                 Financial Services (e.g., invoices, financial reports)
                 Healthcare (e.g., medical records, insurance claims)
                 Public Sector (e.g., tax forms, ID documents, passports)
+    Other Services
+        CodeCommit
+            On July 25th 2024, AWS abruptly discontinued CodeCommit
+        Amazon CodeGuru
+            An ML-powered service for automated code reviews and application performance recommendations 
+            Provides two functionalities
+            CodeGuru Reviewer
+                automated code reviews for static code analysis (development)
+                Identify critical issues, security vulnerabilities, and hard-to-find bugs
+            CodeGuru Profiler
+                Helps understand the runtime behavior of your application
+                visibility/recommendations about application performance during runtime (production)
+                Features:
+                    Identify and remove code inefficiencies
+                    Improve application performance (e.g., reduce CPU utilization)
+                    Decrease compute costs
+                    Provides heap summary (identify which objects using up memory)
+                    Anomaly Detection
+                Support applications running on AWS or on- premise
+        Kinesis Video Streams
+            One video stream per streaming device (producers)
+                Security cameras, body worn camera, smartphone
+                Can use a Kinesis Video Streams Producer library
+            Underlying data is stored in S3 (but we don’t have access to it)
+            Cannot output the stream data to S3 (must build custom solution)
+            Consumers:
+                Consumed by EC2 instances for real time analysis, or in batch
+                Can leverage the Kinesis Video Stream Parser Library
+                Integration with AWS Rekognition for facial detection
+        Amazon WorkSpaces
+            Managed, Secure Cloud Desktop
+            Great to eliminate management of on-premises VDI (Virtual Desktop Infrastructure)
+            Pricing is either on-demand (pay per hour) or monthly subscription
+            Secure, Encrypted, Network Isolation
+            Integrated with Microsoft Active Directory
+            WorkSpaces Application Manager (WAM)
+                Deploy and Manage applications as virtualized application containers
+                Provision at scale, and keep the applications updated using WAM
+            Windows Updates
+                By default, Amazon Workspaces are configured to install software updates
+                Amazon WorkSpaces with Windows will have Windows Update turned on
+                You have full control over the Windows Update frequency 
+            Maintenance Windows
+                Updates are installed during maintenance windows (you define them)
+                Always On WorkSpaces: default is from 00h00 to 04h00 on Sunday morning
+                AutoStop WorkSpaces: automatically starts once a month to install updates
+                Manual maintenance: you define your windows and perform maintenance 
+            IP Access Control Groups
+                List of IP addresses / CIDR address ranges that users are authorized to connect from
+                If users access WorkSpaces through VPN or NAT, the IP Access Control Group must 
+                authorize the public IP of these
+        Amazon AppStream 2.0
+            Desktop Application Streaming Service
+            Deliver to any computer, without acquiring, provisioning infrastructure
+            The application is delivered from within a web browser
+        Amazon AppStream 2.0 vs WorkSpaces
+            Workspaces
+                Fully managed VDI and desktop available
+                The users connect to the VDI and open native or WAM applications 
+                Workspaces are on-demand or always on
+            AppStream 2.0
+                Stream a desktop application to web browsers (no need to connect to a VDI)
+                Works with any device (that has a web browser)
+                Allow to configure an instance type per application type (CPU, RAM, GPU)
+        AWS Device Farm
+            Application testing service for your mobile and web applications 
+            Test across real browsers and real mobiles devices 
+            Fully automated using framework 
+            Improve the quality of web and mobile apps 
+            Generates videos and logs to document the issues encountered 
+            Can remotely log-in to devices for debugging
+        AWS Macie
+            Amazon Macie is a fully managed data security and data privacy service that uses 
+            machine learning and pattern matching to discover and protect your sensitive data in AWS.
+            Macie helps identify and alert you to sensitive data, such as 
+            personally identifiable information(PII)
+        Amazon Simple Email Service (Amazon SES)
+            Fully managed service to send emails securely, globally and at scale
+            Allows inbound/outbound emails
+            Reputation dashboard, performance insights, anti-spam feedback
+            Provides statistics such as email deliveries, bounces, feedback loop results, email open
+            Supports DomainKeys Identified Mail (DKIM) and Sender Policy Framework (SPF) 
+            Flexible IP deployment: shared, dedicated, and customer-owned IPs
+            Send emails using your application using AWS Console, APIs, or SMTP
+            Use cases: transactional, marketing and bulk email communications
+            Configuration Sets
+                Configuration sets help you customize and analyze your email send events 
+                Event destinations: 
+                    Kinesis Data Firehose
+                        receives metrics (numbers of sends, deliveries, opens, clicks, bounces, 
+                        and complaints) for each email 
+                    SNS: for immediate feedback on bounce and complaint information 
+                IP pool management: use IP pools to send particular types of emails
+        Amazon Pinpoint
+            Scalable 2-way (outbound/inbound) marketing communications service 
+            Supports email, SMS, push, voice, and in-app messaging 
+            Ability to segment and personalize messages with the right content to customers 
+            Possibility to receive replies 
+            Scales to billions of messages per day 
+            Use cases: run campaigns by sending marketing, bulk, transactional SMS messages 
+            Versus Amazon SNS or Amazon SES 
+                In SNS & SES you managed each message's audience, content, and delivery schedule 
+                In Amazon Pinpoint, you create "message templates", delivery schedules, 
+                highly-targeted segments, and full
+        EC2 Image Builder
+            Used to automate the creation of Virtual Machines or container images
+            Automate the creation, maintain, validate and test EC2 AMIs
+            Can be run on a schedule (weekly, whenever packages are updated, etc…)
+            Free service (only pay for the underlying resources)
+            Can publish AMI to multiple regions and multiple accounts
+        AWS IoT Core
+            allows you to easily connect IoT devices to the AWS Cloud            
+            Serverless, secure & scalable to billions of devices and trillions of messages 
+            Integrates with a lot of AWS services (Lambda, S3, SageMaker, etc.) 
+            Build IoT applications that gather, process, analyze, and act on data
