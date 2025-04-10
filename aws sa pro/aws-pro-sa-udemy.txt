@@ -1427,6 +1427,29 @@ Notes:
                 Same Region Replication (SRR)
                 Combine with Lifecycle Rules
                 Helpful to reduce latency, disaster recovery, security
+            S3 Standard – General Purpose
+                99.99% Availability
+                Used for frequently accessed data
+                Low latency and high throughput
+                Sustain 2 concurrent facility failures
+            S3 Infrequent Access 
+                less frequently accessed, but requires rapid access
+                types 
+                    Standard IA 
+                    One Zone IA 
+            S3 Glacier Storage
+                meant for archiving / backup
+                price for storage + object retrieval cost
+                S3 Glacier Instant Retrieval
+                    great for data accessed once a quarter
+                S3 Glacier Flexible Retrieval
+                    Expedited (1 to 5 minutes), Standard (3 to 5 hours), Bulk (5 to 12 hours)
+                S3 Glacier Deep Archive
+                    Standard (12 hours), Bulk (48 hours)
+            S3 Intelligent-Tiering
+                Small monthly monitoring and auto-tiering fee
+                Moves objects automatically between Access Tiers based on usage
+                There are no retrieval charges in S3 Intelligent-Tiering
             Event Notifications
                 S3:ObjectCreated, S3:ObjectRemoved, S3:ObjectRestore, S3:Replication…
                 Object name filtering possible (*.jpg)
@@ -2292,6 +2315,465 @@ Notes:
                 Advanced SQL queries, must provision servers
                 Can leverage Redshift Spectrum for serverless queries on S3
     
+    Monitoring
+        CloudWatch
+            CloudWatch Metrics
+                Provided by many AWS services
+                EC2 standard: 5 minutes, detailed monitoring: 1 minute
+                EC2 RAM is not a built-in metric
+                Can create custom metrics: standard resolution 1 minute, high resolution 1 sec
+            CloudWatch Alarms
+                Can trigger actions: EC2 action (reboot, stop, terminate, recover), Auto Scaling, SNS
+                Alarm events can be intercepted by Amazon EventBridge
+            CloudWatch Dashboards
+                Display metrics and alarms
+                Can show metrics of multiple regions
+            Synthetics Canary
+                Configurable script that monitor your APIs, URLs, Websites, …
+                Reproduce what your customers do programmatically to find issues before customers are impacted
+                Checks the availability and latency of your endpoints and can store load time data and 
+                screenshots of the UI
+                Integration with CloudWatch Alarms
+                Scripts written in Node.js or Python
+                Programmatic access to a headless Google Chrome browser
+                Can run once or on a regular schedule
+                Blueprints
+                    Heartbeat Monitor 
+                        load URL, store screenshot and an HTTP archive file
+                    API Canary 
+                        test basic read and write functions of REST APIs
+                    Broken Link Checker 
+                        check all links inside the URL that you are testing
+                    Visual Monitoring 
+                        compare a screenshot taken during a canary run with a baseline screenshot
+                    Canary Recorder 
+                        used with CloudWatch Synthetics Recorder (record your actions on a website and
+                        automatically generates a script for that)
+                    GUI Workflow Builder 
+                        verifies that actions can be taken on your webpage 
+                        (e.g., test a webpage with a login form)
+            CloudWatch Logs
+                Log groups
+                    arbitrary name, usually representing an application
+                Log stream
+                    instances within application / log files / containers
+                    CloudWatch Logs can send logs to:
+                        Amazon S3 (exports)
+                        Kinesis Data Streams
+                        Kinesis Data Firehose
+                        AWS Lambda
+                        ElasticSearch
+                Metric Filter
+                    can use filter expressions
+                    For example, find a specific IP inside of a log
+                    Or count occurrences of “ERROR” in your logs 
+                    Metric filters can be used to trigger alarms
+                Logs Insights
+                    can be used to query logs and add queries to CloudWatch Dashboards
+                S3 Export
+                    S3 buckets must be encrypted with AES-256 (SSE-S3) or SSE-KMS
+                    Log data can take up to 12 hours to become available for export
+                    The API call is CreateExportTask
+                    Not near-real time or real-time… use Logs Subscriptions instead
+                Logs Subscriptions
+                    real-time or near-real time
+                    subcription filter 
+                        used to filter the logs 
+            CloudWatch Agent
+                Install CW Agent using SSM (AWS Systems Manager) Run Command
+                Install CW Agent using SSM State Manager
+                Configure CW Agent by storing config in SSM Parameter Store
+                used to monitor EC2 
+        Amazon EventBridge (ex CloudWatch Events)
+            Schedule
+                Cron jobs (scheduled scripts)
+            Event Pattern
+                Event rules to react to a service doing something
+            Trigger Lambda functions, send SQS/SNS messages…
+            Event buses can be accessed by other AWS accounts using Resource-based Policies
+            You can archive events (all/filter) sent to an event bus (indefinitely or set period)
+            Ability to replay archived events
+            Schema Registry
+                EventBridge can analyze the events in your bus and infer the schema 
+                The Schema Registry allows you to generate code for your application, 
+                that will know in advance how data is structured in the event bus 
+                Schema can be versioned
+            Resource-based Policy
+                Manage permissions for a specific Event Bus
+                Example: allow/deny events from another AWS account or AWS region
+                Use case: aggregate all events from your AWS Organization in a single AWS account or AWS region
+        AWS X-Ray
+            Visual analysis of our applications
+            Tracing requests across your microservices
+            Integrations with:
+                EC2 – install the X-Ray agent
+                ECS – install the X-Ray agent or Docker container
+                Lambda
+                Beanstalk - agent is automatically installed
+                API Gateway – helpful to debug errors (such as 504)
+            The X-Ray agent or services need IAM permissions to X-Ray   
+        AWS Personal Health Dashboard
+            Global service 
+            Show how AWS outages directly impact you 
+            Show the impact on your resources 
+            List issues and actions you can do to remediate them 
+            Will show maintenance events from AWS 
+            Programmatically accessible through the AWS Health API 
+            Aggregations across multiple accounts of an AWS Organization
+            Health Event Notifications
+                Use EventBridge (CloudWatch Events) to react to changes for AWS Health events 
+                in your AWS account
+                Example: receive email notifications when EC2 instances in your AWS account are 
+                scheduled for updates
+                Can’t be used to return public events from the Service Health Dashboard
+                Use cases: send notifications, capture event information, take corrective action, …
+    Deployment & Instance Management
+        AWS Elastic Beanstalk
+            developer centric view of deploying an application on AWS
+            It uses all the component’s we’ve seen before:
+                EC2, Auto Scaling Group, Elastic Load Balancers, RDS, etc…
+            We still have full control over the configuration of each component
+            Beanstalk is free but you pay for the underlying instances
+            Support for many platforms
+                Go
+                Java SE
+                Java with Tomcat
+                .NET on Windows Server with IIS
+                Node.js
+                PHP
+                Python
+                Ruby
+                Packer Builder
+                Single Container Docker
+                Multicontainer Docker
+                Preconfigured Docker
+            Beanstalk is great to "Replatform" your application from on-premises to the cloud
+            Managed service
+                Instance configuration / OS is handled by Beanstalk
+                Deployment strategy is configurable but performed by Elastic Beanstalk
+            Just the application code is the responsibility of the developer
+            Three architecture models 
+                Single Instance deployment
+                    good for dev
+                LB + ASG
+                    great for production or pre-production web applications
+                ASG only
+                    great for non-web apps in production (workers, etc..)
+            Web Server vs Worker Environment
+                If your application performs tasks that are long to complete, offload these tasks 
+                to a dedicated worker environment
+                Decoupling your application into two tiers is common
+                Example: processing a video, generating a zip file, etc
+                You can define periodic tasks in a file cron.yaml
+            Beanstalk Deployment Blue / Green
+                Not a "direct feature" of Elastic Beanstalk 
+                Zero downtime and release facility 
+                Create a new "stage" environment and deploy v2 there 
+                The new environment (green) can be validated independently and roll back if issues 
+                Route 53 can be setup using weighted policies to redirect a little bit of 
+                traffic to the stage environment 
+                Using Beanstalk, "swap URLs" (DNS swap) when done with the environment test
+        AWS CodeDeploy 
+            We want to deploy our application automatically to many EC2 instances 
+            These instances are not managed by Elastic Beanstalk 
+            There are several ways to handle deployments using open source tools 
+            (Ansible, Terraform, Chef, Puppet, etc…) 
+            We can use the managed Service AWS CodeDeploy 
+            CodeDeploy can deploy to: EC2, ASG, ECS & Lambda
+            CodeDeploy to EC2
+                Define how to deploy the application using appspec.yml + deployment strategy 
+                Will do in -place update to your fleet of EC2 instances 
+                Can use hooks to verify the deployment after each deployment phase
+            CodeDeploy to ASG
+                In place updates:
+                    Updates current existing EC2 instances
+                    Instances newly created by an ASG will also get automated deployments
+                Blue / green deployment 
+                    A new auto-scaling group is created (settings are copied) 
+                    Choose how long to keep the old instances 
+                    Must be using an ELB
+            CodeDeploy to AWS Lambda
+                Traffic Shifting feature 
+                Pre and Post traffic hooks features to validate deployment 
+                (before the traffic shift starts and after it ends) 
+                Easy & automated rollback using CloudWatch Alarms 
+                SAM framework natively uses CodeDeploy
+            CodeDeploy to ECS
+                Support for Blue/Green deployments for Amazon ECS and AWS Fargate 
+                Setup is done within the ECS service definition 
+                A new task set is created, and traffic is re-routed to the new task test. 
+                Then if everything is stable for X minutes, the old task set is terminated 
+                (so you have time to notice issues) 
+                Supports Canary deployments (Canary10Percent5Minutes)
+        AWS CloudFormation
+            Infrastructure as code (IaC) in AWS
+            Portability of stacks across multiple accounts and regions
+            Backbone of the Elastic Beanstalk service
+            Backbone of the Service Catalog service
+            Backbone of the SAM (Serverless Application Model) framework
+            Must-know service as a developer / sysops / devops
+            Retaining Data on Deletes
+                You can put a DeletionPolicy on any resource to control what happens when 
+                the CloudFormation template is deleted 
+                DeletionPolicy=Retain: 
+                    Specify on resources to preserve / backup in case of CloudFormation deletes 
+                    To keep a resource, specify Retain (works for any resource / nested stack) 
+                DeletionPolicy=Snapshot: 
+                    EBS Volume, ElastiCache Cluster, ElastiCache ReplicationGroup 
+                    RDS DBInstance, RDS DBCluster, Redshift Cluster 
+                DeletePolicy=Delete (default behavior): 
+                    Note: for AWS::RDS::DBCluster resources, the default policy is Snapshot 
+                    Note: to delete an S3 bucket, you need to first empty the bucket of its content
+            Custom Resources (Lambda)
+                You can define a Custom Resource in CloudFormation to address any of these use cases: 
+                An AWS resource is not yet supported (new service for example) 
+                An on-premises resource 
+                Emptying an S3 bucket before being deleted 
+                Fetch an AMI id etc 
+            StackSets
+                Create, update, or delete stacks across multiple accounts and regions with a single operation 
+                Administrator account 
+                    to create StackSets 
+                Trusted accounts 
+                    to create, update, delete stack instances from StackSets 
+                When you update a stack set, all associated stack instances are updated 
+                throughout all accounts and regions 
+                Enable Automatic Deployment feature 
+                    to automatically deploy to accounts in AWS Organization or OUs
+            Drift
+                CloudFormation allows you to create infrastructure 
+                But it doesn’t protect you against manual configuration changes 
+                How do we know if our resources have drifted? 
+                We can use CloudFormation Drift! 
+                Detect drift on an entire stack or on individual resources within a stack
+            Resource Import                
+                Import existing resources into existing/new stacks 
+                You don’t need to delete and re-create the resources as part of a CloudFormation stack 
+                During import operation, you’ll need 
+                A template that describes the entire stack 
+                (original stack resources & target resources to import) 
+                A Unique identifier for each target resource (ex. BucketName for S3 buckets) 
+                Each resource to import must have a DeletionPolicy attribute (any value) & Identifier 
+                Can’t import the same resource into multiple stacks
+        AWS Service Catalog
+            Create and manage catalogs of IT services that are approved on AWS
+            Some users just want a quick self-service portal to launch a set of authorized 
+            products pre-defined by admins 
+            Includes: virtual machines, databases, storage options, etc… 
+            CloudFormation helps ensure consistency, and standardization by Admins 
+            They are assigned to Portfolios (teams) 
+            Teams are presented a self-service portal where they can launch the products 
+            All the deployed products are centrally managed deployed services 
+            Helps with governance, compliance, and consistency 
+            Can give user access to launching products without requiring deep AWS knowledge 
+            Integrations with “self-service portals” such as ServiceNow
+        AWS SAM - Serverless Application Model
+            Framework for developing and deploying serverless applications 
+            All the configuration is YAML code. Examples: 
+                Lambda Functions (AWS::Serverless::Function) 
+                DynamoDB tables (AWS::Serverless::SimpleTable) 
+                API Gateway (AWS::Serverless::API) 
+                StepFunction - State Machine (AWS::Serverless::StateMachine) 
+            SAM can help you to run Lambda, API Gateway, DynamoDB locally 
+            SAM can use CodeDeploy to deploy Lambda functions (traffic shifting) 
+            Leverages CloudFormation in the backend
+        AWS Cloud Development Kit (CDK)
+            use programming language to deploy both infra and applications
+            Define your cloud infrastructure using a familiar language:
+                JavaScript/TypeScript, Python, Java, and .NET
+            The code is “compiled” into a CloudFormation template (JSON/YAML)
+            You can therefore deploy infrastructure and application runtime code together
+                Great for Lambda functions
+                Great for Docker containers in ECS / EKS
+        AWS Systems Manager
+            Helps you manage your EC2 and on-premises systems at scale 
+            Get operational insights about the state of your infrastructure 
+            Easily detect problems 
+            Patching automation for enhanced compliance 
+            Works for both Windows and Linux OS 
+            Integrated with CloudWatch metrics / dashboards 
+            Integrated with AWS Config 
+            Free service
+            How it works? 
+                We need to install the SSM agent onto the systems we control 
+                Installed by default on Amazon Linux AMI & some Ubuntu AMI 
+                If an instance can’t be controlled with Systems Manager, 
+                it’s probably an issue with the SSM agent! 
+                Make sure the EC2 instances have a proper IAM role to allow Systems Manager actions
+            Run Command
+                Execute a document (= script) or just run a command 
+                Run command across multiple instances (using resource groups) 
+                Rate Control / Error Control 
+                Integrated with IAM & CloudTrail 
+                No need for SSH 
+                Results in the consol
+            Send Command before an ASG Instance is Terminated
+                Perform any action before the ASG terminates an EC2 instance 
+                Create a ASG Lifecycle Hook that puts the instance in Terminating:Wait state 
+                Monitor the Terminating:Wait state using EventBridge 
+                Trigger a SSM Automation Document to perform the actions on the instance before termination
+            Patch Managers
+                Define a patch baseline to use (or multiple if you have multiple environments) 
+                Define patch groups
+                    define based on tags, example different environments (dev, test, prod)
+                    use tag Patch Group 
+                Define Maintenance Windows 
+                    (schedule, duration, registered targets/patch groups and registered tasks) 
+                Add the AWS-RunPatchBaseline Run Command 
+                    as part of the registered tasks of the Maintenance Window 
+                    (works cross platform Linux & Windows) 
+                Define Rate Control (concurrency & error threshold) for the task 
+                Monitor Patch Compliance using SSM Inventory
+            Session Manager
+                Allows you to start a secure shell on your EC2 and on-premises servers 
+                Access through AWS Console, AWS CLI, or Session Manager SDK 
+                Does not need SSH access, bastion hosts, or SSH keys 
+                Supports Linux, macOS, and Windows 
+                Log connections to your instances and executed commands 
+                Session log data can be sent to S3 or CloudWatch Logs 
+                CloudTrail can intercept StartSession events
+            OpsCenter
+                Resolve Operational Issues (OpsItems) related to AWS resources
+                OpsItems – issues, events and alerts
+                Aggregates information to resolve issues on each OpsItems such as:
+                    AWS Config changes and relationships
+                    CloudTrail Logs
+                    CloudWatch Alarms
+                    CloudFormation Stack information
+                Provides Automation Runbooks that you can use to resolve issues
+                EventBridge or CloudWatch Alarms can create OpsItems
+        AWS Cloud Map
+            A fully managed resource discovery service 
+            Creates a map of the backend services/resources that your applications depend on 
+            You register your application components, their locations, attributes, and 
+            health status with AWS Cloud Map 
+            Integrated health checking (stop sending traffic to unhealthy endpoints) 
+            Your applications can query AWS Cloud Map using AWS SDK, API, or DNS
+            ex: update endpoint from v1 to v2 
+    
+    Cost Control
+        AWS Cost Allocation Tags
+            With Tags we can track resources that relate to each other
+            With Cost Allocation Tags we can enable detailed costing reports
+            Just like Tags, but they show up as columns in Reports
+            AWS Generated Cost Allocation Tags
+                Automatically applied to the resource you create
+                Starts with Prefix aws: (e.g. aws: createdBy)
+                They’re not applied to resources created before the activation
+            User tags
+                Defined by the user
+                Starts with Prefix user
+            Cost Allocation Tags just appear in the Billing Console
+            Takes up to 24 hours for the tags to show up in the report
+        AWS Tag Editor
+            Allows you to manage tags of multiple resources at once 
+            You can add/update/delete tags 
+            Search tagged/untagged resources in all AWS Region
+        Trusted Advisor
+            No need to install anything – high level AWS account assessment
+            Analyze your AWS accounts and provides recommendation:
+                Cost Optimization
+                Performance
+                Security
+                Fault Tolerance
+                Service Limits
+                Operational Excellence
+            Core Checks and recommendations – all customers
+            Can enable weekly email notification from the console
+            Full Trusted Advisor
+                Available for Business & Enterprise support plans
+                Ability to set CloudWatch alarms when reaching limits
+                Programmatic Access using AWS Support API
+            Can check if an S3 bucket is made public 
+                But cannot check for S3 objects that are public inside of your bucket! 
+                Use Amazon EventBridge / S3 Events instead / AWS Config Rules
+            Service Limits
+                Limits can only be monitored in Trusted Advisor (cannot be changed) 
+                Cases must be created manually in AWS Support Centre to increase limits 
+                OR use the AWS Service Quotas service
+        AWS Service Quotas
+            Notify you when you’re close to a service quota value threshold
+            Create CloudWatch Alarms on the Service Quotas console
+            Example: Lambda concurrent executions
+            Helps you know if you need to request a quota increase 
+            or shutdown resources before limit is reached
+        AWS Savings Plan
+            New pricing model to get a discount based on long-term usage
+            Commit to a certain type of usage: ex $10 per hour for 1 to 3 years
+            Any usage beyond the savings plan is billed at the on-demand price
+            EC2 Instance Savings plan
+                up to 72% - same discount as Standard RIs
+                Select instance family (e.g. M5, C5…), and locked to a specific region
+                Flexible across size (m5.large to m5.4xlarge), OS (Windows to Linux), tenancy 
+            Compute Savings plan
+                up to 66% - same discount as Convertible RIs
+                Ability to move between instance family (move from C5 to M5), 
+                region (Ireland to US), compute type (EC2, Fargate, Lambda), OS & tenancy
+            SageMaker Savings plan (up to 64% off)
+            S3 Cost Savings
+                Can move between classes manually or using S3 Lifecycle configurations
+                S3 Lifecycle Rules: transition objects between tiers
+                Compress objects to save space
+                S3 Requester Pays
+                    the requester instead of the bucket owner pays the cost of the request and 
+                    the data download from the bucket
+                bucket owner always pays the cost of storing data
+                If an IAM role is assumed, the owner account of that role pays for the request
+        AWS Budgets
+            Create budget and send alarms when costs exceeds the budget
+            types of budgets
+                Usage
+                Cost
+                Reservation
+                Savings Plans 
+            For Reserved Instances (RI)
+                Track utilization
+                Supports EC2, ElastiCache, RDS, Redshift
+            Up to 5 SNS notifications per budget
+            Can filter by: Service, Linked Account, Tag, Purchase Option, Instance 
+            Type, Region, Availability Zone, API Operation, etc… 
+            Same options as AWS Cost Explorer!
+            2 budgets are free, then $0.02/day/budget
+            Budget Actions
+                Run actions on your behalf when a budget exceeds a certain cost or usage threshold
+                Types 
+                    Applying an IAM Policy to a user, group, or IAM role
+                    Applying Service Control Policy (SCP) to an OU
+                    Stop EC2 or RDS Instances
+                Reduces unintentional overspending in your account
+        Cost Explorer
+            Visualize, understand, and manage your AWS costs and usage over time
+            Create custom reports that analyze cost and usage data. 
+            Analyze your data at a high level: total costs and usage across all accounts 
+            Or Monthly, hourly, resource level granularity
+            Choose an optimal Savings Plan (to lower prices on your bill)
+            Forecast usage up to 12 months based on previous usage
+        AWS Compute Optimizer
+            Reduce costs and improve performance by recommending optimal AWS resources for your workloads 
+            Helps you choose optimal configurations and right - size your workloads (over/under provisioned) 
+            Uses Machine Learning to analyze your resources configurations and 
+            their utilization CloudWatch metrics 
+            Supported resources 
+                EC2 instances 
+                EC2 Auto Scaling Groups 
+                EBS volumes 
+                Lambda functions 
+            Lower your costs by up to 25% • Recommendations can be exported to S3   
+            CloudWatch Agent
+                Needed to analyze Memory Utilization
+                Not needed for CPU, NetworkIn/Out, DiskReadOps, DiskWriteOps, …  
+        Reserved Instances
+            Reserved Instances in an AWS Organization
+                all accounts share the Reserved Instances and Savings Plan
+                The payer account (Management account) of an organization 
+                    can turn off Reserved Instance (RI) discount and Savings Plans discount sharing for any 
+                    accounts in that organization, including the payer account
+            Renewal of Reserved Instances
+                You can queue (schedule and reserve ahead of time) your reserved instances
+                To renew a RI, just queue an RI purchase whenever the previous one expires
+  
+
+
 
 
 
