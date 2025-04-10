@@ -3028,3 +3028,379 @@ Notes:
                     Inadvertent or malicious delete operations 
                     Updates that shorten or alter retention periods
                 Even the root user cannot delete backups when enabled
+
+    AWS VPC  
+        VPC
+            A VPC must have a defined list of CIDR blocks, that cannot be changed
+            Each CIDR within VPC: min size is /28, max size is /16 (65536 IP addresses)
+            VPC is private, so only Private IP CIDR ranges are allowed       
+        CIDR: Block of IP address
+            Example: 192.168.0.0/26: 192.168.0.0 – 192.168.0.63 (64 IP)
+            Used for security groups, route tables, VPC, subnets, etc… 
+        Private IP
+            10.0.0.0 – 10.255.255.255 (10.0.0.0/8) <= in big networks
+            172.16.0.0 – 172.31.255.255 (172.31.0.0/12)
+            192.168.0.0 – 192.168.255.255 (192.168.0.0/16) <= example: home networks
+        Public IP
+            All the rest        
+        Subnets
+            Within a VPC, defined as a CIDR that is a subset of the VPC CIDR
+            All instances within subnets get a private IP
+            First 4 IP and last one in every subnet is reserved by AWS
+        Route Tables
+            Used to control where the network traffic is directed to
+            Can be associated with specific subnets
+            The "most specific" routing rule is always followed (192.168.0.1/24 beats 0.0.0.0/0)
+        Internet Gateway (IGW)
+            Helps our VPC connect to the internet, HA, scales horizontally
+            Acts as a NAT for instances that have a public IPv4 or public IPv6
+        Public Subnets
+            Has a route table that sends 0.0.0.0/0 to an IGW
+            Instances must have a public IPv4 to talk to the internet
+        Private Subnets
+            Access internet with a NAT Instance or NAT Gateway setup in a public subnet
+            Must edit routes so that 0.0.0.0/0 routes traffic to the NAT
+        NAT Instance
+            EC2 instance you deploy in a public subnet Edit the route in your private subnet to 
+            route 0.0.0.0/0 to your NAT instance
+            Not resilient to failure, limited bandwidth 
+            based on instance type, cheap
+            Must manage failover yourself 
+            Must disable Source/Destination Check (EC2 setting)
+        NAT Gateway
+            Managed NAT solution, bandwidth scales automatically 
+            Resilient to failure within a single AZ 
+            Must deploy multiple NAT Gateways in multiple AZ for HA 
+            Has an Elastic IP, external services see the IP of the NAT Gateway as the source
+        Network ACL (NACL)
+            Stateless firewall defined at the subnet level, applies to all instances within
+            Support for allow and deny rules
+            Stateless = return traffic must be explicitly allowed by rules
+            Helpful to quickly and cheaply block specific IP addresses
+        Security Groups
+            Applied at the instance level, only support for allow rules, no deny rules
+            Stateful = return traffic is automatically allowed, regardless of rules
+            Can reference other security groups in the same region (peered VPC, cross-account)
+        VPC Flows Logs
+            Log internet traffic going through your VPC
+            Can be defined at the VPC level, Subnet level, or ENI-level 
+            Helpful to capture “denied internet traffic”
+            Can be sent to CloudWatch Logs and Amazon S3
+        Bastion Hosts
+            SSH into private EC2 instances through a public EC2 instance (bastion host)
+            You must manage these instances yourself (failover, recovery)
+            SSM Session Manager is a more secure way to remote control without SSH
+        IPv6 in short
+            All IPv6 addresses are public, total 3.4×1038 addresses (vs 4.3 billion IPv4)
+            Example CIDR: 2600:1f18:80c:a900::/56
+            Addresses are "random" and can’t be scanned online (because too many)
+        VPC support for IPv6
+            Create an IPv6 CIDR for VPC & use an IGW (supports IPv6)
+            Public subnet: 
+                Create an instance with IPv6 support
+                Create a route table entry to ::/0 (IPv6 "all") to the IGW
+            Private subnet (instances cannot be reached by IPv6 but can reach IPv6): 
+                Create an Egress-Only Internet Gateway in the VPC
+                Add a route table entry for the private subnet from ::/0 to the Egress-Only IGW
+        VPC Peering
+            Connect two VPC, privately using AWS’ network 
+            Make them behave as if they were in the same network 
+            Must not have overlapping CIDR 
+            VPC Peering connection is not transitive (must be established for each VPC that 
+            need to communicate with one another) 
+            You can do VPC peering with another AWS account 
+            You must update route tables in each VPC’s subnets to ensure instances can communicate
+            VPC peering can work inter-region, cross-account
+            You can reference a security group of a peered VPC (works cross account)
+            Longest Prefix Match
+                VPC uses the longest prefix match to select the most specific route
+            VPC Peering does not support edge to edge routing for NAT devices
+        Transit Gateway
+            For having transitive peering between thousands of VPC and on-premises, 
+            hub-and-spoke (star) connection 
+            Regional resource, can work cross-region 
+            Share cross -account using Resource Access Manager (RAM) 
+            You can peer Transit Gateways across regions 
+            Route Tables: limit which VPC can talk with other VPC 
+            Works with Direct Connect Gateway, VPN connections 
+            Supports IP Multicast *(not supported by any other AWS service) 
+            Instances in a VPC can access a NAT Gateway, NLB, PrivateLink, and EFS in others VPCs attached to the AWS Transit Gateway
+            Central NAT Gateway
+                The NAT Gateway is shared in the Egress-VPC 
+                The private App VPC can access internet through the TGW 
+            Sharing through RAM
+                You can use AWS RAM to share a Transit Gateway for VPC attachments across accounts 
+                or across AWS Organization
+            Use Different Route Tables to Prevent VPC from Communicating
+            Inter & Intra Region Peering
+                Billed hourly for each peering attachment, no data processing charges
+                If data goes cross-region through the attachment, standard charges
+                Specify the Transit Gateway ID
+        VPC Endpoints
+            Endpoints allow you to connect to AWS Services using a private network instead of the 
+            public www network
+            They scale horizontally and are redundant
+            No more IGW, NAT, etc… to access AWS Services
+            VPC Endpoint Gateway 
+                (S3 & DynamoDB)
+            VPC Endpoint Interface 
+                (all services)
+            In case of issues:
+                Check DNS Setting Resolution in your VPC
+                Check Route Tables 
+            VPC Endpoint Gateway
+                Only works for S3 and DynamoDB, must create one gateway per VPC
+                Must update route tables entries
+                Gateway is defined at the VPC level 
+                DNS resolution must be enabled in the VPC
+                The same public hostname for S3 can be used
+                Gateway endpoint cannot be extended out of a VPC (VPN, DX, TGW, peering)
+            VPC Endpoints Interface
+                Provision an ENI that will have a private endpoint interface hostname
+                Leverage Security Groups for security
+                Private DNS (setting when you create the endpoint)
+                    The public hostname of a service will resolve to the private Endpoint Interface hostname
+                    VPC Setting: "Enable DNS hostnames" and "Enable DNS Support" must be true
+                Interface can be accessed from Direct Connect and Site-to-Site VPN
+            VPC Endpoint Policies
+                Endpoint Policies are JSON documents to control access to services
+                Does not override or replace IAM user policies or service-specific policies 
+                (such as S3 bucket policies)
+                aws:sourceVpce
+                    condition for VPC endpoint
+                aws:sourceVpc
+                    condition for VPC
+                    when u want to restrict/allow access from all vpc endpoints
+            AWS PrivateLink (VPC Endpoint Services)
+                enables private connectivity between your Virtual Private Cloud (VPC) and supported AWS 
+                services, services hosted by other AWS accounts, and AWS Marketplace services, without 
+                exposing traffic to the public internet
+                Most secure & scalable way to expose a service to 1000s of VPC (own or other accounts)
+                Does not require VPC peering, internet gateway, NAT, route tables…
+                Requires a network load balancer (Service VPC) and ENI (Customer VPC)
+                If the NLB is in multiple AZ, and the ENI in multiple AZ, the solution is fault tolerant! 
+        Site to Site VPN (AWS Managed VPN)
+            on-premises 
+                Setup a software or hardware VPN appliance to your on-premises network. 
+                The on-premises VPN should be accessible using a public IP 
+            AWS-side 
+                Setup a Virtual Private Gateway (VGW) and attach to your VPC 
+                Setup a Customer Gateway to point the on- premises VPN appliance 
+            Two VPN connections (tunnels) are created for redundancy, encrypted using IPSec 
+            Can optionally accelerate it using Global Accelerator (for worldwide networks)
+            Route Propagation in Site-to-Site VPN
+                Static Routing
+                    Create static route in corporate data center for 10.0.0.1/24 through the CGW
+                    Create static route in AWS for 10.3.0.0/20 through the VGW
+                Dynamic Routing (BGP)
+                    Uses BGP (Border Gateway Protocol) to share routes automatically (eBGP for internet)
+                    We don’t need to update the routing tables, it will be done for us dynamically
+                    Just need to specify the ASN (Autonomous System Number) of the CGW and VGW
+            Site to Site VPN and Internet Access
+                with NAT Gateway
+                    NOT OKAY (blocked by NAT Gateway restrictions)
+                with NAT Instance (self managed, more control)
+                    OKAY 
+                with VGW in AWS, CGW at on premise 
+                    OKAY 
+        AWS VPN CloudHub
+            Can connect up to 10 Customer Gateway for each Virtual Private Gateway (VGW) 
+            Low cost hub-and-spoke model for primary or secondary network connectivity between locations 
+            Provide secure communication between sites, if you have multiple VPN connections 
+            It’s a VPN connection so it goes over the public internet 
+            Can be a failover connection between your on-premises locations
+        AWS Client VPN
+            Connect from your computer using OpenVPN to your private network 
+            in AWS and on-premises
+            Client VPN is compatible with VPC peering
+            Access On-Premises resources through AWS with Client VPN
+                S2S VPN btw on-premise and AWS 
+        Direct Connect
+            Provides a dedicated private connection from a remote network to your VPC
+            Dedicated connection must be setup between your DC and AWS Direct Connect locations
+            More expensive than running a VPN solution
+            Private access to AWS services through VIF
+            Bypass ISP, reduce network cost, increase bandwidth and stability
+            Not redundant by default (must setup a failover DX or VPN)
+            Virtual Interfaces
+                Public VIF
+                    connect to Public AWS Endpoints (S3 buckets, EC2 service, anything AWS …) 
+                Private VIF
+                    connect to resources in your VPC (EC2 instances, ALB, …) 
+                Transit Virtual Interface
+                    connect to resources in a VPC using a Transit Gateway 
+                VPC Interface Endpoints can be accessed through Private VIF
+            Connection Types
+                Hosted Connections: 50Mbps, 500 Mbps, to 10 Gbps
+                    Connection requests are made via AWS Direct Connect Partners
+                    Capacity can be added or removed on demand 
+                    1, 2, 5, 10 Gbps available at select AWS Direct Connect Partners
+                Dedicated Connections: 1Gbps, 10 Gbps, 100 Gbps capacity
+                    Physical ethernet port dedicated to a customer
+                    Request made to AWS first, then completed by AWS Direct Connect Partners
+                Wait times are often longer than 1 month to establish a new connection
+            Encryption
+                Data in transit is not encrypted but is private 
+                AWS Direct Connect + VPN provides an IPsec-encrypted private connection 
+                    direct connect from aws to aws direct connect location 
+                    vpn from that location to on-premise 
+                VPN over Direct Connect connection Uses Public VIF 
+            Link Aggregation Groups (LAG)
+                Get increased speed and failover by summing up existing DX connections into a logical one 
+                Can aggregate up to 4 connections (active-active mode) 
+                Can add connections over time to the LAG 
+                All connections in the LAG: 
+                    Must be dedicated connections 
+                    Must have the same bandwidth 
+                    Must terminate at the same AWS Direct Connect Endpoint 
+                Can set a minimum number of connections for the LAG to function
+            Direct Connect Gateway
+                If you want to setup a Direct Connect to one or more VPC in many different regions 
+                (same/cross account), you must use a Direct Connect Gateway
+                SiteLink
+                    Allows you to send data from on Direct Connect location to another
+                    Bypassing AWS Regions
+                    Use cases: create private network connections between on-premises data centers 
+                    by connecting them to Direct Connect locations
+                    Data is sent over the fastest path between Direct Connect locations
+        VPC Flow Logs
+            Capture information about IP traffic going into your interfaces:
+                VPC Flow Logs
+                Subnet Flow Logs
+                Elastic Network Interface (ENI) Flow Logs
+            Helps to monitor & troubleshoot connectivity issues
+            Flow logs data can go to S3, CloudWatch Logs, and Kinesis Data Firehose
+            Captures network information from AWS managed interfaces too: ELB, RDS, ElastiCache, 
+            Redshift, WorkSpaces, NATGW, Transit Gateway…
+            Can be used for analytics on usage patterns, or malicious behavior
+            Query VPC flow logs using Athena on S3 or CloudWatch Logs Insights
+        Network Protection on AWS
+            Network Access Control Lists (NACLs)
+            Amazon VPC security groups
+            AWS WAF (protect against malicious requests)
+            AWS Shield & AWS Shield Advanced
+            AWS Firewall Manager (to manage them across accounts)
+        AWS Network Firewall
+            Protect your entire Amazon VPC
+            From Layer 3 to Layer 7 protection 
+            Any direction, you can inspect 
+                VPC to VPC traffic 
+                Outbound to internet 
+                Inbound from internet 
+                To / from Direct Connect & Site-to-Site VPN 
+            Internally, the AWS Network Firewall uses the AWS Gateway Load Balancer 
+            Rules can be centrally managed cross- account by AWS Firewall Manager to apply to many VPCs
+            Fine Grained Controls
+                Supports 1000s of rules
+                    IP & port - example: 10,000s of IPs filtering
+                    Protocol – example: block the SMB protocol for outbound communications
+                    Stateful domain list rule groups: only allow outbound traffic to 
+                    *.mycorp.com or third-party software repo
+                    General pattern matching using regex
+                Traffic filtering
+                    Allow, drop, or alert for the traffic that matches the rules
+                Active flow inspection 
+                    to protect against network threats with intrusion prevention capabilities 
+                    (like Gateway Load Balancer, but all managed by AWS)
+                Send logs of rule matches to Amazon S3, CloudWatch Logs, Kinesis Data Firehose
+    Machine Learning
+        Amazon Rekognition
+            Find objects, people, text, scenes in images and videos using ML
+            Facial analysis and facial search to do user verification, people counting
+            Create a database of “familiar faces” or compare against celebrities
+            Use cases:
+                Labeling 
+                Content Moderation
+                Text Detection
+                Face Detection and Analysis (gender, age range, emotions…)
+                Face Search and Verification
+                Celebrity Recognition
+                Pathing (ex: for sports game analysis)
+            Content Moderation
+                Detect content that is inappropriate, unwanted, or offensive (image and videos) 
+                Used in social media, broadcast media, advertising, and e-commerce situations
+                to create a safer user experience 
+                Set a Minimum Confidence Threshold for items that will be flagged 
+                Flag sensitive content for manual review in Amazon Augmented AI (A2I)
+        Amazon Transcribe
+            Automatically convert speech to text
+            Uses a deep learning process called automatic speech recognition (ASR) to convert 
+            speech to text quickly and accurately
+            Automatically remove Personally Identifiable Information (PII) using Redaction
+            Supports Automatic Language Identification for multi-lingual audio
+            Use cases: 
+                transcribe customer service calls
+                automate closed captioning and subtitling
+                generate metadata for media assets to create a fully searchable archive
+        Amazon Polly
+            Turn text into lifelike speech using deep learning 
+            Allowing you to create applications that talk
+            Lexicon
+                Customize the pronunciation of words with Pronunciation lexicons 
+                Stylized words: St3ph4ne => "Stephane"
+                Acronyms: AWS => "Amazon Web Services"
+                Upload the lexicons and use them in the SynthesizeSpeech operation
+            Speech Synthesis Markup Language (SSML)
+                enables more customization
+                emphasizing specific words or phrases
+                using phonetic pronunciation
+                including breathing sounds, whispering
+                using the Newscaster speaking style
+        Amazon Translate
+            Natural and accurate language translation
+            Amazon Translate allows you to localize content - such as websites and applications 
+            for international users, and to easily translate large volumes of text efficiently.
+        Amazon Lex
+            same technology that powers Alexa
+            Automatic Speech Recognition (ASR) to convert speech to text
+            Natural Language Understanding to recognize the intent of text, callers
+            Helps build chatbots, call center bots
+        Amazon Connect
+            Receive calls, create contact flows, cloud-based virtual contact center
+            Can integrate with other CRM systems or AWS
+            No upfront payments, 80% cheaper than traditional contact center solutions
+        Amazon Comprehend
+            For Natural Language Processing – NLP 
+            Fully managed and serverless service
+            Uses machine learning to find insights and relationships in text
+                Language of the text
+                Extracts key phrases, places, people, brands, or events
+                Understands how positive or negative the text is
+                Analyzes text using tokenization and parts of speech
+                Automatically organizes a collection of text files by topic
+            Sample use cases: 
+                analyze customer interactions (emails) to find what leads to a positive or negative experience
+                Create and groups articles by topics that Comprehend will uncover
+        Amazon Comprehend Medical
+            detects and returns useful information in unstructured clinical text
+                • Physician’s notes
+                • Discharge summaries
+                • Test results
+                • Case notes
+            Uses NLP to detect Protected Health Information (PHI)
+            Store your documents in Amazon S3, analyze real-time data with Kinesis Data Firehose, 
+            or use Amazon Transcribe to transcribe patient narratives into text that can 
+            be analyzed by Amazon Comprehend Medical.
+        Amazon SageMaker
+            Fully managed service for developers / data scientists to build ML models
+        Amazon Kendra
+            Fully managed document search service powered by Machine Learning
+            Extract answers from within a document (text, pdf, HTML, PowerPoint, MS Word, FAQs…)
+            Natural language search capabilities
+            Learn from user interactions/feedback to promote preferred results (Incremental Learning)
+            Ability to manually fine-tune search results (importance of data, freshness, custom, …)
+        Amazon Personalize
+            Fully managed ML-service to build apps with real-time personalized recommendations
+            ex: personalized product recommendations/re-ranking, customized direct marketing
+            Same technology used by Amazon.com
+            Integrates into existing websites, applications, SMS, email marketing systems, …
+            Implement in days, not months (you don’t need to build, train, and deploy ML solutions)
+            Use cases: retail stores, media and entertainment…
+        Amazon Textract
+            Automatically extracts text, handwriting, and data from any scanned documents using AI and ML
+            Extract data from forms and tables
+            Read and process any type of document (PDFs, images, …)
+            Use cases:
+                Financial Services (e.g., invoices, financial reports)
+                Healthcare (e.g., medical records, insurance claims)
+                Public Sector (e.g., tax forms, ID documents, passports)

@@ -25,6 +25,15 @@ CloudFront – Restrict Access to Application Load Balancers and Custom Origins
 Convert RDS to Aurora
     RDS DB Instance => snapshot => restore to Aurora DB instance 
     or RDS DB Instance => Aurora Read Replica => promote to Aurora DB Instance 
-
+VPN to multiple VPC usecase
+    For VPN-based customers, AWS recommends creating a separate VPN connection for each customer VPC. 
+    Direct Connect is recommended because it has a Direct Connect Gateway
+Shared Services VPC usecase
+    Create a VPN connection between on- premises and shared service VPC 
+    Replicate services, applications, databases between on-premises and the Shared Services VPC 
+    or deploy proxies in the shared service VPC 
+    Do VPC peering between the VPC and the shared service VPC 
+    VPCs can directly access the Shared Service VPC services and do not need VPN connections 
+    to on-premises
 
     
