@@ -1,0 +1,558 @@
+points 
+    You pay for all bandwidth into and out of Amazon S3, except for the following:
+        Data transferred out to the internet for the first 100GB per month, aggregated across all AWS Services and Regions (except China and GovCloud)
+        Data transferred in from the internet.
+        Data transferred between S3 buckets in the same AWS Region. 
+        Data transferred from an Amazon S3 bucket to any AWS service(s) within the same AWS Region as the S3 bucket (including to a different account in the same AWS Region).
+        Data transferred out to Amazon CloudFront (CloudFront).
+    You cannot trigger an AWS Step Function directly from an S3 event
+    You cannot trigger an Amazon EC2 Auto Scaling group directly from an S3 event
+    CloudTrail does not capture any query activity in Aurora
+    Aurora lab mode 
+        is used to enable Aurora features that are available in the current Aurora database version but are not enabled by default. These features are tested in development/test environments. Aurora lab mode is not relevant for capturing the log activity of Aurora DB.
+    AWS X-Ray helps developers analyze and debug production, and distributed applications, such as those built using a microservices architecture.
+    GuardDuty Org wide
+        It is inefficient and cumbersome to configure GuardDuty in all member accounts within the AWS Organizations organization. It's better to centrally manage GuardDuty for all AWS accounts by using a GuardDuty delegated administrator account within the AWS Organizations organization.
+    Amazon SQS sets a visibility timeout
+        a period during which Amazon SQS prevents other consumers from receiving and processing the message. Visibility timeout is a configurable parameter of SQS queues and not a temporary storage space to hold failed orders.
+    VPC sharing (part of Resource Access Manager) 
+        allows multiple AWS accounts to create their application resources such as EC2 instances, RDS databases, Redshift clusters, and Lambda functions, into shared and centrally-managed Amazon Virtual Private Clouds (VPCs).
+        an account that owns the VPC (owner) shares one or more subnets with other accounts (participants) that belong to the same organization
+        owner account cannot share the VPC itself.
+    AWS recommends that you should not over-provision your function time out settings. Always understand your code performance and set a function time out accordingly. Over-provisioning function timeout often results in Lambda functions running longer than expected and unexpected costs.    
+    Use Enhanced Fanout feature of Kinesis Data Streams to support the desired read throughput for the downstream applications
+    AWS OpsWorks
+        lets you use Chef and Puppet to automate how servers are configured, deployed, and managed across your Amazon EC2 instances or on-premises compute environments.
+    default security group:
+        Allow inbound traffic from network interfaces (and their associated instances) that are assigned to the same security group.
+        Allows all outbound traffic
+    default rules for security group that you create
+        Allows no inbound traffic
+        Allows all outbound traffic
+    To use a certificate with an Application Load Balancer for the same site (the same fully qualified domain name, or FQDN, or set of FQDNs) in a different Region, you must request a new certificate for each Region in which you plan to use it. To use an ACM certificate with Amazon CloudFront, you must request the certificate in the US East (N. Virginia) Region.
+AWS Storage Gateway vs AWS DataSync
+    AWS DataSync
+        AWS DataSync is an online data movement and discovery service that simplifies and accelerates data migrations to AWS as well as moving data between on-premises storage, edge locations, other clouds, and AWS Storage
+        single DataSync task is capable of fully utilizing a 10 Gbps network link.
+    AWS Storage Gateway
+        to retain access to the migrated data and for ongoing updates from your on-premises file-based applications
+Amazon S3 server access logging
+    captures all bucket-level and object-level events. These logs use a format similar to Apache web server logs. After you enable server access logging, review the logs to find the IP addresses used with each upload to your bucket.
+AWS CloudTrail data events
+    capture the last 90 days of bucket-level events (for example, PutBucketPolicy and DeleteBucketPolicy), and you can enable object-level logging. These logs use a JSON format. After you enable object-level logging with data events, review the logs to find the IP addresses used with each upload to your bucket. It might take a few hours for AWS CloudTrail to start creating logs.
+Changes introduced by disabling S3 ACLs
+    when u apply bucket owner enforced setting for object ownership to disable ALCs 
+    u automatically take full control over every object in bucket 
+    All bucket ACLs and object ACLs are disabled 
+    You as a bucket owner automatically own and have full control over every object 
+    ACLs are no longer affect permissions to ur bucket. As a result, access control for 
+    you data is based on policies like IAM policies, S3 bucket policies, VPC endpoint
+    policies and Organization policies 
+AWS Web Application Firewall (WAF) 
+    protect web applications and APIs from attacks. It enables you to configure a set of rules (called a web access control list (web ACL)) that allow, block, or count web requests based on customizable web security rules and conditions that you define. 
+    can protect:
+        Amazon CloudFront distribution
+        Amazon API Gateway REST API
+        Application Load Balancer
+        AWS AppSync GraphQL API
+        Amazon Cognito user pool
+Types of process in Auto Scaling Group (ASG)
+    Launch 
+        Adds instances to the Auto Scaling group when the group scales out, or when Amazon EC2 Auto Scaling chooses to launch instances for other reasons, such as when it adds instances to a warm pool.
+    Terminate 
+        Removes instances from the Auto Scaling group when the group scales in, or when Amazon EC2 Auto Scaling chooses to terminate instances for other reasons, such as when an instance is terminated for exceeding its maximum lifetime duration or failing a health check.
+    AddToLoadBalancer 
+        Adds instances to the attached load balancer target group or Classic Load Balancer when they are launched. For more information, see Use Elastic Load Balancing to distribute incoming application traffic in your Auto Scaling group .
+    AlarmNotification 
+        Accepts notifications from CloudWatch alarms that are associated with dynamic scaling policies. For more information, see Dynamic scaling for Amazon EC2 Auto Scaling.
+    AZRebalance 
+        Balances the number of EC2 instances in the group evenly across all of the specified Availability Zones when the group becomes unbalanced, for example, when a previously unavailable Availability Zone returns to a healthy state. For more information, see Rebalancing activities.
+    HealthCheck 
+        Checks the health of the instances and marks an instance as unhealthy if Amazon EC2 or Elastic Load Balancing tells Amazon EC2 Auto Scaling that the instance is unhealthy. This process can override the health status of an instance that you set manually. For more information, see Health checks for instances in an Auto Scaling group.
+    InstanceRefresh 
+        Terminates and replaces instances using the instance refresh feature. For more information, see Use an instance refresh to update instances in an Auto Scaling group.
+    ReplaceUnhealthy 
+        Terminates instances that are marked as unhealthy and then creates new instances to replace them. For more information, see Health checks for instances in an Auto Scaling group.
+    ScheduledActions 
+        Performs the scheduled scaling actions that you create or that are created for you when you create an AWS Auto Scaling scaling plan and turn on predictive scaling. For more information, see Scheduled scaling for Amazon EC2 Auto Scaling.
+Enable termination protection for EC2 instance 
+    To prevent your instance from being accidentally terminated using the Amazon EC2 API, whether you call TerminateInstances directly or using another interface such as the Amazon EC2 console, enable termination protection for the instance.
+    does not prevent termination
+        initiating shutdown from the instance (for example, by using an operating system command for system shutdown) when the InstanceInitiatedShutdownBehavior attribute is set to terminate
+        Auto Scaling from terminating an instance when the instance is unhealthy or during scale-in events. 
+        You can't enable termination protection for Spot Instances
+Instance scale-in protection
+    gives you control over which instances Amazon EC2 Auto Scaling can terminate
+    By default, instance scale-in protection is disabled when you create an Auto Scaling group. This means that Amazon EC2 Auto Scaling can terminate any instance in the group.
+    disable the scale-in protection setting on individual instances within the Auto Scaling group. By doing so, you can continue to protect certain instances from unwanted terminations.
+
+S3 Object Ownership bucket-level settings were used and all Access Control Lists (ACLs)?
+S3 bucket level settings were again set back to default and the ACLs were enabled once more?
+A company has multiple AWS accounts. The company has integrated its 
+on-premises Active Directory (AD) with AWS SSO to grant AD users 
+least privilege abilities to manage infrastructure across all the 
+accounts. 
+A solutions architect must integrate a third-party monitoring solution 
+that requires read-only access across all AWS accounts. The 
+monitoring solutions will run in its own AWS account.
+    Create an AWS CloudFormation template that defines a new AWS IAM role for 
+    the third-party monitoring solution with the account of the third party listed in the 
+    trust policy. Create the IAM role across all linked AWS accounts by using a stack set
+
+A company has two AWS accounts: one for production workloads and 
+one for development workloads. Creating and managing these 
+workloads are a development team and an operations team. The 
+company needs a security strategy that meets the following 
+requirements: 
+• Developers need to create and delete development application infrastructure. 
+• Operators need to create and delete both development and production 
+application infrastructure. 
+• Developers should have no access to production infrastructure. 
+• All users should have a single set of AWS credentials. 
+• What strategy meets these requirements?
+    In the development account: 
+        • Create a development IAM group with the ability to create and delete application 
+        infrastructure. 
+        • Create an operations IAM group with the ability to assume the shared role in the 
+        production account. 
+        • Create an IAM user for each developer and assign them to the development group. 
+        • Create an IAM user for each operator and assign them to the development group and 
+        the operations group. 
+    In the production account: 
+        • Create a shared IAM role with the ability to create and delete application infrastructure. 
+        • Add the development account to the trust policy for the shared role.
+
+A solutions architect needs to reduce costs for a big data application. The application 
+environment consists of hundreds of devices that send events to Amazon Kinesis 
+Data Streams. The device ID is used as the partition key, so each device gets a 
+separate shard. Each device sends between 50 KB and 450 KB of data per second. 
+The shards are polled by an AWS Lambda function that processes the data and 
+stores the result on Amazon S3. 
+• Every hour, an AWS Lambda function runs an Amazon Athena query against the 
+result data that identifies any outliers and places them in an Amazon SQS queue. An 
+Amazon EC2 Auto Scaling group of two EC2 instances monitors the queue and 
+runs a short (approximately 30-second) process to address the outliers. The devices 
+submit an average of 10 outlying values every hour. 
+    Replace the Auto Scaling group with an AWS Lambda function triggered by messages 
+    arriving in the Amazon SQS queue.
+    Reconfigure the devices and data stream to set a ratio of 2 devices to 1 data 
+    stream shard.
+    Each shard has a limit of 1MB/s = 1000KB/s
+The application continued to work 
+correctly, but the increased request rate overwhelmed the third-party affiliate 
+and resulted in failed requests.
+    Move the code that calls the affiliate to a new AWS Lambda function. Modify the application to place the order data in an Amazon SQS queue. Trigger the Lambda function from the queue.
+    Adjust the concurrency limit of the new AWS Lambda function.
+
+A bioinformatics company leverages multiple open source tools to manage data analysis workflows running on its on-premises servers to process biological data which is generated and stored on a Network Attached Storage (NAS). The existing workflow receives around 100 GB of input biological data for each job run and individual jobs can take several hours to process the data. The CTO at the company wants to re-architect its proprietary analytics workflow on AWS to meet the workload demands and reduce the turnaround time from months to days. The company has provisioned a high-speed AWS Direct Connect connection. The final result needs to be stored in Amazon S3. The company is expecting approximately 20 job requests each day.
+    Leverage AWS DataSync to transfer the biological data to Amazon S3. Use S3 events to trigger an AWS Lambda function that starts an AWS Step Functions workflow for orchestrating an AWS Batch job that processes the biological data
+
+The security team at a company has put forth a requirement to track the external IP address when a customer or a third party uploads files to the Amazon Simple Storage Service (Amazon S3) bucket owned by the company.
+How will you track the external IP address used for each upload?
+    Enable AWS CloudTrail data events to enable object-level logging for S3 bucket
+    Enable Amazon S3 server access logging to capture all bucket-level and object-level events
+
+An Amazon S3 bucket is shared by three different teams (managing their own separate AWS accounts) for document uploads. Initially, the S3 bucket settings were set to default. Later, the bucket sees the following updates:
+After week 1, S3 Object Ownership bucket-level settings were used and all Access Control Lists (ACLs) were disabled. The three teams uploaded their documents to the shared bucket with this new setting.After week 2, S3 bucket level settings were again set back to default and the ACLs were enabled once more.
+What is the outcome of these action(s) on the documents uploaded after week 1 and what are the key points of consideration for future S3 bucket configurations? (Select two)
+    You, as the bucket owner, still own any objects that were written to the bucket while the bucket owner enforced setting was applied. These objects are not owned by the object writer, even if you re-enable ACLs
+    If you used object ACLs for permissions management before you applied the bucket owner enforced setting and you didn't migrate these object ACL permissions to your bucket policy after you re-enable ACLs, these permissions are restored
+    points 
+        AWS recommends that you disable ACLs by choosing the bucket owner enforced setting and use your bucket policy to share data with users outside of your account as needed. This approach simplifies permissions management and auditing. You can disable ACLs on both newly created and already existing buckets.
+
+A team has recently created a secret using AWS Secrets Manager to access their private Amazon Relational Database Service (Amazon RDS) instance. When the team tried to rotate the AWS Secrets Manager secret in an Amazon Virtual Private Cloud (Amazon VPC), the operation failed. On analyzing the Amazon CloudWatch Logs, the team realized that the AWS Lambda task timed out.
+    Configure an Amazon VPC interface endpoint for the Secrets Manager service to enable access for your Secrets Manager Lambda rotation function and private Amazon Relational Database Service (Amazon RDS) instance
+    points 
+        Secrets Manager can't rotate secrets for AWS services running in Amazon VPC private subnets because these subnets don't have internet access.
+
+A retail company offers its services to the customers via APIs that leverage Amazon API Gateway and Lambda functions. The company also has a legacy API hosted on an Amazon EC2 instance that is used by the company's supply chain partners. The security and audit team at the company has raised concerns over the use of these APIs and wants a solution to secure them all from any vulnerabilities, DDoS attacks, and malicious exploits.
+    Use AWS Web Application Firewall (WAF) as the first line of defense to protect the API Gateway APIs against malicious exploits and DDoS attacks. Install Amazon Inspector on the EC2 instance to check for vulnerabilities. Configure Amazon GuardDuty to monitor any malicious attempts to access the APIs illegally
+    points 
+        GuardDuty cannot block any malicious attempts to access the APIs illegally. Rather, it can only monitor/detect such attempts.
+    
+A financial services company has multiple AWS accounts hosting its portfolio of IT applications that serve the company's retail and enterprise customers. A CloudWatch Logs agent is installed on each of the EC2 instances running these IT applications. The company wants to aggregate all security events in a centralized AWS account dedicated to log storage. The centralized operations team at the company needs to perform near-real-time gathering and collating events across multiple AWS accounts.
+    Set up Kinesis Data Firehose in the logging account and then subscribe the delivery stream to CloudWatch Logs streams in each application AWS account via subscription filters. Persist the log data in an Amazon S3 bucket inside the logging AWS account
+    points
+        Logs that are sent to a receiving service through a subscription filter are Base64 encoded and compressed with the gzip format.
+
+A company has its flagship application fronted by an Application Load Balancer that is targeting several EC2 Linux instances running in an Auto Scaling group in a private subnet. AWS Systems Manager Agent is installed on all the EC2 instances. The company recently released a new version of the application, however, some of the EC2 instances are now being marked as unhealthy and are being terminated, thereby causing the application to run at reduced capacity. You have been tasked to ascertain the root cause by analyzing Amazon CloudWatch logs that are collected from the application, but you find that the logs are inconclusive.
+    Suspend the Auto Scaling group's Terminate process. Use Session Manager to log in to an instance that is marked as unhealthy and analyze the system logs to figure out the root cause     
+    The Terminate process 
+        removes instances from the Auto Scaling group when the group scales in, or when Amazon EC2 Auto Scaling chooses to terminate instances for other reasons, such as when an instance is terminated for exceeding its maximum lifetime duration or failing a health check
+    ReplaceUnhealthy 
+        another way to prevent Amazon EC2 Auto Scaling from terminating unhealthy instances
+
+An e-commerce company is investigating user reports of its Java-based web application errors on the day of the Thanksgiving sale. The development team recovered the logs created by the EC2 instance-hosted web servers and reviewed Aurora DB cluster performance metrics. Some of the web servers were terminated before logs could be collected and the Aurora metrics were inadequate for query performance analysis.Which of the following steps would you recommend to make the monitoring process more reliable to troubleshoot any future events due to traffic spikes?
+    Configure the Aurora MySQL DB cluster to publish slow query and error logs to Amazon CloudWatch Logs
+        The slow query logs and error logs can be used to identify the root cause behind the given issue.
+    Install and configure an Amazon CloudWatch Logs agent on the EC2 instances to send the application logs to CloudWatch Logs
+    Set up the AWS X-Ray SDK to trace incoming HTTP requests on the EC2 instances as well as set up tracing of SQL queries with the X-Ray SDK for Java
+
+The development team at a company needs to implement a client-side encryption mechanism for objects that will be stored in a new Amazon S3 bucket. The team created a CMK that is stored in AWS Key Management Service (AWS KMS) for this purpose. The team created the following IAM policy and attached it to an IAM role:
+    {
+      "Sid": "KMS",
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "kms:Encrypt"
+      ],
+      "Resource": "arn:aws:kms:us-west-1:111122223333:key/keyid-12345"
+    }
+The error message stated that the action was forbidden.
+Which IAM policy action should be added to the IAM policy to resolve the error?
+    kms:GenerateDataKey
+        GenerateDataKey returns a unique symmetric data key for use outside of AWS KMS. This operation returns a plaintext copy of the data key and a copy that is encrypted under a symmetric encryption KMS key that you specify. 
+
+A company provides a web-based business-management platform for IT service companies across the globe to manage help desk, customer service, sales and marketing, and other critical business functions. More than 50,000 people use the company's platform, so the company must respond quickly to any reported problems. However, the company has issues with not having enough visibility into its systems to discover any issues. Multiple logs and monitoring systems are needed to understand the root cause of problems thereby taking hours to resolve. Even as the company is slowly moving towards serverless architecture using AWS Lambda/Amazon API Gateway/Amazon Elastic Container Service (Amazon ECS), the company wants to monitor the microservices and gain deeper insights into its serverless resources.
+Which of the following will you recommend to address the given requirements?
+    Use AWS X-Ray to analyze the microservices applications through request tracing. Configure Amazon CloudWatch for monitoring containers, latency, web server requests, and incoming load-balancer requests and create CloudWatch alarms to send out notifications if system latency is increasing
+
+A company is migrating its two-tier legacy application (using MongoDB as a key-value database) from its on-premises data center to AWS. The company has mandated that the EC2 instances must be hosted in a private subnet with no internet access. In addition, all connectivity between the EC2 instance-hosted application and the database must be encrypted. The database must be able to scale to meet traffic spikes from any bursty or unpredictable workloads.
+    Set up new Amazon DynamoDB tables for the application with on-demand capacity. Use a gateway VPC endpoint for DynamoDB so that the application can have a private and encrypted connection to the DynamoDB tables
+        Amazon DocumentDB (with MongoDB compatibility) clusters are deployed within an Amazon Virtual Private Cloud (Amazon VPC). They can be accessed directly by Amazon EC2 instances or other AWS services that are deployed in the same Amazon VPC. Additionally, Amazon DocumentDB can be accessed by EC2 instances or other AWS services in different VPCs in the same AWS Region or other Regions via VPC peering. Therefore, neither the interface nor gateway VPC endpoint is supported for DocumentDB. 
+
+A retail company is introducing multiple business units as part of its expansion plans. To implement this change, the company will be building several new business-unit-specific workloads by leveraging a variety of AWS services. The company wants to track the expenses of each business unit and limit the spending to a pre-defined threshold. In addition, the solution should allow the security team to identify and respond to threats as quickly as possible for all the workloads across the business units. Also, workload accounts may need to be pulled off into a temporary holding area due to resource audit reasons.
+    Configure an AWS Budget alert to move an AWS account to Exceptions OU if the account reaches a predefined budget threshold. Use Service Control Policies (SCPs) to limit/block resource usage in the Exceptions OU. Configure a Suspended OU to hold workload accounts with retired resources. Use Service Control Policies (SCPs) to limit/block resource usage in the Suspended OU
+    Designate an account within the AWS Organizations organization to be the GuardDuty delegated administrator. Create an SNS topic in this account. Subscribe the security team to the topic so that the security team can receive alerts from GuardDuty via SNS
+    Use AWS Organizations to set up a multi-account environment. Organize the accounts into the following Organizational Units (OUs): Security, Infrastructure, Workloads, Suspended and Exceptions
+        When you use GuardDuty with an AWS Organizations organization, you can designate any account within the organization to be the GuardDuty delegated administrator. Only the organization management account can designate GuardDuty delegated administrators.
+        An account that is designated as a delegated administrator becomes a GuardDuty administrator account, has GuardDuty automatically enabled in the designated Region and is granted permission to enable and manage GuardDuty for all accounts in the organization within that Region. 
+        
+A financial services company wants to set up an AWS WAF-based solution to manage AWS WAF rules across multiple AWS accounts that are structured under different Organization Units (OUs) in AWS Organizations. The solution should automatically update and remediate noncompliant AWS WAF rules in all accounts. The solution should also facilitate adding or removing accounts or OUs from managed AWS WAF rule sets as needed.
+    Create an AWS Organizations organization-wide AWS Config rule that mandates all resources in the selected OUs to be associated with the AWS WAF rules. Configure automated remediation actions by using AWS Systems Manager Automation documents to fix non-compliant resources. Set up AWS WAF rules by using an AWS CloudFormation stack set to target the same OUs where the AWS Config rule is applied
+        AWS Config allows you to manage AWS Config rules across all AWS accounts within an organization. 
+        AWS Config applies remediation using AWS Systems Manager Automation documents.
+        AWS CloudFormation StackSets extends the capability of CloudFormation stacks by enabling you to create, update, or delete stacks across multiple accounts and AWS Regions with a single operation.
+
+A company manages a stateful web application that persists data on a MySQL database. The application stack is hosted in the company's on-premises data center using a single server. The company is looking at increasing its market presence through promotions and campaigns. While the user experience has been good so far, the current application architecture will not support the growth that the company envisages. The company has hired you as an AWS Certified Solutions Architect Professional to migrate the current architecture to AWS which should continue to support SQL-based queries. The proposed solution should offer maximum reliability with better performance.
+    Set up database migration to Amazon Aurora MySQL. Deploy the application in an Auto Scaling group for Amazon EC2 instances that are fronted by an Application Load Balancer. Store sessions in an Amazon ElastiCache for Redis with replication group
+        Redis lets you create multiple replicas of a Redis primary. This allows you to scale database reads and to have highly available clusters. The replication support makes Redis a more reliable solution than Memcached.
+
+A team uses an Amazon S3 bucket to store the client data. After updating the S3 bucket with a few file deletes and some new file additions, the team has just realized that these changes have not been propagated to the AWS Storage Gateway file share.
+    Storage Gateway doesn't automatically update the cache when you upload a file directly to Amazon S3. Perform a RefreshCache operation to see the changes on the file share
+        Storage Gateway updates the file share cache automatically when you write files to the cache locally using the file share. However, Storage Gateway doesn't automatically update the cache when you upload a file directly to Amazon S3.
+        you must perform a RefreshCache operation to see the changes on the file share. If you have more than one file share, then you must run the RefreshCache operation on each file share.
+        'ResetCache' 
+            resets all cache disks that have encountered an error, and make the disks available for reconfiguration as cache storage. When a cache is reset, the gateway loses its cache storage. At this point, you can reconfigure the disks as cache disks. This operation is only supported in the cached volume and tape gateway types.
+
+A multi-national company operates hundreds of AWS accounts and the CTO wants to rationalize the operational costs. The CTO has mandated a centralized process for purchasing new Reserved Instances (RIs) or modifying existing RIs. Whereas earlier the business units (BUs) would directly purchase or modify RIs in their own AWS accounts independently, now all BUs must be denied independent purchase and the BUs must submit requests to a dedicated central team for purchasing RIs.
+    Make sure that all AWS accounts are assigned organizational units (OUs) within an AWS Organizations structure operating in all features mode
+        All features
+            preferred way to work with AWS Organizations
+            includes Consolidating Billing features
+            Service control policies (SCPs) offer central control over the maximum available permissions for all of the accounts in your organization
+        Consolidated Billing features
+            provides basic management tools that you can use to centrally manage the accounts in your organization. You cannot leverage SCPs in this feature mode
+
+Recently, an Amazon CloudFront distribution has been configured with an Amazon S3 bucket as the origin. However, users are getting an HTTP 307 Temporary Redirect response from Amazon S3.
+    When a new Amazon S3 bucket is created, it takes up to 24 hours before the bucket name propagates across all AWS Regions
+    CloudFront by default, forwards the requests to the default S3 endpoint. Change the origin domain name of the distribution to include the Regional endpoint of the bucket
+
+A social learning platform allows students to connect with other students as well as experts and professionals from academic, research institutes and industry. The engineering team at the company manages 5 Amazon EC2 instances that make read-heavy database requests to the Amazon RDS for PostgreSQL DB cluster. As an AWS Certified Solutions Architect Professional, you have been asked to make the database cluster resilient from a disaster recovery perspective.
+    Use cross-Region Read Replicas
+    Enable the automated backup feature of Amazon RDS in a multi-AZ deployment that creates backups in a single or multiple AWS Region(s)
+
+A data analytics company uses Amazon S3 as the data lake to store the input data that is ingested from the IoT field devices on an hourly basis. The ingested data has attributes such as the device type, ID of the device, the status of the device, the timestamp of the event, the source IP address, etc. The data runs into millions of records per day and the company wants to run complex analytical queries on this data daily for product improvements for each device type.
+    Store the data in Apache ORC, partitioned by date and sorted by device type of the device
+        Apache Parquet and ORC are columnar storage formats that are optimized for fast retrieval of data and used in AWS analytical applications.
+        By partitioning your data, you can restrict the amount of data scanned by each query, thus improving performance and reducing cost.
+            You can partition your data by any key. A common practice is to partition the data based on time, often leading to a multi-level partitioning scheme. 
+            as the company does daily analysis, so it only needs to look at the data generated for a given date. Hence partitioning by date offers significant performance and cost advantages. Since the company also wants to analyze product improvements for each device type, it is better to keep the data sorted by device type, so it allows for faster query execution.
+
+An e-commerce company manages its flagship application on a load-balanced EC2 instance fleet for web hosting, database API services, and business logic. This tightly coupled architecture makes it inflexible for new feature additions while also making the architecture less scalable.
+    Configure Amazon S3 for hosting the web application while using AWS AppSync for database access services. Use Amazon Simple Queue Service (Amazon SQS) for queuing orders and AWS Lambda for business logic. Use Amazon SQS dead-letter queue for tracking and re-processing failed orders
+        AWS AppSync creates serverless GraphQL and Pub/Sub APIs that simplify application development through a single endpoint to securely query, update, or publish data.
+        Amazon SQS supports dead-letter queues (DLQ), which other queues (source queues) can target for messages that can't be processed (consumed) successfully. Dead-letter queues are useful for debugging your application or messaging system because they let you isolate unconsumed messages to determine why their processing doesn't succeed.
+
+A company uses Amazon FSx for Windows File Server with deployment type of Single-AZ 2 as its file storage service for its non-core functions. With a change in the company's policy that mandates high availability of data for all its functions, the company needs to change the existing configuration. The company also needs to monitor the file system activity as well as the end-user actions on the Amazon FSx file server.
+    Configure a new Amazon FSx for Windows file system with a deployment type of Multi-AZ. Transfer data to the newly created file system using the AWS DataSync service. Point all the file system users to the new location. You can test the failover of your Multi-AZ file system by modifying its throughput capacity
+    You can monitor storage capacity and file system activity using Amazon CloudWatch, and monitor end-user actions with file access auditing using Amazon CloudWatch Logs and Amazon Kinesis Data Firehose
+
+An Amazon Simple Storage Service (Amazon S3) bucket has been configured to host a static website. While using the S3 static website endpoint, the testing team has complained that they are receiving access denied error for this website.What are the key points to consider while configuring an S3 bucket as a static website?
+    The AWS account that owns the bucket must also own the object
+        To allow public read access to objects, the AWS account that owns the bucket must also own the objects. A bucket or object is owned by the account of the AWS Identity and Access Management (IAM) identity that created the bucket or object. The object-ownership requirement applies to public read access granted by a bucket policy. It doesn't apply to public read access granted by the object's access control list (ACL).
+    Objects can't be encrypted by AWS Key Management Service (AWS KMS)
+        AWS KMS doesn't support anonymous requests. As a result, any Amazon S3 bucket that allows anonymous or public access will not apply to objects that are encrypted with AWS KMS. You must remove KMS encryption from the objects that you want to serve using the Amazon S3 static website endpoint. Instead of using AWS KMS encryption, use AES-256 to encrypt your objects.
+
+A leading pharmaceutical company has significant investments in running Oracle and PostgreSQL services on Amazon RDS which provide their scientists with near real-time analysis of millions of rows of manufacturing data generated by continuous manufacturing equipment with 1,600 data points per row. The business analytics team has been running ad-hoc queries on these databases to prepare daily reports for senior management. The engineering team has observed that the database performance takes a hit whenever these reports are run by the analytics team. To facilitate the business analytics reporting, the engineering team now wants to replicate this data with high availability and consolidate these databases into a petabyte-scale data warehouse by streaming data to Amazon Redshift.
+As a Solutions Architect Professional, which of the following would you recommend as the MOST resource-efficient solution that requires the LEAST amount of development time without the need to manage the underlying infrastructure?
+    Use AWS Database Migration Service to replicate the data from the databases into Amazon Redshift
+        AWS Database Migration Service helps you migrate databases to AWS quickly and securely.
+        The source database remains fully operational during the migration, minimizing downtime to applications that rely on the database. With AWS Database Migration Service, you can continuously replicate your data with high availability and consolidate databases into a petabyte-scale data warehouse by streaming data to Amazon Redshift and Amazon S3.
+
+An e-commerce web application is hosted on Amazon EC2 instances that are fronted by Application Load Balancer (ALB) configured with an Auto Scaling group (ASG). Enhanced security is provided to the ALB by AWS WAF web ACLs. As per the company's security policy, AWS CloudTrail is activated and logs are configured to be stored on Amazon S3 and CloudWatch Logs.implement to permanently record all traffic coming into the application?
+    Configure the WAF web ACL to deliver logs to Amazon Kinesis Data Firehose, which should be configured to eventually store the logs in an Amazon S3 bucket. Use Athena to query the logs for errors and tracking
+        logging destinations that you can choose from for your AWS WAF logs are:
+            Amazon CloudWatch Logs
+            Amazon Simple Storage Service
+            Amazon Kinesis Data Firehose
+
+        note that VPC Flow Logs cannot capture all traffic coming into the application as these can only capture information about the IP traffic going to and from network interfaces in your VPC.
+
+The engineering team has built a notification system on the web platform using SNS notifications which are then handled by a Lambda function for end-user delivery. During the off-season, the notification systems need to handle about 100 requests per second. During the peak baseball season, the rate touches about 5000 requests per second and it is noticed that a significant number of the notifications are not being delivered to the end-users on the web platform.
+    Amazon SNS message deliveries to AWS Lambda have crossed the account concurrency quota for Lambda, so the team needs to contact AWS support to raise the account limit
+
+The updated backup policy at the company mandates that all nightly backups for its data are durably stored in at least two geographically distinct Regions for Production and Disaster Recovery (DR) and the backup processes for both Regions must be fully automated. The new backup solution must ensure that the backup is available to be restored immediately for the Production Region and should be restored within 24 hours in the DR Region.
+MOST cost-effective solution that will address the given use-case?
+    Create a backup process to persist all the data to an S3 bucket A using S3 standard storage class in the Production Region. Set up cross-Region replication of this S3 bucket A to an S3 bucket B using S3 standard storage class in the DR Region and set up a lifecycle policy in the DR Region to immediately move this data to Amazon Glacier
+        Amazon S3 stores object replicas using the same storage class as the source object. You can also specify a different storage class for the replicas. This allows you to use something like an S3 Standard-IA for the replica bucket, however, S3 standard IA has a minimum storage duration charge of 30 days thereby making it costlier than using S3 Standard storage class for the given scenario because the data would be moved to Glacier via a Lifecycle policy immediately.
+
+A digital media company wants to use AWS Cloudfront to manage its content. Firstly, it would like to allow only those new users who have paid the annual subscription fee the ability to download the application installation file. Secondly, only the subscribers should be able to view the files in the members' area.
+    Use CloudFront signed URLs to restrict access to the application installation file
+    Use CloudFront signed cookies to restrict access to all the files in the members' area of the website
+        CloudFront signed cookies 
+            allow you to control who can access your content when you don't want to change your current URLs or when you want to provide access to multiple restricted files
+
+To handle certain sensitive photos, the team wants to postpone the delivery of certain messages "to the queue" by one minute while all other messages need to be delivered immediately to the queue.
+    Use message timers to postpone the delivery of certain messages to the queue by one minute
+        message timers
+            set an initial invisibility period for a message added to a queue
+
+The entrepreneur has created a test file of size 5 GB with some random data. Next, he uploads this test file into AWS S3 Standard storage class, provisions an EBS volume (General Purpose SSD (gp2)) with 50 GB of provisioned storage and copies the test file into the EBS volume, and lastly copies the test file into an EFS Standard Storage filesystem.
+    Cost of test file storage on S3 Standard < Cost of test file storage on EFS < Cost of test file storage on EBS
+        With Amazon EFS, you pay only for the resources that you use. The EFS Standard Storage pricing is $0.30 per GB per month. Therefore the cost for storing the test file of 5 GB on EFS is 5 * $0.30 = $1.5 for the month.
+
+the media company wants to archive about 9 PB of data in its on-premises data center to durable long term storage.As a Solutions Architect Professional, what is your recommendation to migrate and store this data in the quickest and MOST cost-optimal way?
+        Transfer the on-premises data into multiple Snowball Edge Storage Optimized devices. Copy the Snowball Edge data into Amazon S3 and create a lifecycle policy to transition the data into AWS Glacier
+        Snowball Edge Storage Optimized
+            if you need to securely and quickly transfer dozens of terabytes to petabytes of data to AWS. It provides up to 80 TB of usable HDD storage, 40 vCPUs, 1 TB of SATA SSD storage, and up to 40 Gb network connectivity to address large scale data transfer and pre-processing use cases.
+            You can't directly copy data from Snowball Edge devices into AWS Glacier.
+        AWS Snowmobile 
+            is an exabyte-scale data transfer service used to move extremely large amounts of data to AWS. 
+            You can transfer up to 100 PB per Snowmobile
+        AWS recommends that you should use Snowmobile to migrate large datasets of 10PB or more in a single location. For datasets less than 10PB or distributed in multiple locations, you should use Snowball. 
+
+design a highly available solution that will provision an Elastic Beanstalk environment in the morning and terminate it at the end of the day. The solution should be designed with minimal operational overhead with a focus on minimizing costs. The solution should also facilitate the increased use of Elastic Beanstalk environments among different development teams and must provide a one-stop scheduler solution for all teams to keep the operational costs as low as possible.
+    Set up separate Lambda functions to provision and terminate the Elastic Beanstalk environment. Configure a Lambda execution role granting the required Elastic Beanstalk environment permissions and assign the role to the Lambda functions. Configure cron expression based Amazon EventBridge events rules to trigger the Lambda functions
+
+As part of its research, the product team has figured out a market need to support both stateful and stateless client-server communications via the APIs developed using its platform.
+    API Gateway creates RESTful APIs that enable stateless client-server communication and API Gateway also creates WebSocket APIs that adhere to the WebSocket protocol, which enables stateful, full-duplex communication between client and server
+
+serverless application stack that consists of CloudFront, API Gateway and Lambda functions. The company has hired you as an AWS Certified Solutions Architect Professional to improve the current deployment process which creates a new version of the Lambda function and then runs an AWS CLI script for deployment. In case the new version errors out, then another CLI script is invoked to deploy the previous working version of the Lambda function. The company has mandated you to decrease the time to deploy new versions of the Lambda functions and also reduce the time to detect and rollback when errors are identified.
+    Use Serverless Application Model (SAM) and leverage the built-in traffic-shifting feature of SAM to deploy the new Lambda version via CodeDeploy and use pre-traffic and post-traffic test functions to verify code. Rollback in case CloudWatch alarms are triggered
+    AWS Serverless Application Model (SAM) 
+        open source framework for building serverless applications. It provides shorthand syntax to express functions, APIs, databases, and event source mappings. You define the application you want with just a few lines per resource and model it using YAML. During deployment, SAM transforms and expands the SAM syntax into AWS CloudFormation syntax. Then, CloudFormation provisions your resources with reliable deployment capabilities.
+        traffic shifting feature
+            test the new version of the Lambda function without having to manually move 100% traffic 
+
+document management system for users to upload their documents. The system also has a web application that connects to an Amazon API Gateway with Regional endpoints which in turn invokes AWS Lambda functions. The Lambda functions write the metadata of the documents to the Amazon Aurora Serverless database before uploading the actual documents to the Amazon S3 bucket. While the serverless architecture has been tested in the US East (N. Virginia) Region, the solution should be scalable for other AWS Regions too.
+architecture scalable while offering low latency service to customers of any AWS region
+    Enable S3 Transfer Acceleration on the S3 bucket and configure the web application to use the Transfer Acceleration endpoints
+    Change the API Gateway Regional endpoints to edge-optimized endpoints
+        API endpoint type can be 
+            regional
+                intended for clients in the same region.
+            edge-optimized
+                best for geographically distributed clients
+                API requests are routed to the nearest CloudFront Point of Presence (POP). 
+
+They intend to use AWS Lambda extensively and are looking at the salient features to consider when using Lambda as the backbone for the serverless architecture. which of the following would you identify as key considerations for a serverless architecture?
+    By default, Lambda functions always operate from an AWS-owned VPC and hence have access to any public internet address or public AWS APIs. Once a Lambda function is VPC-enabled, it will need a route through a NAT gateway in a public subnet to access public resources
+    Since Lambda functions can scale extremely quickly, it's a good idea to deploy a CloudWatch Alarm that notifies your team when function metrics such as ConcurrentExecutions or Invocations exceeds the expected threshold
+    If you intend to reuse code in more than one Lambda function, you should consider creating a Lambda Layer for the reusable code
+        layers 
+            You can configure your Lambda function to pull in additional code and content in the form of layers. A layer is a ZIP archive that contains libraries, a custom runtime, or other dependencies. With layers, you can use libraries in your function without needing to include them in your deployment package. Layers let you keep your deployment package small, which makes development easier. A function can use up to 5 layers at a time.
+    
+The engineering team at a data analytics company is currently optimizing a production workload on AWS that is I/O intensive with frequent read/write/update operations and it's currently constrained on the IOPS. This workload consists of a single-tier with 15 r6g.8xlarge instances, each with 3 TB gp2 volume. The number of processing jobs has increased recently, resulting in an increase in latency as well. The team has concluded that they need to increase the IOPS by 3,000 for each of the instances for the application to perform efficiently.meet the performance goal in the MOST cost-efficient way?
+    Modify the size of the gp2 volume for each instance from 3 TB to 4 TB
+        increasing the EBS volume size by 1 TB which will add 3,000 IOPS (3 IOPS per GB * 1000 GB) to the EBS volume on each instance.
+
+The analytics company stores the IoT sensor data in Amazon DynamoDB tables. To detect anomalous behaviors and respond quickly, all changes to the items stored in the DynamoDB tables must be logged in near real-time.recommend to meet the requirements of the given use-case so that it requires minimal custom development and infrastructure maintenance
+    Set up DynamoDB Streams to capture and send updates to a Lambda function that outputs records to Kinesis Data Analytics (KDA) via Kinesis Data Streams (KDS). Detect and analyze anomalies in KDA and send notifications via SNS
+        DynamoDB stream
+            ordered flow of information about changes to items in a DynamoDB table. 
+        Kinesis Data Analytics (KDA)
+            only supports following as source 
+                Kinesis data stream (KDS)
+                Kinesis Data Firehose (KDF)
+
+leading mobility company wants to use AWS for its connected cab application that would collect sensor data from its electric cab fleet to give drivers dynamically updated map information. The company would like to build its new sensor service by leveraging fully serverless components that are provisioned and managed automatically by AWS. The development team at the company does not want an option that requires the capacity to be manually provisioned, as it does not want to respond manually to changing volumes of sensor data. The company has hired you as an AWS Certified Solutions Architect Professional to provide consultancy for this strategic initiative.
+    Ingest the sensor data in an Amazon SQS standard queue, which is polled by a Lambda function in batches and the data is written into an auto-scaled DynamoDB table for downstream processing
+    Amazon Kinesis Data Firehose
+        real-time streaming data to destinations
+            Amazon Simple Storage Service (Amazon S3) 
+            Amazon Redshift 
+            Amazon OpenSearch Service 
+            Splunk and any custom HTTP endpoint
+        Firehose cannot directly write into a DynamoDB table
+
+establish best practices around least privileges for developers and control access to on-premises as well as AWS Cloud resources using Active Directory. The company has mandated you to institute a mechanism to control costs by restricting the level of access that developers have to the AWS Management Console without impacting their productivity. The company would also like to allow developers to launch RDS instances only in us-east-1 Region without limiting access to other services in any Region.
+    Configure SAML-based authentication tied to an IAM role that has the PowerUserAccess managed policy attached to it. Attach a customer-managed policy that denies access to RDS in any AWS Region except us-east-1
+
+The engineering team at a company is evaluating the Multi-AZ and Read Replica capabilities of RDS MySQL vs Aurora MySQL before they implement the solution in their production environment. The company has hired you as an AWS Certified Solutions Architect Professional to provide a detailed report on this technical requirement.
+    Read Replicas can be manually promoted to a standalone database instance for RDS MySQL whereas Read Replicas for Aurora MySQL can be promoted to the primary instance
+    The primary and standby DB instances are upgraded at the same time for RDS MySQL Multi-AZ. All instances are upgraded at the same time for Aurora MySQL
+    Multi-AZ deployments for both RDS MySQL and Aurora MySQL follow synchronous replication
+
+The Content Delivery Network (CDN) offers a multi-tier cache by default, with regional edge caches that improve latency and lower the load on the origin servers when the object is not already cached at the edge. However, there are certain content types that bypass the regional edge cache and go directly to the origin.
+    Proxy methods PUT/POST/PATCH/OPTIONS/DELETE go directly to the origin
+    Dynamic content, as determined at request time (cache-behavior configured to forward all headers)
+
+healthcare company is working on the Disaster Recovery (DR) plans for its Redshift cluster deployed in the eu-west-1 Region. The existing cluster is encrypted via AWS KMS and the team wants to copy the Redshift snapshots to another Region to meet the DR requirements
+    Create a snapshot copy grant in the destination Region for a KMS key in the destination Region. Configure Redshift cross-Region snapshots in the source Region
+        To copy snapshots for AWS KMS–encrypted clusters to another AWS Region, you need to create a grant for Redshift to use a KMS customer master key (CMK) in the destination AWS Region. Then choose that grant when you enable copying of snapshots in the source AWS Region. You cannot use a KMS key from the source Region as AWS KMS keys are specific to an AWS Region.
+
+consultancy for managing a serverless application that consists of multiple API gateways, Lambda functions, S3 buckets and DynamoDB tables. The company is getting reports from customers that some of the application components seem to be lagging while loading dynamic images and some are timing out with the "504 Gateway Timeout" error. As part of your investigations to identify the root cause behind this issue, you can confirm that DynamoDB monitoring metrics are at acceptable levels.
+    Process and analyze the AWS X-Ray traces and analyze HTTP methods to determine the root cause of the HTTP errors
+    Process and analyze the Amazon CloudWatch Logs for Lambda function to determine processing times for requested images at pre-configured intervals
+        neither execution logs nor access logs at the API Gateway level will provide information to identify the root cause for the "504 Gateway Timeout" error as it needs to be analyzed at the source system level
+
+The firm is using SQS to migrate several trading applications to the cloud to ensure high availability and cost efficiency while simplifying administrative complexity and overhead. The development team at the firm expects a peak rate of about 2,400 messages per second to be processed via SQS. It is important that the messages are processed in the order they are received.
+    Use Amazon SQS FIFO queue in batch mode of 8 messages per operation to process the messages at the peak rate
+        By default, FIFO queues support up to 300 messages
+    
+Which of the following strategies would you adopt to address these business requirements for continuously assessing, auditing and monitoring the configurations of AWS resources
+    Enable trails and set up CloudTrail events to review and monitor management activities of all AWS accounts by logging these activities into CloudWatch Logs using a KMS key. Ensure that CloudTrail is enabled for all accounts as well as all available AWS services
+    Leverage Config rules to audit changes to AWS resources and monitor the compliance of the configuration by running the evaluations for the rule at a frequency that you choose. Develop AWS Config custom rules to establish a test-driven development approach by triggering the evaluation when any resource that matches the rule's scope changes in configuration
+        CloudTrail is an AWS service that helps you enable governance, compliance, and operational and risk auditing of your AWS account. Actions taken by a user, role, or an AWS service are recorded as events in CloudTrail.
+
+The company wants to use clickstream data to perform data science, develop algorithms, and create visualizations and dashboards to support the business stakeholders. Each of these groups would work independently and would need real-time access to this clickstream data for their applications.
+Which of the following options would provide a highly available and fault-tolerant solution to capture the clickstream events from the source and also provide a simultaneous feed of the data stream to the downstream applications
+    Use AWS Kinesis Data Streams to facilitate multiple applications consume same streaming data concurrently and independently
+        recommended when you need the ability for multiple applications to consume the same stream concurrently
+        Amazon Kinesis Data Firehose
+            easiest way to load streaming data into data stores and analytics tools. 
+
+medical technology company has recently set up a hybrid cloud between its on-premises data centers and AWS Cloud. The engineering team at the company has developed a Media Archiving and Communication System application that runs on AWS to support real-time collaboration among radiologists and other specialists. The company uses Amazon S3 to aggregate the raw medical images and video footage from its research teams across the world to discover tremendous medical insights. The technical teams at the overseas research facilities have reported huge delays in uploading large video files to the destination S3 bucket.
+MOST cost-effective solutions to improve the file upload speed into S3?
+    Use multipart uploads for faster file uploads into the destination S3 bucket
+    Use Amazon S3 Transfer Acceleration to enable faster file uploads into the destination S3 bucket
+
+The team is testing the alpha release of the application running on 20 EC2 instances managed by an Auto Scaling group in subnet 172.20.0.0/24 within VPC X with CIDR block 172.20.0.0/16. The team has noticed connection timeout errors in the application logs while connecting to a MySQL database running on an EC2 instance in the same region in subnet 172.30.0.0/24 within VPC Y with CIDR block 172.30.0.0/16. The IP of the database instance is hard-coded in the application instances.
+    Set up a VPC peering connection between the two VPCs and add a route to the routing table of VPC Y that points to the IP address range of 172.20.0.0/16
+    Set up a VPC peering connection between the two VPCs and add a route to the routing table of VPC X that points to the IP address range of 172.30.0.0/16
+
+A gaming company runs its flagship application with an SLA of 99.99%. Global users access the application 24/7. The application is currently hosted on the on-premises data centers and it routinely fails to meet its SLA, especially when hundreds of thousands of users access the application concurrently. The engineering team has also received complaints from some users about high latency.how would you redesign this application for scalability and also allow for automatic failover at the lowest possible cost
+    Configure Route 53 latency-based routing to route to the nearest Region and activate the health checks. Host the website on S3 in each Region and use API Gateway with AWS Lambda for the application layer. Set up the data layer using DynamoDB global tables with DAX for caching
+        you cannot use geolocation-based routing to route to the nearest Region as you need to use latency based routing to accomplish that
+
+The company wants to move its data artifacts, 200 TB in total size, to Amazon S3 on the AWS Cloud in the shortest possible time. The company has hired you as an AWS Certified Solutions Architect Professional to provide consultancy for this data migration. In terms of the networking infrastructure, the company has a 500 Mbps Direct Connect connection to the AWS Cloud as well as an IPSec based AWS VPN connection using the public internet that supports a bandwidth of 1 Gbps
+    Order three AWS Snowball Edge appliances, split and transfer the data to these three appliances and ship them to AWS which will then copy the data from the Snowball Edge appliances to S3
+            Snowball Edge is the optimal choice if you need to securely and quickly transfer dozens of terabytes to petabytes of data to AWS. The AWS Snow Family is ideal for customers moving large batches of data at once. The AWS Snowball has a typical 5-7 days turnaround time. As each Snowball Edge device can handle 80TB of data, you can order 3 such devices to take care of the data transfer for the given use-case.
+
+An e-commerce company wants to rollout and test a blue-green deployment for its global application in the next couple of days. Most of the customers use mobile phones which are prone to DNS caching. The company has only two days left before the big sale will be launched.
+    Use AWS Global Accelerator to distribute a portion of traffic to a particular deployment
+    AWS Global Accelerator 
+        is a network layer service that directs traffic to optimal endpoints over the AWS global network, this improves the availability and performance of your internet applications. It provides two static anycast IP addresses that act as a fixed entry point to your application endpoints in a single or multiple AWS Regions, such as your Application Load Balancers, Network Load Balancers, Elastic IP addresses or Amazon EC2 instances, in a single or in multiple AWS regions.
+        uses endpoint weights to determine the proportion of traffic that is directed to endpoints in an endpoint group, and traffic dials to control the percentage of traffic that is directed to an endpoint group (an AWS region where your application is deployed).
+
+After a recent DDoS assault, the IT security team of a media company has asked the Security Engineer to revamp the security of the application to prevent future attacks. The website is hosted on an Amazon EC2 instance and data is maintained on Amazon RDS. A large part of the application data is static and this data is in the form of images.
+    Use Amazon Route 53 to distribute traffic
+    Move the static content to Amazon S3, and front this with an Amazon CloudFront distribution. Configure another layer of protection by adding AWS Web Application Firewall (AWS WAF) to the CloudFront distribution
+        WAF cannot be directly configured in front of an ASG
+        Route 53 DNS requests and subsequent application traffic routed through CloudFront are inspected inline. Always-on monitoring, anomaly detection, and mitigation against common infrastructure DDoS attacks such as SYN/ACK floods, UDP floods, and reflection attacks are built into both Route 53 and CloudFront.
+        Route 53 is also designed to withstand DNS query floods, which are real DNS requests that can continue for hours and attempt to exhaust DNS server resources. Route 53 uses shuffle sharding and anycast striping to spread DNS traffic across edge locations and help protect the availability of the service.
+
+The instances under the ASG span two Availability Zones (AZ) within the eu-west-1 region. All the incoming requests are handled by an Application Load Balancer (ALB) that routes the requests to the EC2 instances under the ASG. A planned migration went wrong last week when two instances (belonging to AZ 1) were manually terminated and desired capacity was reduced causing the Availability Zones to become unbalanced. Later that day, another instance (belonging to AZ 2) was detected as unhealthy by the Application Load Balancer's health check.
+    Amazon EC2 Auto Scaling creates a new scaling activity for terminating the unhealthy instance and then terminates it. Later, another scaling activity launches a new instance to replace the terminated instance
+    As the Availability Zones got unbalanced, Amazon EC2 Auto Scaling will compensate by rebalancing the Availability Zones. When rebalancing, Amazon EC2 Auto Scaling launches new instances before terminating the old ones, so that rebalancing does not compromise the performance or availability of your application
+        Auto Scaling activity
+            creates a new scaling activity for terminating the unhealthy instance and then terminates it. Later, another scaling activity launches a new instance to replace the terminated instance. 
+        Actions such as changing the Availability Zones for your group or explicitly terminating or detaching instances and decrement the desired capacity at the same time, it can lead to the Auto Scaling group becoming unbalanced between Availability Zones. Amazon EC2 Auto Scaling compensates by rebalancing the Availability Zones.
+        When rebalancing, 
+            Amazon EC2 Auto Scaling launches new instances before terminating the old ones, so that rebalancing does not compromise the performance or availability of your application. Therefore, this option is correct.
+
+AWS in a hybrid environment to innovate and deploy features for its flagship video product, XFINITY X1, several times a week. The company uses AWS products such as Amazon Virtual Private Cloud (Amazon VPC) and Amazon Direct Connect to deliver the scalability and security needed for rapidly innovating in a hybrid environment. As part of an internal product roadmap, the engineering team at the company has created a private hosted zone and associated it with a virtual private cloud (VPC). However, the domain names remain unresolved, resulting in errors.
+    To use private hosted zones, DNS hostnames and DNS resolution should be enabled for the VPC
+    DNS hostnames
+        non-default virtual private clouds that aren't created using the Amazon VPC wizard, this option is disabled by default.
+    DNS resolution
+        Private hosted zones accept DNS queries only from a VPC DNS server
+        Enabling DNS resolution allows you to use the VPC DNS server as a Resolver for performing DNS resolution. 
+
+The DevOps team for a CRM SaaS company wants to implement a patching plan on AWS Cloud for a large mixed fleet of Windows and Linux servers. The patching plan has to be auditable and must be implemented securely to ensure compliance with the company's business requirements.
+    Set up Systems Manager Agent on all instances to manage patching. Test patches in pre-production and then deploy as a maintenance window task with the appropriate approval
+    Apply patch baselines using the AWS-RunPatchBaseline SSM document
+        AWS-RunPatchBaseline SSM document
+            performs patching operations on instances for both security-related and other types of updates. When the document is run, it uses the patch baseline currently specified as the "default" for an operating system type.
+            For applying patch baselines to both Windows Server and Linux instances, the recommended SSM document is AWS-RunPatchBaseline.
+        AWS-ApplyPatchBaseline SSM document
+            supports patching on Windows instances only and doesn't support Linux instances.
+
+A multi-national retail company has built a hub-and-spoke network with AWS Transit Gateway. VPCs have been provisioned into multiple AWS accounts to facilitate network isolation and to enable delegated network administration. The organization is looking at a cost-effective, quick and secure way of maintaining this distributed architecture so that it provides access to services required by workloads in each of the VPCs.
+    Use Centralized VPC Endpoints for connecting with multiple VPCs, also known as shared services VPC
+        shared services VPC
+            which provides access to services required by workloads in each of the VPCs.
+
+The VPC flow logs data is funneled into Kinesis Data Streams which further acts as the source of a delivery stream for Kinesis Firehose. The engineering team has now configured a Kinesis Agent to send the VPC flow logs data from another set of network devices to the same Firehose delivery stream. They noticed that data is not reaching Firehose as expected.
+    Kinesis Agent cannot write to a Kinesis Firehose for which the delivery stream source is already set as Kinesis Data Streams
+        When a Kinesis data stream is configured as the source of a Firehose delivery stream, Firehose’s PutRecord and PutRecordBatch operations are disabled and Kinesis Agent cannot write to Firehose delivery stream directly. Data needs to be added to the Kinesis data stream through the Kinesis Data Streams PutRecord and PutRecords operations instead.
+
+The engineering team at the company now wants to finetune the disaster recovery strategy for its database tier. As an AWS Certified Solutions Architect Professional, you have been asked to implement a disaster recovery strategy for all the Amazon RDS databases that the company owns.
+    Database snapshots are user-initiated backups of your complete DB instance that serve as full backups. These snapshots can be copied and shared to different Regions and accounts
+    Automated backups, manual snapshots and Read Replicas are supported across multiple Regions
+    Recovery time objective (RTO) represents the number of hours it takes, to return the Amazon RDS database to a working state after a disaster
+
+A research assistant working with the radiology department is trying to upload a high-resolution image into S3 via the public internet. The image size is approximately 5GB. The research assistant is using S3 Transfer Acceleration (S3TA) for faster image upload. It turns out that S3TA did not result in an accelerated transfer.
+    The research assistant does not need to pay any transfer charges for the image upload        
+        There are no S3 data transfer charges when data is transferred in from the internet.
+    
+The solution should help the company eliminate the bottleneck created by manual provisioning of development pipelines while adhering to crucial governance and control requirements. As a means to this end, the company has set up "AWS Organizations" to manage several of these scenarios and would like to use Service Control Policies (SCP) for central control over the maximum available permissions for the various accounts in their organization. This allows the organization to ensure that all accounts stay within the organization’s access control guidelines.
+    SCPs do not affect service-linked role
+    SCPs affect all users and roles in attached accounts, including the root user
+    If a user or role has an IAM permission policy that grants access to an action that is either not allowed or explicitly denied by the applicable SCPs, the user or role can't perform that action
+
+social media company has its corporate headquarters in New York with an on-premises data center using an AWS Direct Connect connection to the AWS VPC. The branch offices in San Francisco and Miami use Site-to-Site VPN connections to connect to the AWS VPC. The company is looking for a solution to have the branch offices send and receive data with each other as well as with their corporate headquarters.
+    Set up VPN CloudHub between branch offices and corporate headquarters which will enable branch offices to send and receive data with each other as well as with their corporate headquarters
+        AWS VPN CloudHub
+            If you have multiple AWS Site-to-Site VPN connections, you can provide secure communication between sites
+            Sites that use AWS Direct Connect connections to the virtual private gateway can also be part of the AWS VPN CloudHub.
+
+analytics company wants to leverage ElastiCache for Redis in cluster mode to enhance the performance and scalability of its existing two-tier application architecture. The ElastiCache cluster is configured to listen on port 6379. The company has hired you as an AWS Certified Solutions Architect Professional to build a secure solution so that the cache data is secure and protected from unauthorized access.
+    Create the cluster with auth-token parameter and make sure that the parameter is included in all subsequent commands to the cluster
+        Redis authentication tokens enable Redis to require a token (password) before allowing clients to run commands, thereby improving data security.
+
+The company policy mandates never to have public S3 objects so the Governance and Compliance team must be notified immediately as soon as any public objects are identified. The company has hired you as an AWS Certified Solutions Architect Professional to help build a solution that detects the presence of a public S3 object, which in turn sets off an alarm to trigger notifications and then automatically remediates the said object.
+    Configure a Lambda function as one of the SNS topic subscribers, which is invoked to secure the objects in the S3 bucket
+    Enable object-level logging for S3. Set up a EventBridge event pattern when a PutObject API call with public-read permission is detected in the AWS CloudTrail logs and set the target as an SNS topic for downstream notifications
+        object-level logging for an S3 bucket
+            to send logs to CloudTrail for object-level API operations such as GetObject, DeleteObject, and PutObject.
+            These events are called data events. By default, CloudTrail trails don't log data events
+        You need to further configure a EventBridge event-pattern based rule to analyze the CloudTrail logs for S3 PutObject API call with public-read permissions.
+
+company stores event data in its on-premises PostgreSQL database. With the increase in the number of clients, the company is spending a lot of resources managing and maintaining the infrastructure while performance seems to be dwindling. The company has established connectivity between its on-premises systems and AWS Cloud already and wants a hybrid solution that can automatically buffer and transform event data in a scalable way and create visualizations to track and monitor events in real time. The transformed event data would be in semi-structured JSON format and have dynamic schemas.
+    Set up Amazon Kinesis Data Firehose to buffer events and an AWS Lambda function to process and transform the events. Set up Amazon OpenSearch to receive the transformed events. Use the Kibana endpoint that is deployed with OpenSearch to create near-real-time visualizations and dashboards
+        Amazon OpenSearch
+            makes it easy for you to perform interactive log analytics, real-time application monitoring, a website search, and more.
+            It offers visualization capabilities powered by OpenSearch Dashboards and Kibana.
+
+The current on-premises data centers are in different locations and are inter-linked via a private fiber. Due to the unique constraints of the existing legacy applications, using NAT is not an option. During the migration period, many critical applications will need access to other applications deployed in both the on-premises data centers and AWS Cloud.
+    Set up a Direct Connect to each on-premises data center from different service providers and configure routing to failover to the other on-premises data center's Direct Connect in case one connection fails. Make sure that no VPC CIDR blocks overlap one another or the on-premises network
+        AWS Direct Connect 
+            links your on-premises data center to an AWS Direct Connect location over a standard Ethernet fiber-optic cable. One end of the cable is connected to your router, the other to an AWS Direct Connect router.
+
+company runs a data archival workflow once a month for its on-premises data center which is connected to the AWS Cloud over a minimally used 10-Gbps Direct Connect connection using a private virtual interface to its virtual private cloud (VPC). The company internet connection is 200 Mbps, and the usual archive size is around 140 TB that is created on the first Friday of a month. The archive must be transferred and available in Amazon S3 by the next Monday morning.
+    Configure a public virtual interface on the 10-Gbps Direct Connect connection and then copy the data to S3 over the connection
+        you should configure a public virtual interface from the Direct Connect connection to connect to AWS resources that are reachable by a public IP address (such as an S3 bucket).
+        VPC endpoint is only meant to be used from within a VPC to connect to an S3 bucket, like so
+
+The web servers connect to a PostgreSQL database running on a different server. With the consistent increase in users, both the web servers and the database are underperforming leading to a bad user experience. The company has decided to migrate to AWS Cloud and has chosen Amazon Aurora PostgreSQL as its database solution. The company needs a solution that can scale the web servers and the database layer based on user traffic.
+    Configure EC2 instances behind an Application Load Balancer with Round Robin routing algorithm and sticky sessions enabled
+    Enable Aurora Auto Scaling for Aurora Replicas. Deploy the application on Amazon EC2 instances configured behind an Auto Scaling Group
+        The flow hash routing algorithm can only be used with Network Load Balancers
+
+company uses Amazon S3 as its data lake to store the data that flows into its business. This data is both structured and semi-structured and is organized under different buckets in the company's AWS account in the same Region. Hundreds of applications in the company's AWS account use structured data for running data analytics, event monitoring, report generation, event creation, and many more. While the semi-structured data runs through several transformations and is sent to downstream applications for further processing. While the company's security policy restricts S3 bucket access over the internet, the internal security team has requested tighter access rules for the applications using the S3 data lake.
+    Create a gateway endpoint for Amazon S3 in the data lake VPC. Attach an endpoint policy to allow access to the S3 bucket only via the access points. Specify the route table that is used to access the bucket
+    In the AWS account that owns the S3 buckets, create an S3 access point for each bucket that the applications must use to access the data. Set up all applications in a single data lake VPC
+    Add a bucket policy on the buckets to deny access from applications outside the data lake VPC
+        S3 Access Points 
+            are unique hostnames that you can create to enforce distinct permissions and network controls for any request made through the Access Point.
+            key features of S3 Access Points: 
+            1. Access Points contain a hostname, an AWS ARN, and an AWS IAM resource policy. 2. Access Points by default have a specific setting to Block Public Access. 3. Access Points are unique to an account and Region. 4. Access Points can have custom IAM permissions for a user or application. 5. Access Points can have custom IAM permissions to specific objects in a bucket via a prefix to precisely control access. 6. Access Points can be configured to accept requests only from a virtual private cloud (VPC) to restrict Amazon S3 data access to a private network.
+
+engineering team at a social media company is building an ElasticSearch based index for all the existing files in S3. To build this index, it only needs to read the first 250 bytes of each object in S3, which contains some metadata about the content of the file itself. There are over 100,000 files in your S3 bucket, adding up to 50TB of data.
+    Create an application that will traverse the S3 bucket, issue a Byte Range Fetch for the first 250 bytes, and store that information in ElasticSearch
+    Create an application that will use the S3 Select ScanRange parameter to get the first 250 bytes and store that information in ElasticSearch
+        With Amazon S3 Select, 
+            you can scan a subset of an object by specifying a range of bytes to query using the ScanRange parameter. This capability lets you parallelize scanning the whole object by splitting the work into separate Amazon S3 Select requests for a series of non-overlapping scan ranges. Use the Amazon S3 Select ScanRange parameter and Start at (Byte) and End at (Byte). You can then store the relevant information in the form of a JSON document in ElasticSearch.
+
+company wants to block access to its application from specific countries; however, the company wants to allow its remote development team (from one of the blocked countries) to have access to the application. The application is deployed on EC2 instances running under an Application Load Balancer (ALB) with AWS WAF.
+    Use WAF geo match statement listing the countries that you want to block
+    Use WAF IP set statement that specifies the IP addresses that you want to allow through
+
+Users upload video files up to 1 GB in size to a single EC2 instance based application server which stores them on a shared EFS file system. Another set of EC2 instances managed via an Auto Scaling group, periodically scans the EFS share directory for new files to process and generate new videos (for thumbnails and composite visual effects) according to the video processing instructions that are uploaded alongside the raw video files. Post-processing, the raw video files are deleted from the EFS file system and the results are stored in an S3 bucket. Links to the processed video files are sent via in-app notifications to the users. The startup has recently found that even as more instances are added to the Auto Scaling Group, many files are processed twice, therefore image processing speed is not improved.
+    Refactor the application to run from S3 instead of EFS and upload the video files directly to an S3 bucket. Configure an S3 trigger to invoke a Lambda function on each video file upload to S3 that puts a message in an SQS queue containing the link and the video processing instructions. Change the video processing application to read from the SQS queue and the S3 bucket. Configure the queue depth metric to scale the size of the Auto Scaling group for video processing instances. Leverage EventBridge events to trigger an SNS notification to the user containing the links to the processed files
+
+company wants to migrate its on-premises Oracle database to Aurora MySQL. The company has hired an AWS Certified Solutions Architect Professional to carry out the migration with minimal downtime using AWS DMS. The company has mandated that the migration must have minimal impact on the performance of the source database and the Solutions Architect must validate that the data was migrated accurately from the source to the target before the cutover.
+    Configure DMS data validation on the migration task so it can compare the source and target data for the DMS task and report any mismatches
+        AWS DMS data validation to ensure that your data has migrated accurately from the source to the target. DMS compares the source and target records and then reports any mismatches.
