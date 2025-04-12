@@ -1,91 +1,3 @@
-points 
-    You pay for all bandwidth into and out of Amazon S3, except for the following:
-        Data transferred out to the internet for the first 100GB per month, aggregated across all AWS Services and Regions (except China and GovCloud)
-        Data transferred in from the internet.
-        Data transferred between S3 buckets in the same AWS Region. 
-        Data transferred from an Amazon S3 bucket to any AWS service(s) within the same AWS Region as the S3 bucket (including to a different account in the same AWS Region).
-        Data transferred out to Amazon CloudFront (CloudFront).
-    You cannot trigger an AWS Step Function directly from an S3 event
-    You cannot trigger an Amazon EC2 Auto Scaling group directly from an S3 event
-    CloudTrail does not capture any query activity in Aurora
-    Aurora lab mode 
-        is used to enable Aurora features that are available in the current Aurora database version but are not enabled by default. These features are tested in development/test environments. Aurora lab mode is not relevant for capturing the log activity of Aurora DB.
-    AWS X-Ray helps developers analyze and debug production, and distributed applications, such as those built using a microservices architecture.
-    GuardDuty Org wide
-        It is inefficient and cumbersome to configure GuardDuty in all member accounts within the AWS Organizations organization. It's better to centrally manage GuardDuty for all AWS accounts by using a GuardDuty delegated administrator account within the AWS Organizations organization.
-    Amazon SQS sets a visibility timeout
-        a period during which Amazon SQS prevents other consumers from receiving and processing the message. Visibility timeout is a configurable parameter of SQS queues and not a temporary storage space to hold failed orders.
-    VPC sharing (part of Resource Access Manager) 
-        allows multiple AWS accounts to create their application resources such as EC2 instances, RDS databases, Redshift clusters, and Lambda functions, into shared and centrally-managed Amazon Virtual Private Clouds (VPCs).
-        an account that owns the VPC (owner) shares one or more subnets with other accounts (participants) that belong to the same organization
-        owner account cannot share the VPC itself.
-    AWS recommends that you should not over-provision your function time out settings. Always understand your code performance and set a function time out accordingly. Over-provisioning function timeout often results in Lambda functions running longer than expected and unexpected costs.    
-    Use Enhanced Fanout feature of Kinesis Data Streams to support the desired read throughput for the downstream applications
-    AWS OpsWorks
-        lets you use Chef and Puppet to automate how servers are configured, deployed, and managed across your Amazon EC2 instances or on-premises compute environments.
-    default security group:
-        Allow inbound traffic from network interfaces (and their associated instances) that are assigned to the same security group.
-        Allows all outbound traffic
-    default rules for security group that you create
-        Allows no inbound traffic
-        Allows all outbound traffic
-    To use a certificate with an Application Load Balancer for the same site (the same fully qualified domain name, or FQDN, or set of FQDNs) in a different Region, you must request a new certificate for each Region in which you plan to use it. To use an ACM certificate with Amazon CloudFront, you must request the certificate in the US East (N. Virginia) Region.
-AWS Storage Gateway vs AWS DataSync
-    AWS DataSync
-        AWS DataSync is an online data movement and discovery service that simplifies and accelerates data migrations to AWS as well as moving data between on-premises storage, edge locations, other clouds, and AWS Storage
-        single DataSync task is capable of fully utilizing a 10 Gbps network link.
-    AWS Storage Gateway
-        to retain access to the migrated data and for ongoing updates from your on-premises file-based applications
-Amazon S3 server access logging
-    captures all bucket-level and object-level events. These logs use a format similar to Apache web server logs. After you enable server access logging, review the logs to find the IP addresses used with each upload to your bucket.
-AWS CloudTrail data events
-    capture the last 90 days of bucket-level events (for example, PutBucketPolicy and DeleteBucketPolicy), and you can enable object-level logging. These logs use a JSON format. After you enable object-level logging with data events, review the logs to find the IP addresses used with each upload to your bucket. It might take a few hours for AWS CloudTrail to start creating logs.
-Changes introduced by disabling S3 ACLs
-    when u apply bucket owner enforced setting for object ownership to disable ALCs 
-    u automatically take full control over every object in bucket 
-    All bucket ACLs and object ACLs are disabled 
-    You as a bucket owner automatically own and have full control over every object 
-    ACLs are no longer affect permissions to ur bucket. As a result, access control for 
-    you data is based on policies like IAM policies, S3 bucket policies, VPC endpoint
-    policies and Organization policies 
-AWS Web Application Firewall (WAF) 
-    protect web applications and APIs from attacks. It enables you to configure a set of rules (called a web access control list (web ACL)) that allow, block, or count web requests based on customizable web security rules and conditions that you define. 
-    can protect:
-        Amazon CloudFront distribution
-        Amazon API Gateway REST API
-        Application Load Balancer
-        AWS AppSync GraphQL API
-        Amazon Cognito user pool
-Types of process in Auto Scaling Group (ASG)
-    Launch 
-        Adds instances to the Auto Scaling group when the group scales out, or when Amazon EC2 Auto Scaling chooses to launch instances for other reasons, such as when it adds instances to a warm pool.
-    Terminate 
-        Removes instances from the Auto Scaling group when the group scales in, or when Amazon EC2 Auto Scaling chooses to terminate instances for other reasons, such as when an instance is terminated for exceeding its maximum lifetime duration or failing a health check.
-    AddToLoadBalancer 
-        Adds instances to the attached load balancer target group or Classic Load Balancer when they are launched. For more information, see Use Elastic Load Balancing to distribute incoming application traffic in your Auto Scaling group .
-    AlarmNotification 
-        Accepts notifications from CloudWatch alarms that are associated with dynamic scaling policies. For more information, see Dynamic scaling for Amazon EC2 Auto Scaling.
-    AZRebalance 
-        Balances the number of EC2 instances in the group evenly across all of the specified Availability Zones when the group becomes unbalanced, for example, when a previously unavailable Availability Zone returns to a healthy state. For more information, see Rebalancing activities.
-    HealthCheck 
-        Checks the health of the instances and marks an instance as unhealthy if Amazon EC2 or Elastic Load Balancing tells Amazon EC2 Auto Scaling that the instance is unhealthy. This process can override the health status of an instance that you set manually. For more information, see Health checks for instances in an Auto Scaling group.
-    InstanceRefresh 
-        Terminates and replaces instances using the instance refresh feature. For more information, see Use an instance refresh to update instances in an Auto Scaling group.
-    ReplaceUnhealthy 
-        Terminates instances that are marked as unhealthy and then creates new instances to replace them. For more information, see Health checks for instances in an Auto Scaling group.
-    ScheduledActions 
-        Performs the scheduled scaling actions that you create or that are created for you when you create an AWS Auto Scaling scaling plan and turn on predictive scaling. For more information, see Scheduled scaling for Amazon EC2 Auto Scaling.
-Enable termination protection for EC2 instance 
-    To prevent your instance from being accidentally terminated using the Amazon EC2 API, whether you call TerminateInstances directly or using another interface such as the Amazon EC2 console, enable termination protection for the instance.
-    does not prevent termination
-        initiating shutdown from the instance (for example, by using an operating system command for system shutdown) when the InstanceInitiatedShutdownBehavior attribute is set to terminate
-        Auto Scaling from terminating an instance when the instance is unhealthy or during scale-in events. 
-        You can't enable termination protection for Spot Instances
-Instance scale-in protection
-    gives you control over which instances Amazon EC2 Auto Scaling can terminate
-    By default, instance scale-in protection is disabled when you create an Auto Scaling group. This means that Amazon EC2 Auto Scaling can terminate any instance in the group.
-    disable the scale-in protection setting on individual instances within the Auto Scaling group. By doing so, you can continue to protect certain instances from unwanted terminations.
-
 S3 Object Ownership bucket-level settings were used and all Access Control Lists (ACLs)?
 S3 bucket level settings were again set back to default and the ACLs were enabled once more?
 A company has multiple AWS accounts. The company has integrated its 
@@ -556,3 +468,204 @@ Users upload video files up to 1 GB in size to a single EC2 instance based appli
 company wants to migrate its on-premises Oracle database to Aurora MySQL. The company has hired an AWS Certified Solutions Architect Professional to carry out the migration with minimal downtime using AWS DMS. The company has mandated that the migration must have minimal impact on the performance of the source database and the Solutions Architect must validate that the data was migrated accurately from the source to the target before the cutover.
     Configure DMS data validation on the migration task so it can compare the source and target data for the DMS task and report any mismatches
         AWS DMS data validation to ensure that your data has migrated accurately from the source to the target. DMS compares the source and target records and then reports any mismatches.
+
+A media company uses Amazon S3 under the hood to power its offerings which allow the customers to upload and view the media files immediately. Currently, all the customer files are uploaded directly under a single S3 bucket. The systems administration team has started seeing scalability issues where customer file uploads are failing during the peak access hours with more than 5000 requests per second.
+    Change the application architecture to create customer-specific custom prefixes within the single bucket and then upload the daily files into those prefixed locations
+
+A company is building an on-demand streaming application on AWS Cloud. The company has chosen Amazon S3 as its storage service and moved the existing videos to an Amazon S3 bucket. The application requires the video playback to start quickly, fast-forwarding should be more efficient and the overall user experience should be smoother without smothering the user's bandwidth.
+    Use AWS Elemental MediaConvert for file-based video processing and Amazon CloudFront for delivery. Use video streaming protocols like Apple’s HTTP Live Streaming (HLS) and create a manifest file. Point the CloudFront distribution at the manifest
+        AWS Elemental MediaConvert
+            convert your video into the size, resolution, or format needed by a particular television or connected device.
+        video streaming protocols including Apple’s HTTP Live Streaming (HLS), Dynamic Adaptive Streaming over HTTP (DASH), Microsoft’s Smooth Streaming (MSS), and Adobe’s HTTP Dynamic Streaming (HDS) improves the user experience by delivering video as it is being watched, generally fetching content a few seconds ahead of when it will be needed.
+
+The company leverages AWS Organizations and SAML-based federation to provide access to its development teams. A single shared production AWS account is used by all teams to deploy their production workloads. Recently, the company faced an incident when one of the teams had accidentally shut down a production EC2 instance used by another team.
+    During SAML-based federation, pass an attribute for DevelopmentDept as an AWS Security Token Service (AWS STS) session tag. The policy of the assumed IAM role used by the developers should be updated with a deny action and a StringNotEquals condition for the DevelopmentDept resource tag and aws:PrincipalTag/ DevelopmentDept
+
+A company has a web application running on an EC2 instance with a single elastic network interface in a subnet in a VPC. As part of the network re-architecture, the CTO at the company wants the web application to be moved to a different subnet in the same Availability Zone.
+    Launch a new instance in the new subnet via an AMI created from the old instance. Direct traffic to this new instance using Route 53 and then terminate the old instance
+        It's not possible to move an existing instance to another subnet, Availability Zone, or VPC.
+
+The data has a velocity of 1GB per minute. You would like to store the data with only the most relevant attributes to build a predictive model for weather patterns.
+    Capture the data in Kinesis Data Firehose and use an intermediary Lambda function to filter and transform the incoming stream before the output is dumped on S3
+
+the development team has used AWS Lambda functions which will be managed in a centralized AWS account. The team needs the required permissions to allow the Lambda functions to access resources in each of the company's AWS accounts with the least privilege(s) possible.
+    In the other AWS accounts, configure an IAM role that has minimal permissions. Add the Lambda execution role of the centralized account as a trusted entity
+    In the centralized account, configure an IAM role that has the Lambda service as a trusted entity. Add an inline policy to assume the roles of the other AWS accounts
+
+As a solutions architect, you have been asked to define Service Control Policies (SCPs) for the company.
+    The specified actions from an attached SCP affect all IAM identities including the root user of the member account
+    If a user has an IAM policy that grants access to an action that is either not allowed or explicitly denied by the applicable SCPs, the user cannot perform that action
+
+it has come to light that employees have not followed the security standards mandated by the company while using the AWS Key Management Service (AWS KMS) keys. The senior management has decided that access to AWS KMS keys should be restricted to only the principals belonging to their AWS Organizations.    
+    The aws:PrincipalOrgID global condition key can be used with the Principal element in a resource-based policy with AWS KMS. You need to specify the Organization ID in the Condition element
+
+three-tier web application with separate subnets for Web, Application and Database tiers. The CTO at the company wants to monitor any malicious activity targeting the web application running on EC2 instances. As a solutions architect, you have been tasked with developing a solution to notify the security team in case the network exposure of EC2 instances on specific ports violates the security policies of the company.
+Which AWS Services would you use to build an automated notification system to meet these requirements with the least development effort?
+    Amazon SNS
+    Amazon Inspector
+        AWS Shield cannot be used to assess network exposure of EC2 instances on specific ports.
+
+The architect needs to automate VPC creation to enforce the company's network and security standards which mandate that each application is isolated in its own VPC. The solution must also ensure that the CIDR range used in each VPC is unique.
+    Deploy the VPC infrastructure using AWS CloudFormation and leverage a custom resource to request a unique CIDR range from an external IP address management (IPAM) service
+        IP address management (IPAM) is a core part of planning and managing the assignment and use of IP address space of a network. In order to request available CIDR blocks from IPAM for VPCs, you can use AWS CloudFormation Custom Resources. Custom resources enable you to write custom provisioning logic in templates that AWS CloudFormation runs anytime you create, update (if you changed the custom resource), or delete stacks. 
+    
+The instances are fronted by an Elastic Load Balancer (ELB). To enhance the system performance, a new Amazon Machine Image (AMI) was created and the ASG was configured to use the new AMI. However, after the production deployment, users complained of aberrations in the expected application functionality. A cross-check on the ELB has confirmed that all the instances are healthy and running as expected.
+    Create a new ASG launch configuration that uses the newly created AMI. Double the size of the ASG and allow the new instances to become healthy and then reduce the ASG back to the original size. If the new instances do not work as expected, associate the ASG with the old launch configuration    
+        A launch configuration is an instance configuration template that an Auto Scaling group uses to launch EC2 instances. When you create a launch configuration, you specify information for the instances. Include the ID of the Amazon Machine Image (AMI), the instance type, a key pair, one or more security groups, and a block device mapping.
+        Auto Scaling group is associated with one launch configuration at a time, and you can't modify a launch configuration after you've created it. To change the launch configuration for an Auto Scaling group, use an existing launch configuration as the basis for a new launch configuration. Then, update the Auto Scaling group to use the new launch configuration.
+
+The bucket is organized into folders with each folder having an insurance claim type. Employees working on claims have access to this S3 bucket and copy the bills and supporting documents to the folders based on the claim type. With changes in the regulations, the company has a new workflow for a new type of claim that exceeds a certain amount. These high-value claims have to be copied to a different bucket from where a program processes them within an hour. The workflow must trigger a ticket for the Audit team if the claim data is not copied into the destination bucket within 15 minutes.
+    Create a new Amazon S3 bucket to be used for replication. Create a new S3 Replication Time Control (S3 RTC) rule on the source S3 bucket that filters data based on the prefix (high-value claim type) and replicates it to the new S3 bucket. Leverage an Amazon S3 event notification to trigger a notification when the time to copy the claim data exceeds the desired threshold
+        S3 Replication Time Control (S3 RTC) helps you meet compliance or business requirements for data replication and provides visibility into Amazon S3 replication times. S3 RTC replicates most objects that you upload to Amazon S3 in seconds and 99.99 percent of those objects within 15 minutes.
+        You can track replication time for objects that did not replicate within 15 minutes by monitoring specific event notifications that S3 Replication Time Control (S3 RTC) publishes. These events are published when an object that was eligible for replication using S3 RTC didn't replicate within 15 minutes, and when that object replicates after the 15-minute threshold.
+
+Multiple S3 event notifications have been configured to be delivered to Amazon Simple Queue Service (Amazon SQS) queue when objects pass through the storage lifecycle. The team has noticed that notifications are not being delivered to the queue. Amazon SQS queue has server-side encryption (SSE) turned on.What should be done to receive the S3 event notifications to an Amazon SQS queue that uses SSE
+    Create a customer-managed AWS KMS key and configure the key policy to grant permissions to the Amazon S3 service principal
+
+A web development company uses FTP servers for their growing list of 200 odd clients to facilitate remote data sharing of media assets. To reduce management costs and time, the company has decided to move to AWS Cloud. The company is looking for an AWS solution that can offer increased scalability with reduced costs. Also, the company's policy mandates complete privacy and isolation of data for each client.
+    Create a single Amazon S3 bucket. Create an IAM user for each client. Group these users under an IAM policy that permits access to sub-folders within the bucket via the use of the 'username' Policy variable. Train the clients to use an S3 client instead of an FTP client
+        By default, you can only create up to 100 buckets in each of your AWS accounts.
+
+The Amazon EC2 instances running the applications are fronted by an Application Load Balancer (ALB). Amazon Route 53 provides public DNS services. Different URLs (mobile.ecomm.com, web.ecomm.com, api.ecomm.com) will serve the required content to the end-users.
+    Use Host conditions in ALB listener to route *.ecomm.com to appropriate target groups
+    Use Host conditions in ALB listener to route ecomm.com to appropriate target groups
+        *.example.com matches test.example.com but doesn't match example.com. Hence, we also need to include ecomm.com along with *.ecomm.com 
+
+three-tier web application hosted on AWS Cloud. A Multi-AZ RDS MySQL server (with one standby) forms the database layer with Amazon ElastiCache forming the cache layer. The top management wants a reporting feature for the sales and marketing activity at the company. As a solutions architect, you have been tasked to build a reporting layer that fetches the information from the database and displays it to the management's dashboards every half an hour. most optimal solution to meet these requirements with the least impact on the operational performance of the database?
+    Create a new RDS Read Replica from your Multi AZ primary database and generate reports by querying the Read Replica
+        your standby DB instance is only a passive failover target for high availability and is unavailable to serve any read requests.
+
+business has their web application hosted in us-east-1 region. Recently, the business has added another region us-east-2, and has configured Route53 to direct user traffic to the least-latency AWS Region. However, the development team has found some aberrations in the expected functionality and the team is trying to ascertain if it's a configuration issue.
+Which of the following would you suggest as the key points of consideration while configuring Route53?
+    If you configure Route 53 to use the HTTPS protocol to check the health of your endpoint, then that endpoint must support TLS
+    After a Route 53 health checker receives the HTTP status code, it must receive the response body from the endpoint within the next two seconds with the SearchString string that you specified. The string must appear entirely in the first 5,120 bytes of the response body or the endpoint fails the health check
+    HTTPS health checks don't validate SSL/TLS certificates, so checks don't fail if a certificate is invalid or expired
+
+A company has three VPCs: A, B, and C. VPCs A and C are both peered with VPC B. The IP address ranges are as follows:
+VPC A: 10.1.0.0/16
+VPC B: 192.168.0.0/16
+VPC C: 10.1.0.0/16
+Instance a-1 in VPC A has the IP address 10.1.0.10. Instance c-1 in VPC C has the IP address 10.1.0.10. Instances b-1 and b-2 in VPC B have the IP addresses 192.168.2.10 and 192.168.2.20 respectively. The instances b-1 and b-2 are in the subnet 192.168.2.0/24.
+The networking team at the company has mandated that b-1 must be able to communicate with a-1, and b-2 must be able to communicate with c-1. However, the team has noticed that both b-1 and b-2 are only able to communicate with a-1; instead of b-1 communicating with a-1 and b-2 communicating with c-1.
+    Discard existing subnet in VPC B. Create two new subnets 192.168.2.0/28 and 192.168.2.16/28 in VPC B. Move b-1 to subnet 192.168.2.0/28 and b-2 to subnet 192.168.2.16/28 by launching a new instance in the new subnet via an AMI created from the old instance
+    Create two route tables in VPC B - one with a route for destination VPC A and another with a route for destination VPC C
+
+company has a Direct Connect connection between its on-premises data center and its VPC on the AWS Cloud. The company's flagship application runs on an EC2 instance in the VPC and it needs to access customer data stored in the on-premises data center with consistent performance. To meet the compliance guidelines, the data should remain encrypted during this operation.
+    Configure a public virtual interface on the Direct Connect connection. Create an AWS Site-to-Site VPN between the customer gateway and the virtual private gateway in the VPC
+        Private virtual interface: A private virtual interface should be used to access an Amazon VPC using private IP addresses.
+        Public virtual interface: A public virtual interface can access all AWS public services using public IP addresses.
+        You cannot use a private VIF on the Direct Connect connection to create an AWS Site-to-Site VPN between the customer gateway and the virtual private gateway.
+
+The mobile app sends 2 KB of data to the company’s backend servers every 2 minutes. The user data is stored in a DynamoDB table. The development team runs a nightly procedure to scan the table for extracting and aggregating the data from the previous day. These insights are then stored on Amazon S3 in JSON files for each user (daily average file size per user is approximately 1 MB). Approximately 50,000 end-users in the US are then alerted via SNS push notifications the next morning, as the new insights are available to be parsed and visualized in the mobile app.
+    Set up a new DynamoDB table each day and drop the table for the previous day after its data is written on S3
+    Set up an Amazon SQS queue to buffer writes to the Amazon DynamoDB table and reduce provisioned write throughput
+        Deleting an entire table is significantly more efficient than removing items one by one, which essentially doubles the throughput requirements as you need to query/scan and then delete each item. This is the fastest and simplest method for the given use case since all the items for the previous day can be deleted from the table for that day, without the need to scan and delete each item.
+
+A team needs to set up a private network connection between AWS Storage Gateway's file interface (file gateway) and Amazon Simple Storage Service (Amazon S3). 
+    Create a VPC Gateway endpoint and create the file gateway using this VPC endpoint
+    Create a VPC Interface endpoint and create the file gateway using this VPC endpoint
+        Amazon S3 supports both Gateway endpoints and Interface endpoints.
+
+A global multi-player gaming application runs on UDP protocol and it needs to add functionality where you can assign multiple players to a single session on a game server based on factors such as geographic location, player skill, and a few more configurable parameters. The application is accessed by players spread out across different regions of the world.
+    Use custom routing accelerator of Global Accelerator to deterministically route one or more users to a specific instance using VPC subnet endpoints
+        Custom routing accelerators support only VPC subnet endpoints
+
+CTO at the company tasked the development team to build an ad-hoc solution of using CloudFront with a custom origin pointing to the SSL endpoint URL for the legacy web application until the replacement is ready and deployed. The ad-hoc solution has worked for several weeks, however, all browser connections recently began showing an HTTP 502 Bad Gateway error with the header "X-Cache: Error from CloudFront". Network monitoring services show that the HTTPS port 443 on the legacy web application is open and responding to requests.
+    The SSL certificate on the legacy web application server has expired. Reissue the SSL certificate on the web server that is signed by a globally recognized certificate authority (CA). Install the full certificate chain onto the legacy web application server
+        To require HTTPS between CloudFront and your custom origin, such as the legacy web server mentioned in the given use case, you must use a certificate that is signed by a trusted third-party certificate authority (CA), for example, Comodo, DigiCert, or Symantec. When CloudFront uses HTTPS to communicate with your origin, CloudFront verifies that the certificate was issued by a trusted certificate authority. CloudFront supports the same certificate authorities that Mozilla does. If the origin server returns an expired certificate, an invalid certificate, or a self-signed certificate, or if the origin server returns the certificate chain in the wrong order, CloudFront drops the TCP connection, returns HTTP status code 502 (Bad Gateway), and sets the X-Cache header to Error from CloudFront.
+
+As per the company's policy, developers should have limited access to a few AWS Regions (known as Core Regions). This restricted access was implemented using custom code. The company now wants to use AWS services to implement this restriction and relinquish the custom application.
+Which of the following represents the most optimal solution that is easy to set up and maintain
+    Enable AWS Organizations and attach the AWS accounts of all business units to it. Create a Service Control Policy to deny access to the Non-Core Regions and attach the policy to the root OU
+        Service control policies (SCPs) are a type of organization policy that you can use to manage permissions in your organization.
+        SCPs don't affect users or roles in the management account. They affect only the member accounts in your organization.
+
+An on-premises data center, set up a decade ago, hosts all the applications of a business. The business now wants to move to AWS Cloud. The documentation of these systems is outdated and complete knowledge of all existing workloads is absent. The data center hosts a mix of Windows and Linux virtual machines.
+As a solutions architect, you need to provide a plan to migrate all the applications to the cloud. How will you gather the necessary data of the existing machines
+    Install the AWS Application Discovery Service on each of the VMs to collect the configuration and utilization data
+
+company has an Elastic Load Balancer (ELB) that is configured with an Auto Scaling Group (ASG) having a minimum of 4, a maximum of 10, and the desired value of 4 instances. The ASG cooldown and the termination policies are configured to the default values. Monitoring reports indicate a general usage requirement of 4 instances, while any traffic spikes result in an additional 10 instances. Customers have been complaining of request timeouts and partially loaded pages.
+    Configure connection draining on ELB
+        Configure connection draining on ELB - To ensure that an ELB stops sending requests to instances that are de-registering or unhealthy while keeping the existing connections open, use connection draining. This enables the load balancer to complete in-flight requests made to instances that are de-registering or unhealthy.
+        For the duration of the configured timeout, the load balancer will allow existing, in-flight requests made to an instance to complete, but it will not send any new requests to the instance.
+
+healthcare company is migrating sensitive data from its on-premises data center to AWS Cloud via an existing AWS Direct Connect connection. The company must ensure confidentiality and integrity of the data in transit to the AWS VPC.
+Which of the following options should be combined to set up the most cost-effective connection between your on-premises data center and AWS
+    Create a VPC with a virtual private gateway
+    Set up a public virtual interface on the Direct Connect connection
+    Create an IPsec tunnel between your customer gateway appliance and the virtual private gateway
+        AWS Direct Connect public VIF can be used to establish a dedicated network connection between your network to public AWS resources, such as an Amazon virtual private gateway IPsec endpoint. 
+
+solutions architect at a retail company has configured a private hosted zone using Route 53. The architect needs to configure health checks for record sets within the private hosted zone that are associated with EC2 instances.
+    Configure a CloudWatch metric that checks the status of the EC2 StatusCheckFailed metric, add an alarm to the metric, and then configure a health check that monitors the state of the alarm
+        Amazon Route 53 health checks monitor
+            The health of a specified resource, such as a web server.
+            The status of other health checks.
+            The status of an Amazon CloudWatch alarm.
+
+web application is hosted on a fleet of Amazon EC2 instances running behind an Application Load Balancer (ALB). A custom functionality has mandated the need for a static IP address for the ALB. As a solutions architect, how will you implement this requirement while keeping the costs to a minimum
+    Register the Application Load Balancer behind a Network Load Balancer that will provide the necessary static IP address to the ALB
+        You can't assign a static IP address to an Application Load Balancer. If you need a static IP address for your Application Load Balancer, it's a best practice to register the Application Load Balancer behind a Network Load Balancer. The static IP address assigned to a Network Load Balancer doesn't change, providing a fixed entry point for your Application Load Balancer.
+
+company is looking at connecting the company's Amazon EC2 instances to the confidential data stored on Amazon S3 storage. The architect has a requirement to use private IP addresses from the company's VPC to access Amazon S3 while also having the ability to access S3 buckets from the company's on-premises systems. In a few months, the S3 buckets will also be accessed from a VPC in another AWS Region.
+    Set up Interface endpoints for Amazon S3
+        Interface endpoints extend the functionality of gateway endpoints by using private IP addresses to route requests to Amazon S3 from within your VPC, on-premises, or from a VPC in another AWS Region using VPC peering or AWS Transit Gateway.
+
+solutions architect is setting up DNS failover configuration for Route 53. The architect needs to use multiple routing policies (such as latency-based and weighted) to configure a more complex DNS failover.
+    Records without a health check are always considered healthy. If no record is healthy, all records are deemed to be healthy
+    If you're creating failover records in a private hosted zone, you must assign a public IP address to an instance in the VPC to check the health of an endpoint within a VPC by IP address
+        you're creating failover records in a private hosted zone, note the following:
+            Route 53 health checkers are outside the VPC. To check the health of an endpoint within a VPC by IP address, you must assign a public IP address to an instance in the VPC.
+            You can create a CloudWatch metric, associate an alarm with the metric, and then create a health check that is based on the data stream for the alarm.
+
+a company has decided to use AWS CodePipeline to deploy an AWS CloudFormation stack in an AWS account (account A) to a different AWS account (account B).
+    In account B, create a service role for the CloudFormation stack that includes the required permissions for the services deployed by the stack. In account A, update the CodePipeline configuration to include the resources associated with account B
+    In account B, create a cross-account IAM role. In account A, add the AssumeRole permission to account A's CodePipeline service role to allow it to assume the cross-account role in account B
+    In account A, create a customer-managed AWS KMS key that grants usage permissions to account A's CodePipeline service role and account B. Also, create an Amazon Simple Storage Service (Amazon S3) bucket with a bucket policy that grants account B access to the bucket
+
+To track daily spending, Example Corp needs access to your AWS resources, therefore, you allow Example Corp to assume an IAM role in your account. However, Example Corp also tracks spending for other customers, and there could be a configuration issue in the Example Corp environment that allows another customer to compel Example Corp to attempt to take an action in your AWS account, even though that customer should only be able to take the action in their account.
+    Create an IAM role in your AWS account with a trust policy that trusts the Partner (Example Corp). Take a unique external ID value from Example Corp and include this external ID condition in the role’s trust policy
+        the external ID is a piece of data that can be passed to the AssumeRole API of the Security Token Service (STS). You can then use the external ID in the condition element in a role’s trust policy, allowing the role to be assumed only when a certain value is present in the external ID.
+
+solutions architect has configured an Amazon Relational Database Service (Amazon RDS) DB instance as part of an AWS Elastic Beanstalk environment. To resolve an issue, the Beanstalk environment has to be upgraded from environment A to environment B for a week. Therefore, the dependency between the DB instance and the Beanstalk environment has to be removed.
+How will you implement this requirement without causing a downtime and data loss
+    Decouple the RDS DB instance from the Beanstalk environment (environment A) and leverage Elastic Beanstalk blue (environment A)/green (environment B) deployment to connect to the decoupled database post the upgrade
+
+research agency processes multiple compressed (gzip) CSV files containing data about contagious diseases for the past month aggregated from healthcare facilities. The files are about ~200 GB and are stored in Amazon S3 Glacier Flexible Storage Class. As per the reporting guidelines, the agency needs to query a portion of this data to prepare a report every month. the most cost-effective way to query this data?
+    Ingest the data into Amazon S3 from S3 Glacier and query the required data with Amazon S3 Select
+        S3 Select is an Amazon S3 feature that makes it easy to retrieve specific data from the contents of an object using simple SQL expressions without having to retrieve the entire object. S3 Select simplifies and improves the performance of scanning and filtering the contents of objects into a smaller, targeted dataset by up to 400%. With S3 Select, you can also perform operational investigations on log files in Amazon S3 without the need to operate or manage a compute cluster.
+
+development team at a gaming company has been tasked to reduce the in-game latency and jitters. The team wants traffic from its end users to be routed to the AWS Region that is closest to the end users geographically. When maintenance occurs in an AWS Region, traffic must be routed to the next closest AWS Region with no changes to the IP addresses being used as connections by the end-users.
+    Set up AWS Global Accelerator in front of all the AWS Regions
+        AWS Global Accelerator is a networking service that helps you improve the availability and performance of the applications that you offer to your global users. AWS Global Accelerator is easy to set up, configure, and manage. It provides static IP addresses that provide a fixed entry point to your applications and eliminate the complexity of managing specific IP addresses for different AWS Regions and Availability Zones.
+        Route 53 does not support static IP addresses as entry points to your applications, so this option is incorrect.
+
+media company has its users accessing the content from different platforms including mobile, tablet, and desktop. Each platform is customized to provide a different user experience based on various viewing modes. Path-based headers are used to serve the content for different platforms, hosted on different Amazon EC2 instances. An Auto Scaling group (ASG) has also been configured for the EC2 instances to ensure that the solution is highly scalable.Which of the following combination of services can help minimize the cost while maximizing the performance
+    Amazon CloudFront with Lambda@Edge
+        dynamically route requests to different origins based on different viewer characteristics, you can balance the load on your origins, while improving the performance for your users.
+    Application Load Balancer
+        serves as the single point of contact for clients. The load balancer distributes incoming application traffic across multiple targets, such as EC2 instances, in multiple Availability Zones. This increases the availability of your application. You add one or more listeners to your load balancer. ALB offers support for Path conditions. 
+
+company leverages Amazon QuickSight (Enterprise Edition) for creating and publishing interactive BI dashboards that can be accessed from any device. For a new requirement, the company must create a private connection from Amazon QuickSight to an Amazon RDS DB instance that's in a private subnet to fetch data for analysis.
+    Create a new private subnet in the same VPC as the Amazon RDS DB instance. Create a new security group with necessary inbound rules for QuickSight in the same VPC. Sign in to QuickSight as a QuickSight admin and create a new QuickSight VPC connection. Create a new dataset from the RDS DB instance
+        QuickSight Enterprise edition is fully integrated with the Amazon VPC service.
+
+The web tier of the application is fronted by Elastic Load Balancer while the database tier is built on RDS MYSQL database. The company is planning to run heavy discounts for the upcoming holiday sales season. The company is looking for a solution to avoid any similar outages as well as quickly ramp up the ability to handle huge traffic spikes.
+As an AWS Certified Solutions Architect Professional, which of the following would you suggest as the most optimal solution that can enhance the application's capabilities to handle the sudden spikes in user traffic without significant development effort
+    Create a CloudFront distribution and configure CloudFront to cache objects from a custom origin. This will offload some traffic from the on-premises servers. Customize CloudFront cache behavior by setting Time To Live (TTL) to suit your business requirement
+
+A company is delivering web content from an Amazon EC2 instance in a public subnet with address 2022:db8:1:100::1. Users report they are unable to access the web content. The VPC Flow Logs for the subnet contain the following entries:
+2 098765432112 eni-0596e500987654321 2022:db8:2:200::2 2022:db8:1:100::1 0 0 58 236 42336 1551200195 1551200434 ACCEPT OK 2 098765432112 eni-0596e500987654321 2022:db8:1:100::1 2022:db8:2:200::2 0 0 58 236 42336 1551200195 1551200434 REJECT OK
+    Update the network ACL associated with the subnet to allow outbound traffic
+
+company has its web application hosted on Amazon EC2 instances that are deployed in a single AWS Region. The company has now expanded its operations into new geographies and the company wants to offer low-latency access for the application to its customers. To comply with different financial regulations of each geography, the application needs to operate in silos and the underlying instances in one region should not interact with instances running in other regions.
+Which of the following represents the most optimal solution to automate the application deployment to different AWS regions
+    Create a CloudFormation template describing the application infrastructure in the Resources section. Use CloudFormation stack set from an administrator account to launch stack instances that deploy the application to various other regions
+        Stack set: A stack set lets you create stacks in AWS accounts across regions by using a single CloudFormation template. 
+        Change sets allow you to preview how proposed changes to a stack might impact your running resources
+
+data analytics company runs a real-time data processing application that uses Kinesis Client Library (KCL) to help consume and process data from the real-time data streams. The development team has raised a query on the viability of using the same DynamoDB table for different KCL applications.
+Which of the following are correct statements for KCL while consuming Kinesis Data Streams
+    Each KCL application must use its own DynamoDB table
+    You can only use DynamoDB for checkpointing KC
+        A DynamoDB table is required as a checkpointing table for the KCL because the KCL behavior and implementation are interconnected with DynamoDB

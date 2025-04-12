@@ -1,3 +1,200 @@
+points 
+    Management account
+        A management account is the AWS account you use to create your organization. From the management account, you can do the following:
+            Create other accounts in your organization
+            Invite and manage invitations for other accounts to join your organization
+            Designate delegated administrator accounts
+            Remove accounts from your organization
+            Attach policies to entities such as roots, organizational units (OUs), or accounts within your organization
+            Enable integration with supported AWS services to provide service functionality across all of the accounts in the organization.
+    Policy types
+        Identity-based policies
+            Attach managed and inline policies to IAM identities (users, groups)
+        Resource-based policies
+            Attach inline policies to resources. The most common examples of resource-based policies are Amazon S3 bucket policies and IAM role trust policies. Resource-based policies grant permissions to the principal that is specified in the policy. Principals can be in the same account as the resource or in other accounts.
+        Permissions boundaries
+            Use a managed policy as the permissions boundary for an IAM entity (user or role). 
+            defines the maximum permissions that the identity-based policies can grant to an entity, but does not grant permissions. Permissions boundaries do not define the maximum permissions that a resource-based policy can grant to an entity.
+        AWS Organizations SCPs 
+            Use an AWS Organizations service control policy (SCP) to define the maximum permissions for IAM users and IAM roles within accounts in your organization or organizational unit (OU). SCPs limit permissions that identity-based policies or resource-based policies grant to IAM users or IAM roles within the account
+        AWS Organizations RCPs 
+            Use an AWS Organizations resource control policy (RCP) to define the maximum permissions for resources within accounts in your organization or organizational unit (OU). RCPs limit permissions that identity-based and resource-based policies can grant to resources in accounts within your organization
+        Access control lists (ACLs) 
+            Use ACLs to control which principals in other accounts can access the resource to which the ACL is attached. ACLs are similar to resource-based policies, although they are the only policy type that does not use the JSON policy document structure. ACLs are cross-account permissions policies that grant permissions to the specified principal. ACLs cannot grant permissions to entities within the same account.
+        Session policies 
+            Pass advanced session policies when you use the AWS CLI or AWS API to assume a role or a federated user. Session policies limit the permissions that the role or user's identity-based policies grant to the session. Session policies limit permissions for a created session, but do not grant permissions. 
+    cross account access 
+        the requester in the trusted AccountA must have an identity-based policy. That policy must allow them to make a request to the resource in the trusting AccountB. Additionally, the resource-based policy in AccountB must allow the requester in AccountA to access the resource.
+        
+    AWS Application Migration Service 
+        allows companies to lift-and-shift to AWS a large number of physical, virtual, or cloud servers without compatibility issues, performance disruption, or long cutover windows.
+    AWS Control Tower
+        Set up and govern a secure, compliant, multi-account AWS environment.
+    Tasks and entities not restricted by SCPs
+        Any action performed by the management account
+        Any action performed using permissions that are attached to a service-linked role
+        Register for the Enterprise support plan as the root user
+        Provide trusted signer functionality for CloudFront private content
+        Configure reverse DNS for an Amazon Lightsail email server and Amazon EC2 instance as the root user
+        Tasks on some AWS-related services:
+                Alexa Top Sites
+                Alexa Web Information Service
+                Amazon Mechanical Turk
+                Amazon Product Marketing API
+    ownership of S3 objects and disabling ACLs
+        By default, Object Ownership is set to the Bucket owner enforced setting and all ACLs are disabled.
+        ACLs disabled (default)
+            Bucket owner enforced (default)
+                ACLs are disabled, and the bucket owner automatically owns and has full control over every object in the bucket. ACLs no longer affect permissions to data in the S3 bucket. The bucket uses policies to define access control.
+        ACLs enabled
+            Bucket owner preferred
+                The bucket owner owns and has full control over new objects that other accounts write to the bucket with the bucket-owner-full-control canned ACL.
+            Object writer
+                The AWS account that uploads an object owns the object, has full control over it, and can grant other users access to it through ACLs.
+    service-linked role 
+        is a unique type of IAM role that is linked directly to an AWS service. Service-linked roles are predefined by the service and include all the permissions that the service requires to call other AWS services on your behalf. The linked service also defines how you create, modify, and delete a service-linked role. 
+    AWS recommended Organization OUs 
+        Security OU (Foundational)
+        Infrastructure OU (Foundational)
+        Workloads OU (Application)
+        Sandbox OU (Experimental)
+        Exceptions OU (Procedural)
+        Transitional OU (Procedural)
+        Policy Staging OU (Procedural)
+        Suspended OU (Procedural)
+        Individual Business Users OU (Advanced)
+        Deployments OU (Advanced)
+        Business Continuity OU (Advanced)
+    VPC endpoints for S3 
+        Amazon S3 supports both Gateway endpoints and Interface endpoints.
+        AWS PrivateLink for Amazon S3
+            you can provision interface VPC endpoints (interface endpoints) in your virtual private cloud (VPC). These endpoints are directly accessible from applications that are on premises over VPN and AWS Direct Connect, or in a different AWS Region over VPC peering.
+        Gateway endpoints for Amazon S3
+            your network traffic remains on the AWS network.
+            Use Amazon S3 public IP addresses
+            Do not allow access from on premises
+            Do not allow access from another AWS Region
+            Not billed
+        Interface endpoints for Amazon S3
+            your network traffic remains on the AWS network.
+            Use private IP addresses from your VPC to access Amazon S3
+            Allow access from on premises
+            Allow access from a VPC in another AWS Region by using VPC peering or AWS Transit Gateway
+            Billed
+    Gateway Endpoint
+        It only supports connectivity to Amazon S3 and Amazon DynamoDB
+        Does not require an elastic network interface.
+        Requests must only originate from a VPC
+        Cross-region access is not allowed
+        No Cost
+        Associated on a VPC Level
+    Interface Endpoint
+        Supports many AWS Managed services, endpoint services hosted by other AWS customers and partners, and supported AWS Marketplace partner services.
+        Acts as an entry point for traffic to reach supported services through AWS PrivateLink.
+        Use a private IP address
+        Allow access from on-premise
+        Allow cross-region access through VPC peering via Transit Gateway
+        Additional charges
+        Associated on a subnet level
+    Athena vs Redshift 
+        Redshift has much better performance than Athena for complex analytical queries.
+    dreprecated services
+        As of March 31, 2022, AWS has discontinued AWS Server Migration Service (AWS SMS). Going forward, AWS recommends AWS Application Migration Service (AWS MGN) as the primary migration service for lift-and-shift migrations.
+    Cloud Trail
+        Enable CloudTrail log file integrity validation
+            CloudTrail creates a hash for every log file that it delivers. Every hour, CloudTrail also creates and delivers a file that references the log files for the last hour and contains a hash of each. This file is called a digest file. CloudTrail signs each digest file using the private key of a public and private key pair. After delivery, you can use the public key to validate the digest file.  
+        CloudTrail does not capture any query activity in Aurora
+        AWS CloudTrail data events
+            capture the last 90 days of bucket-level events (for example, PutBucketPolicy and DeleteBucketPolicy), and you can enable object-level logging. These logs use a JSON format. After you enable object-level logging with data events, review the logs to find the IP addresses used with each upload to your bucket. It might take a few hours for AWS CloudTrail to start creating logs.
+    S3 pricing 
+        You pay for all bandwidth into and out of Amazon S3, except for the following:
+            Data transferred out to the internet for the first 100GB per month, aggregated across all AWS Services and Regions (except China and GovCloud)
+            Data transferred in from the internet.
+            Data transferred between S3 buckets in the same AWS Region. 
+            Data transferred from an Amazon S3 bucket to any AWS service(s) within the same AWS Region as the S3 bucket (including to a different account in the same AWS Region).
+            Data transferred out to Amazon CloudFront (CloudFront).
+    trigger sources
+        You cannot trigger an AWS Step Function directly from an S3 event
+        You cannot trigger an Amazon EC2 Auto Scaling group directly from an S3 event
+    Aurora 
+        Aurora lab mode 
+            is used to enable Aurora features that are available in the current Aurora database version but are not enabled by default. These features are tested in development/test environments. Aurora lab mode is not relevant for capturing the log activity of Aurora DB.
+    AWS X-Ray 
+        helps developers analyze and debug production, and distributed applications, such as those built using a microservices architecture.
+    GuardDuty Org wide
+        It is inefficient and cumbersome to configure GuardDuty in all member accounts within the AWS Organizations organization. It's better to centrally manage GuardDuty for all AWS accounts by using a GuardDuty delegated administrator account within the AWS Organizations organization.
+    Amazon SQS sets a visibility timeout
+        a period during which Amazon SQS prevents other consumers from receiving and processing the message. Visibility timeout is a configurable parameter of SQS queues and not a temporary storage space to hold failed orders.
+    VPC sharing (part of Resource Access Manager) 
+        allows multiple AWS accounts to create their application resources such as EC2 instances, RDS databases, Redshift clusters, and Lambda functions, into shared and centrally-managed Amazon Virtual Private Clouds (VPCs).
+        an account that owns the VPC (owner) shares one or more subnets with other accounts (participants) that belong to the same organization
+        owner account cannot share the VPC itself.
+    lambda
+        AWS recommends that you should not over-provision your function time out settings. Always understand your code performance and set a function time out accordingly. Over-provisioning function timeout often results in Lambda functions running longer than expected and unexpected costs.    
+    Kinesis Data Streams
+        Use Enhanced Fanout feature of Kinesis Data Streams to support the desired read throughput for the downstream applications
+    AWS OpsWorks
+        lets you use Chef and Puppet to automate how servers are configured, deployed, and managed across your Amazon EC2 instances or on-premises compute environments.
+    default security group:
+        Allow inbound traffic from network interfaces (and their associated instances) that are assigned to the same security group.
+        Allows all outbound traffic
+    default rules for security group that you create
+        Allows no inbound traffic
+        Allows all outbound traffic
+    SSL certificates
+        To use a certificate with an Application Load Balancer for the same site (the same fully qualified domain name, or FQDN, or set of FQDNs) in a different Region, you must request a new certificate for each Region in which you plan to use it. To use an ACM certificate with Amazon CloudFront, you must request the certificate in the US East (N. Virginia) Region.
+    AWS Storage Gateway vs AWS DataSync
+        AWS DataSync
+            AWS DataSync is an online data movement and discovery service that simplifies and accelerates data migrations to AWS as well as moving data between on-premises storage, edge locations, other clouds, and AWS Storage
+            single DataSync task is capable of fully utilizing a 10 Gbps network link.
+        AWS Storage Gateway
+            to retain access to the migrated data and for ongoing updates from your on-premises file-based applications
+    Amazon S3 server access logging
+        captures all bucket-level and object-level events. These logs use a format similar to Apache web server logs. After you enable server access logging, review the logs to find the IP addresses used with each upload to your bucket.
+
+    Changes introduced by disabling S3 ACLs
+        when u apply bucket owner enforced setting for object ownership to disable ALCs 
+        u automatically take full control over every object in bucket 
+        All bucket ACLs and object ACLs are disabled 
+        You as a bucket owner automatically own and have full control over every object 
+        ACLs are no longer affect permissions to ur bucket. As a result, access control for you data is based on policies like IAM policies, S3 bucket policies, VPC endpoint policies and Organization policies 
+    AWS Web Application Firewall (WAF) 
+        protect web applications and APIs from attacks. It enables you to configure a set of rules (called a web access control list (web ACL)) that allow, block, or count web requests based on customizable web security rules and conditions that you define. 
+        can protect:
+            Amazon CloudFront distribution
+            Amazon API Gateway REST API
+            Application Load Balancer
+            AWS AppSync GraphQL API
+            Amazon Cognito user pool
+    Types of process in Auto Scaling Group (ASG)
+        Launch 
+            Adds instances to the Auto Scaling group when the group scales out, or when Amazon EC2 Auto Scaling chooses to launch instances for other reasons, such as when it adds instances to a warm pool.
+        Terminate 
+            Removes instances from the Auto Scaling group when the group scales in, or when Amazon EC2 Auto Scaling chooses to terminate instances for other reasons, such as when an instance is terminated for exceeding its maximum lifetime duration or failing a health check.
+        AddToLoadBalancer 
+            Adds instances to the attached load balancer target group or Classic Load Balancer when they are launched. For more information, see Use Elastic Load Balancing to distribute incoming application traffic in your Auto Scaling group .
+        AlarmNotification 
+            Accepts notifications from CloudWatch alarms that are associated with dynamic scaling policies. For more information, see Dynamic scaling for Amazon EC2 Auto Scaling.
+        AZRebalance 
+            Balances the number of EC2 instances in the group evenly across all of the specified Availability Zones when the group becomes unbalanced, for example, when a previously unavailable Availability Zone returns to a healthy state. For more information, see Rebalancing activities.
+        HealthCheck 
+            Checks the health of the instances and marks an instance as unhealthy if Amazon EC2 or Elastic Load Balancing tells Amazon EC2 Auto Scaling that the instance is unhealthy. This process can override the health status of an instance that you set manually. For more information, see Health checks for instances in an Auto Scaling group.
+        InstanceRefresh 
+            Terminates and replaces instances using the instance refresh feature. For more information, see Use an instance refresh to update instances in an Auto Scaling group.
+        ReplaceUnhealthy 
+            Terminates instances that are marked as unhealthy and then creates new instances to replace them. For more information, see Health checks for instances in an Auto Scaling group.
+        ScheduledActions 
+            Performs the scheduled scaling actions that you create or that are created for you when you create an AWS Auto Scaling scaling plan and turn on predictive scaling. For more information, see Scheduled scaling for Amazon EC2 Auto Scaling.
+    Enable termination protection for EC2 instance 
+        To prevent your instance from being accidentally terminated using the Amazon EC2 API, whether you call TerminateInstances directly or using another interface such as the Amazon EC2 console, enable termination protection for the instance.
+        does not prevent termination
+            initiating shutdown from the instance (for example, by using an operating system command for system shutdown) when the InstanceInitiatedShutdownBehavior attribute is set to terminate
+            Auto Scaling from terminating an instance when the instance is unhealthy or during scale-in events. 
+            You can't enable termination protection for Spot Instances
+    Instance scale-in protection
+        gives you control over which instances Amazon EC2 Auto Scaling can terminate
+        By default, instance scale-in protection is disabled when you create an Auto Scaling group. This means that Amazon EC2 Auto Scaling can terminate any instance in the group.
+        disable the scale-in protection setting on individual instances within the Auto Scaling group. By doing so, you can continue to protect certain instances from unwanted terminations.
 Notes:
     IAM
         Users
