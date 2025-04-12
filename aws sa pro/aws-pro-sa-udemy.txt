@@ -1,4 +1,31 @@
 points 
+    NLB 
+        When using an NLB with instance IDs as targets, the security group you need to focus on is the one associated with the EC2 instances themselves, not the NLB. The NLB itself doesn't have a security group; instead, it relies on the security groups attached to the instances to control inbound and outbound traffic. 
+        You can associate a security group with your Network Load Balancer to control the traffic that is allowed to reach and leave the Network Load Balancer. You specify the ports, protocols, and sources to allow for inbound traffic and the ports, protocols, and destinations to allow for outbound traffic. If you don't assign a security group to your Network Load Balancer, all client traffic can reach the Network Load Balancer listeners and all traffic can leave the Network Load Balancer.
+    
+    AWS CodePipeline 
+        is a continuous delivery service for fast and reliable application and infrastructure updates. CodePipeline builds, tests, and deploys your code every time there is a code change, based on the release process models you define.
+    CloudFormation change sets 
+        you first create the change set which allows you to preview how proposed changes to a stack
+        once you’re happy with the changes the change set can be executed which will update the stack.
+    AWS CodeBuild 
+        to both build and test code. CodeBuild can be configured with custom scripts to run tests and the result of the tests can determine the subsequent actions such as proceeding to deployment.
+    AWS CodeDeploy 
+        automates the deployment of those artifacts to various environments like EC2, on-premises servers, Lambda functions, and ECS services
+    S3 Batch Operations 
+        is designed for performing large-scale batch operations on S3 objects, not for real-time, event-driven tasks like image processing. 
+    Blocking public access to your Amazon S3 storage
+        BlockPublicAcls
+            Setting this option to TRUE causes the following behavior:
+                PutBucketAcl and PutObjectAcl calls fail if the specified access control list (ACL) is public.
+                PutObject calls fail if the request includes a public ACL.
+                If this setting is applied to an account, then PUT Bucket calls fail if the request includes a public ACL.
+        IgnorePublicAcls
+            Setting this option to TRUE causes Amazon S3 to ignore all public ACLs on a bucket and any objects that it contains. This setting enables you to safely block public access granted by ACLs while still allowing PutObject calls that include a public ACL (as opposed to BlockPublicAcls, which rejects PutObject calls that include a public ACL).
+        BlockPublicPolicy
+            Setting this option to TRUE for a bucket causes Amazon S3 to reject calls to PutBucketPolicy if the specified bucket policy allows public access. Setting this option to TRUE for a bucket also causes Amazon S3 to reject calls to PutAccessPointPolicy for all of the bucket's same-account access points if the specified policy allows public access.
+        RestrictPublicBuckets
+            Setting this option to TRUE restricts access to an access point or bucket with a public policy to only AWS service principals and authorized users within the bucket owner's account and access point owner's account. This setting blocks all cross-account access to the access point or bucket (except by AWS service principals), while still allowing users within the account to manage the access point or bucket.
     Management account
         A management account is the AWS account you use to create your organization. From the management account, you can do the following:
             Create other accounts in your organization
@@ -12,6 +39,9 @@ points
             Attach managed and inline policies to IAM identities (users, groups)
         Resource-based policies
             Attach inline policies to resources. The most common examples of resource-based policies are Amazon S3 bucket policies and IAM role trust policies. Resource-based policies grant permissions to the principal that is specified in the policy. Principals can be in the same account as the resource or in other accounts.
+            Trust policy 
+                The trust policy defines which principals can assume the role, and under which conditions.
+                common use case is when you need to provide access to a role in account A to assume a role in Account B. To facilitate this, you add an entry in the role in account B’s trust policy that allows authenticated principals from account A to assume the role through the sts:AssumeRole API call.
         Permissions boundaries
             Use a managed policy as the permissions boundary for an IAM entity (user or role). 
             defines the maximum permissions that the identity-based policies can grant to an entity, but does not grant permissions. Permissions boundaries do not define the maximum permissions that a resource-based policy can grant to an entity.
@@ -25,7 +55,11 @@ points
             Pass advanced session policies when you use the AWS CLI or AWS API to assume a role or a federated user. Session policies limit the permissions that the role or user's identity-based policies grant to the session. Session policies limit permissions for a created session, but do not grant permissions. 
     cross account access 
         the requester in the trusted AccountA must have an identity-based policy. That policy must allow them to make a request to the resource in the trusting AccountB. Additionally, the resource-based policy in AccountB must allow the requester in AccountA to access the resource.
-        
+            1. create role in acc B with necessary permission 
+            2. add user in trust policy for that role 
+            3. allow user to sts Assume role in acc A 
+                so he can assume role
+                can mention which roles or * for any role he can assume 
     AWS Application Migration Service 
         allows companies to lift-and-shift to AWS a large number of physical, virtual, or cloud servers without compatibility issues, performance disruption, or long cutover windows.
     AWS Control Tower

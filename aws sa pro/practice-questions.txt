@@ -669,3 +669,156 @@ Which of the following are correct statements for KCL while consuming Kinesis Da
     Each KCL application must use its own DynamoDB table
     You can only use DynamoDB for checkpointing KC
         A DynamoDB table is required as a checkpointing table for the KCL because the KCL behavior and implementation are interconnected with DynamoDB
+
+A new AWS Lambda function has been created to replicate objects that are received in an Amazon S3 bucket to several other S3 buckets in various AWS accounts. The Lambda function is triggered when an object create event occurs in the main S3 bucket. A Solutions Architect is concerned that the function may impact other critical functions due to Lambda's regional concurrency limit.
+    Configure the reserved concurrency limit for the new Lambda function. Monitor existing critical Lambda functions with Amazon CloudWatch alarms for the Throttles Lambda metric
+        Concurrency is subject to a Regional quota that is shared by all functions in a Region. To ensure that a function can always reach a certain level of concurrency, you can configure the function with reserved concurrency. When a function has reserved concurrency, no other function can use that concurrency. Reserved concurrency also limits the maximum concurrency for the function, and applies to the function as a whole, including versions and aliases.
+
+A company wants to run an application on AWS. The company plans to provision its application in Docker containers running in an Amazon ECS cluster. The application requires a MySQL database and the company plans to use Amazon RDS.
+What is the MOST cost-effective solution to meet these requirements
+    Create an ECS cluster using a fleet of Spot Instances, with Spot Instance draining enabled. Provision the database using Reserved Instances.
+        ECS Spot Instance draining is enabled on the instance, ECS receives the Spot Instance interruption notice and places the instance in DRAINING status.
+
+company is developing an application on AWS, where the application's logs are sent to an Amazon OpenSearch Service cluster within a VPC for analysis. The development team, which includes remote workers and staff at three different office locations, needs to access the OpenSearch Service for log analysis directly from their local development machines.
+What is the most effective solution to enable this access while adhering to the requirement that all data must be stored within a VPC
+    Set up an AWS Client VPN endpoint, associate it with a subnet in the VPC, and configure a Client VPN self-service portal. Instruct the developers to connect using the Client VPN client.
+        AWS Client VPN is a managed client-based VPN service that enables secure access to AWS resources in a VPC. By setting up a Client VPN endpoint and associating it with a subnet in the VPC, developers can securely access the OpenSearch Service cluster from any location.
+        The self-service portal simplifies the connection process, making it an ideal solution for a team that includes remote workers and staff in multiple office locations. This approach ensures that all data remains within the VPC, adhering to the company's security policy.
+
+A company has created several development accounts in an AWS Organizations organization. The company has defined a fixed budget for each development account and needs to ensure that developers cannot launch expensive services or exceed the fixed monthly budget.
+    Create an AWS Budgets alert action to send an Amazon SNS notification when the budgeted amount is reached. Invoke an AWS Lambda function to terminate all services.
+    Create an SCP that denies access to expensive services. Apply the SCP to an OU containing the development accounts.
+    Use the AWS Budgets service to define a fixed monthly budget for each development account.
+        The budget can trigger an SNS notification which in turn can invoke an AWS Lambda function to terminate the resources.
+
+A company requires that only the master account in AWS Organizations is able to purchase Amazon EC2 Reserved Instances. Current and future member accounts should be blocked from purchasing Reserved Instances.
+    Create an SCP with the Deny effect on the ec2:PurchaseReservedInstancesOffering action. Attach the SCP to the root of the organization.
+        SCPs affect only member accounts in the organization. They have no effect on users or roles in the management account (also known as the master account).
+
+A company has deployed sensors in its factories to continuously monitor environmental factors such as temperature and lighting. The company seeks an AWS solution to stream this data for real-time analysis and to alert the factory management team immediately if any readings exceed predefined thresholds.
+    Stream the environmental data to Amazon Kinesis Data Streams, analyze it using an AWS Lambda function, and configure Amazon SNS to send immediate alerts to the management team if anomalies are detected.
+        using Amazon SES for notifications might not provide the immediacy required for alerting in this scenario, as SES is primarily an email service.
+
+global enterprise utilizes AWS Control Tower for streamlined account management within its AWS Organizations structure. The enterprise has established a policy across its various organizational units (OUs) to ensure enhanced security and compliance. The policy strictly prohibits Amazon EC2 instances in any of these OUs from being assigned public IP addresses. Which is the most effective solution to enforce this policy across the enterprise's AWS environment while using AWS Control Tower 
+    Configure Service Control Policies (SCPs) within AWS Control Tower to disallow assigning public IP addresses to EC2 instances across all OUs.
+        AWS Config addresses the issue after public IPs have been assigned, which could potentially lead to brief periods of policy violation.
+
+An application stores user comment data in multiple Amazon DynamoDB tables. A solutions architect must use a serverless architecture to make the data accessible publicly through a simple and cost-effective API over HTTPS. The solution must scale automatically in response to demand.
+    Create an Amazon API Gateway HTTP API. Configure this API with integrations to AWS Lambda functions that return data from the DynamoDB tables.
+        HTTP API which is lower cost
+
+A database for an eCommerce website was deployed on an Amazon RDS for MySQL DB instance with General Purpose SSD storage. The database was running performantly for several weeks until a peak shopping period when customers experienced slow performance and timeouts. Amazon CloudWatch metrics indicate that reads and writes to the DB instance were experiencing long response times. Metrics show that CPU utilization is <50%, plenty of available memory, and sufficient free storage space. There is no evidence of database connectivity issues in the application server logs.
+    A large number of reads and writes exhausted the I/O credit balance due to provisioning low disk storage during the setup phase.
+
+A company has established a 10 Gbps AWS Direct Connect (DX) connection to a single VPC in an AWS Region. A single private VIF has been created for the existing DX connection. The company requires redundancy for the existing DX connection and needs to connect to an additional VPC in a second Region.
+    Create a new DX connection to the same Region. Provision a Direct Connect gateway and establish new private VIFs to a virtual private gateway in the VPCs in each Region.
+
+company has deployed a SAML 2.0 federated identity solution with their on-premises identity provider (IdP) to authenticate users' access to the AWS environment. A Solutions Architect ran authentication tests through the federated identity web portal and access to the AWS environment was granted. When a test users attempt to authenticate through the federated identity web portal, they are not able to access the AWS environment.
+    The company's IdP defines SAML assertions that properly map users or groups in the company to IAM roles with appropriate permissions.
+    The IAM roles created for the federated users' or federated groups' trust policy have set the SAML provider as the principal.
+    The web portal calls the AWS STS AssumeRoleWithSAML API with the ARN of the SAML provider, the ARN of the IAM role, and the SAML assertion from IdP.
+
+A company operates a large-scale workload with numerous Amazon EC2 instances within a VPC, which includes both public and private subnets. The public subnets are currently configured with a route to an internet gateway for IPv4 traffic (0.0.0.0/0), while the private subnets route IPv4 traffic (0.0.0.0/0) to a NAT gateway. The company now plans to transition its EC2 instances to IPv6, ensuring that instances in private subnets remain inaccessible from the public internet.
+    Modify the existing VPC to include an Amazon-provided IPv6 CIDR block for the VPC and its subnets. For the public subnets, update the route tables to route IPv6 traffic (::/0) to the internet gateway. For the private subnets, update the route tables to route IPv6 traffic (::/0) to an egress-only internet gateway.
+        For public subnets, routing IPv6 traffic (::/0) to the internet gateway allows instances in these subnets to send and receive IPv6 traffic from the internet, maintaining their public accessibility.
+        For private subnets, using an egress-only internet gateway for IPv6 traffic ensures that instances can initiate outbound IPv6 connections while remaining inaccessible from the public internet.
+        NAT gateways in AWS do not support IPv6 traffic
+
+A company is planning to build a high-performance computing (HPC) solution in the AWS Cloud. The solution will include a 10-node cluster running Linux. High speed and low latency inter-instance connectivity is required to optimize the performance of the cluster.
+    Deploy Amazon EC2 instances in a cluster placement group.
+    Use Amazon EC2 instance types and AMIs that support EFA.
+        Elastic Fabric Adapter (EFA) is a network device that you can attach to your Amazon EC2 instance to accelerate Artificial Intelligence (AI), Machine Learning (ML), and High Performance Computing (HPC) applications.
+
+A company has a large photo library stored on Amazon S3. They use AWS Lambda to extract metadata from the files according to various processing rules for different categories of photo. The output is then stored in an Amazon DynamoDB table.The extraction process is performed whenever customer requests are submitted and can take up to 60 minutes to complete. The company wants to reduce the time taken to extract the metadata and has split the single Lambda function into separate Lambda functions for each category of photo
+    Create an AWS Step Functions workflow to run the Lambda functions in parallel. Create a Lambda function to retrieve a list of files and write each item to an Amazon SQS queue. Configure a Lambda function to retrieve messages from the SQS queue and call the StartExecution API.
+        information from the SQS messages can then be used as input to the parallel functions that form the workflow using the StartExecution API.
+
+A company is using AWS CloudFormation templates for infrastructure provisioning. The templates are hosted in the company’s private GitHub repository. The company has experienced several issues with updates to the templates that have caused errors when executing the updates and creating the environment. A Solutions Architect must resolve these issues and implement automated testing of the CloudFormation template updates.
+    Use AWS CodePipeline to a create a change set when updates are made to the CloudFormation templates in GitHub. Include a CodePipeline action to test the deployment with testing scripts run using AWS CodeBuild. Upon successful testing, configure CodePipeline to execute the change set and deploy to production.
+        You can apply continuous delivery practices to your AWS CloudFormation stacks using AWS CodePipeline.
+        AWS CodePipeline is a continuous delivery service for fast and reliable application and infrastructure updates. CodePipeline builds, tests, and deploys your code every time there is a code change, based on the release process models you define.
+        When using CloudFormation change sets you first create the change set which allows you to preview how proposed changes to a stack might impact your running resources. When you create a CloudFormation change set, it does not create a separate CloudFormation stack. Instead, it generates a preview of the changes that will be made to the existing stack when you decide to execute the change set. Then, once you’re happy with the changes the change set can be executed which will update the stack.
+        You can use AWS CodeBuild to both build and test code. CodeBuild can be configured with custom scripts to run tests and the result of the tests can determine the subsequent actions such as proceeding to deployment.
+
+A company has an NFS file server on-premises with 50 TB of data that is being migrated to Amazon S3. The data is made up of many millions of small and files and a Snowball Edge device is being used for the migration. A shell script is being used to copy data using the file interface of the Snowball Edge device. Data transfer times are very slow and the Solutions Architect suspects this may be related to the overhead of encrypting all the small files and copying them over the network.
+    Perform multiple copy operations at one time by running each command from a separate terminal window, in separate instances of the Snowball client.
+        you can improve the transfer speed from your data source to the Snowball in the following ways, ordered from largest to smallest positive impact on performance:
+            Use the latest Mac or Linux Snowball client
+            Batch small files together
+            Perform multiple copy operations at one time
+            Copy from multiple workstations
+            Transfer directories, not files
+        The Snowball Edge device does not come with a USB interface.
+        You cannot cluster these devices for throughput.
+
+A company has deployed an application on Amazon EC2 instances behind an internet-facing Application Load Balancer (ALB). The ALB is configured as the origin in an Amazon CloudFront distribution. The company requires that the solution is secured against web-based attacks. An AWS WAF web ACL has been created and associated with the CloudFront distribution. The company must prevent anyone from circumventing the CloudFront distribution and connecting directly to the ALB.
+    Add a security group rule to the ALB to allow traffic from the AWS managed prefix list for CloudFront only.
+        AWS-managed prefix lists are created and maintained by AWS and are available to use at no additional cost.can reference the managed prefix list for CloudFront in your (Amazon VPC) security group rules.
+
+A company utilizing Amazon Connect for their contact center is encountering a surge in automated calls, affecting both operational costs and agent productivity. They need a system where agents can easily mark a call as spam, subsequently preventing such numbers from being routed to agents in the future.
+    Add a custom 'flag as spam' button to the Contact Control Panel (CCP) in Amazon Connect. This button triggers an AWS Lambda function to update call attributes and log the number in an Amazon DynamoDB table. Adapt the contact flows to reference these attributes and interact with the DynamoDB table for future call filtering.
+
+A company plans to build a gaming application in the AWS Cloud that will be used by Internet-based users. The application will run on a single instance and connections from users will be made over the UDP protocol. The company has requested that the service is implemented with a high level of security. A Solutions Architect has been asked to design a solution for the application on AWS.
+    Configure a network ACL rule to block all non-UDP traffic. Associate the network ACL with the subnets that hold the load balancer instances.
+    Use a Network Load Balancer (NLB) in front of the application instance. Use a friendly DNS entry in Amazon Route 53 pointing to the NLB's Elastic IP address.
+    Enable AWS Shield Advanced on all public-facing resources.
+
+An application runs on an Amazon EC2 instance with an attached Amazon EBS Provisioned IOPS (PIOPS) volume. The volume is configured at 200-GB in size and has 3,000 IOPS provisioned. The application requires low latency and random access to the data. A Solutions Architect has been asked to consider options for lowering the cost of the storage without impacting performance and durability.
+    Change the PIOPS volume for a 1-TB EBS General Purpose SSD (gp2) volume.
+
+A company is running a custom Java application on-premises and plans to migrate the application to the AWS Cloud. The application uses a MySQL database and the application servers maintain users’ sessions locally. Which combination of architecture changes will be required to create a highly available solution on AWS
+    Migrate the database to Amazon RDS for MySQL. Configure the RDS instance to use a Multi-AZ deployment.
+    Put the application instances in an Amazon EC2 Auto Scaling group. Configure the Auto Scaling group to create new instances if an instance becomes unhealthy.
+    Configure the application to store the user's session in Amazon ElastiCache. Use Application Load Balancers to distribute the load between application instances.
+
+A developer is attempting to access an Amazon S3 bucket in a member account in AWS Organizations. The developer is logged in to the account with user credentials and has received an access denied error with no bucket listed. The developer should have read-only access to all buckets in the account.
+A Solutions Architect has reviewed the permissions and found that the developer's IAM user has been granted read-only access to all S3 buckets in the account.
+    Check for the permissions boundaries set for the IAM user.
+    Check the SCPs set at the organizational units (OUs).
+
+Amazon S3 buckets containing sensitive patient data that are not encrypted. The company needs a systematic approach to encrypt these existing S3 buckets and ensure future compliance across all AWS accounts.
+The company also seeks a centralized management solution for its AWS accounts with a focus on security and regulatory compliance.
+    Establish an AWS Organizations structure, implement AWS Control Tower, and activate the necessary security guardrails. Consolidate all AWS accounts under this organization and organize them into Organizational Units (OUs) based on their function.
+    Create an AWS Lambda function triggered by Amazon EventBridge to monitor and automatically apply encryption to any newly created or existing unencrypted S3 buckets.
+
+A Solutions Architect has deployed an application on Amazon EC2 instances in a private subnet behind a Network Load Balancer (NLB) in a public subnet. Customers have attempted to connect from their office location and are unable to access the application. The targets were registered by instance-id and are all healthy in the associated target group.
+    Check the security group for the EC2 instances to ensure it allows ingress from the customer office.
+        Note that NLBs do not have security groups configured and pass connections straight to EC2 instances with the source IP of the client preserved (when registered by instance-id).
+
+A solutions architect developed a web application that includes an AWS Lambda function that queries an Amazon Aurora MySQL database. The database is configured with three read replicas. During periods of high demand, the application does not meet performance requirements. A solutions architect noticed that the application opens many database connections, and this causes latency in the application
+    Move Lambda function code for opening the database connection outside of the event handler.
+    Connect an RDS Proxy connection pool to the reader endpoint of the Aurora database.
+
+A company has deployed two Microsoft Active Directory Domain Controllers into an Amazon VPC with a default configuration. The DHCP options set associated with the VPC has been configured to assign the IP addresses of the Domain Controllers as DNS servers. A VPC interface endpoint has been created but EC2 instances within the VPC are unable to resolve the private endpoint addresses.
+    Define an outbound Amazon Route 53 Resolver. Set a conditional forwarding rule for the Active Directory domain to the Active Directory servers. Configure the DNS settings in the VPC DHCP options set to use the AmazonProvidedDNS servers.    
+    Update the DNS service on the Active Directory servers to forward all non-authoritative queries to the VPC Resolver.
+
+A company is moving their IT infrastructure to the AWS Cloud and will have several Amazon VPCs within an AWS Region. The company requires centralized and controlled egress-only internet access. The solution must be highly available and horizontally scalable. The company is expecting to grow the number of VPCs to more than fifty.
+    Attach each VPC to a shared transit gateway. Use an egress VPC with firewall appliances in two AZs and connect the transit gateway using IPSec VPNs with BGP.
+        VPN attachment with BGP for an AWS Transit Gateway allows BGP equal-cost multipathing (ECMP) to be used which can load balance traffic across multiple EC2 instances. This is the only solution that provides the ability to horizontally scale the outbound internet traffic across multiple appliances with HA across AZs.
+
+A company runs an application that generates user activity reports and stores them in an Amazon S3 bucket. Users are able to download the reports using the application which generates a signed URL. A user recently reported that the reports of other users can be accessed directly from the S3 bucket. A Solutions Architect reviewed the bucket permissions and discovered that public access is currently enabled.
+    Use the Block Public Access feature in Amazon S3 to set the IgnorePublicAcls option to TRUE on the bucket.
+        Setting the IgnorePublicAcls option to TRUE causes Amazon S3 to ignore all public ACLs on a bucket and any objects that it contains.
+
+A company uses Amazon RedShift for analytics. Several teams deploy and manage their own RedShift clusters and management has requested that the costs for these clusters is better managed. The management team has set budgets and once the budgetary thresholds have been reached a notification should be sent to a distribution list for managers. Teams should be able to view their RedShift cluster’s expenses to date. A Solutions Architect needs to create a solution that ensures the policy is centrally enforced in a multi-account environment.
+    Update the AWS CloudFormation template to include the AWS::Budgets::Budget::resource with the NotificationsWithSubscribers property.
+    Create an AWS Service Catalog portfolio for each team. Add each team's Amazon RedShift cluster as an AWS CloudFormation template to their Service Catalog portfolio as a Product.
+        You can use AWS Budgets to track your service costs and usage within AWS Service Catalog. You can associate budgets with AWS Service Catalog products and portfolios.
+        If a budget is associated to a product, you can view information about the budget on the Products and Product details page. same for portfolios
+
+A Solutions Architect has deployed an application on Amazon EC2 instances in a private subnet behind a Network Load Balancer (NLB) in a public subnet. The NLB has not been associated with a security group. Customers have attempted to connect from their office location and are unable to access the application. The targets were registered by instance-id and are all healthy in the associated target group.
+    Check the security group for the EC2 instances to ensure it allows ingress from the customer office.
+        When the target is registered by instance-id, NLBs pass connections straight to EC2 instances with the source IP of the client preserved.
+        With NLBs, when you register EC2 instances as targets, you must ensure that the security groups for these instances allow traffic on both the listener port and the health check port. We know that the health check port is already configured correctly as the targets are all healthy.
+
+A Solutions Architect is migrating an application to AWS Fargate. The task runs in a private subnet and does not have direct connectivity to the internet. When the Fargate task is launched, it fails with the following error:CannotPullContainerError: API error (500): Get https://111122223333.dkr.ecr.us-east-1.amazonaws.com/v2/: net/http: request canceled while waiting for connection"
+    Specify DISABLED for Auto-assign public IP when launching the task and configure a NAT gateway in a public subnet to route requests to the internet.
+        To resolve this issue, you can:
+            For tasks in public subnets, specify ENABLED for Auto-assign public IP when launching the task.
+            For tasks in private subnets, specify DISABLED for Auto-assign public IP when launching the task, and configure a NAT gateway in your VPC to route requests to the internet.
+        The NAT Gateway should be in a public subnet.
+
+
+
+        
