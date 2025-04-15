@@ -1,4 +1,42 @@
 points 
+    Amazon FSx 
+        for Windows File Server makes it easy for you to launch and scale reliable, performant, and secure shared file storage for your applications and end users.
+    Amazon API Gateway
+        easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
+        you can create RESTful APIs and WebSocket APIs that enable real-time two-way communication applications.
+        HTTP APIs 
+            are the best choice for building APIs that only require API proxy functionality. 
+        REST APIs.
+            If your APIs require API proxy functionality and API management features
+    AWS AppSync 
+        fully managed service for real-time data queries, synchronization, and communications. 
+        Provides a robust, scalable GraphQL interface for application developers to "combine data from multiple sources", including Amazon DynamoDB, AWS Lambda, and HTTP APIs.
+        Real-time and offline functionality
+
+
+    AWS Glue Data Catalog 
+        is a centralized repository that stores metadata about your organization's data sets. It acts as an index to the location, schema, and runtime metrics of your data sources. The metadata is stored in metadata tables, where each table represents a single data store.
+    AWS Application Discovery Service 
+        is specifically designed to assist organizations in collecting detailed information about their on-premises infrastructure, which is crucial for cloud migration planning.
+        By deploying the data collection agent on each server, the organization can obtain in-depth data on server performance, including CPU and memory usage, network I/O, and running services.
+    availability SLA 
+        To meet the 99.9% availability SLA a solution in a single Region with Auto Scaling and Load Balancing across multiple AZs is sufficient.
+    Network load balancer 
+        NLBs can use on-premises targets. 
+    AWS Cloud Development Kit (AWS CDK)
+        software development framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation. 
+        supports TypeScript, JavaScript, Python, Java, and C#/.Net.
+    AWS PrivateLink
+        provides you option to connect to SaaS products privately, as if it is running on customer’s VPC itself.
+        A service consumer creates a VPC endpoint to connect their VPC to an endpoint service. A service consumer must specify the service name of the endpoint service when creating a VPC endpoint. There are multiple types of VPC endpoints. You must create the type of VPC endpoint that's required by the endpoint service.
+            Interface 
+                Create an interface endpoint to send traffic to endpoint services that use a Network Load Balancer to distribute traffic. Traffic destined for the endpoint service is resolved using DNS.            
+            GatewayLoadBalancer 
+                Create a Gateway Load Balancer endpoint to send traffic to a fleet of virtual appliances using private IP addresses. You route traffic from your VPC to the Gateway Load Balancer endpoint using route tables. The Gateway Load Balancer distributes traffic to the virtual appliances and can scale with demand.            
+            Gateway 
+                Create a gateway endpoint to send traffic to Amazon S3 or DynamoDB using private IP addresses. You route traffic from your VPC to the gateway endpoint using route tables. Gateway endpoints do not enable AWS PrivateLink.
+        AWS PrivateLink endpoint service is published by the service provider
+        service consumer needs to create a VPC interface endpoint.
     NLB 
         When using an NLB with instance IDs as targets, the security group you need to focus on is the one associated with the EC2 instances themselves, not the NLB. The NLB itself doesn't have a security group; instead, it relies on the security groups attached to the instances to control inbound and outbound traffic. 
         You can associate a security group with your Network Load Balancer to control the traffic that is allowed to reach and leave the Network Load Balancer. You specify the ports, protocols, and sources to allow for inbound traffic and the ports, protocols, and destinations to allow for outbound traffic. If you don't assign a security group to your Network Load Balancer, all client traffic can reach the Network Load Balancer listeners and all traffic can leave the Network Load Balancer.

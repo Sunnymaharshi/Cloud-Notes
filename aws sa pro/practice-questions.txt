@@ -819,6 +819,159 @@ A Solutions Architect is migrating an application to AWS Fargate. The task runs 
             For tasks in private subnets, specify DISABLED for Auto-assign public IP when launching the task, and configure a NAT gateway in your VPC to route requests to the internet.
         The NAT Gateway should be in a public subnet.
 
+A corporation needs to quickly enable 350 staff members to work remotely in the event of an emergency. Their current setup includes a mix of Windows and Linux desktops with various applications installed, such as office suites and communication tools.
+The solution must integrate with the company's existing on-premises Active Directory, allowing staff to use their current login credentials. Additionally, it should support multifactor authentication (MFA) and closely replicate the user interface of their existing desktop environments.
+    Use Amazon WorkSpaces for providing cloud desktops. Connect it to the on-premises network via VPN, integrate with the on-premises Active Directory using an AD Connector, and set up a RADIUS server to enable MFA.
+
+A company runs an application in an on-premises data center that uses an IBM Db2 database. The web application calls an API that runs stored procedures on the database to retrieve read-only data. The dataset is constantly updated. Users have reported significant latency when attempting to retrieve data. The company are concerned about Db2 CPU licensing costs and the performance of the database.
+    Use AWS DMS to migrate data to Amazon DynamoDB using a continuous replication task. Refactor the API to use the DynamoDB data. Implement the refactored API in Amazon API Gateway and enable API caching.
+
+A Solutions Architect is working on refactoring a monolithic application into a modern application design that will be deployed in the AWS Cloud. A CI/CD pipeline should be used that supports the modern design and allows for multiple releases every hour. The pipeline should also ensure that changes can be quickly rolled back if required.
+    Use AWS Elastic Beanstalk and create a secondary environment configured as a deployment target for the CI/CD pipeline. To deploy, swap the staging and production environment URLs.
+
+An advertising company hosts static content in an Amazon S3 bucket that is served by Amazon CloudFront. The static content is generated programmatically from a Development account, and the S3 bucket and CloudFront are in a Production account. The build pipeline uploads the files to Amazon S3 using an IAM role in the Development Account. The S3 bucket has a bucket policy that only allows CloudFront to read objects using an origin access identity (OAI). During testing all attempts to upload objects using the to the S3 bucket are denied..
+    Create a new cross-account IAM role in the Production account with write access to the S3 bucket. Modify the build pipeline to assume this role to upload the files to the Production Account.
+
+A pharmaceutical company has deployed an application on their private Amazon VPC. They need to use a third-party software-as-a-service (SaaS) application which is hosted in another AWS account inside an Amazon VPC.
+They need to connect applications to the third-party SaaS from private subnets in the company VPC. The company’s security team has mandated policies that private network needs to be used without internet propagation. No resources that run in the company VPC are allowed to be accessed from outside the company's VPC. All permissions must conform to the principles of least privilege.
+    Create an AWS PrivateLink interface VPC endpoint. Connect this endpoint to the endpoint service that the third-party SaaS application provides. Create a security group to limit the access to the endpoint and associate the security group with the endpoint.
+        AWS PrivateLink endpoint service is published by the service provider which in this case is the third-party SaaS provider. The company is then acting as the service consumer and needs to create a VPC interface endpoint.
+
+A new application will ingest millions of records per minute from user devices all over the world. Each record is less than 4 KB in size and must be stored durably and accessed with low latency. The data must be stored for 90 days after which it can be deleted. It has been estimated that storage requirements for a year will be 15-20TB.
+    Store each incoming record in an Amazon DynamoDB table. Configure the DynamoDB Time to Live (TTL) feature to delete records older than 90 days.
+        Amazon DynamoDB Time to Live (TTL)
+            allows you to define a per-item timestamp to determine when an item is no longer needed. Shortly after the date and time of the specified timestamp, DynamoDB deletes the item from your table without consuming any write throughput. TTL is provided at no extra cost as a means to reduce stored data volumes by retaining only the items that remain current for your workload’s needs.
+
+The algorithms are being run using a high-performance compute cluster on Amazon EC2 Spot instances. Each time an instance launches a DNS record must be created in an Amazon Route 53 private hosted zone. When the instance is terminated the DNS record must be deleted.The current configuration uses an Amazon CloudWatch Events rule that triggers an AWS Lambda function to create the DNS record. When scaling the solution to thousands of instances the university has experienced “HTTP 400 error (Bad request)” errors in the Lambda logs. The response header also includes a status code element with a value of "Throttling" and a status message element with a value of "Rate exceeded".
+    Update the CloudWatch Events rule to trigger on Amazon EC2 "Instance Launch Successful" and "Instance Terminate Successful" events for the Auto Scaling group used by the cluster" is a correct answer
+    Configure a Lambda function to retrieve messages from an Amazon SQS queue. Modify the Lambda function to retrieve a maximum of 10 messages then batch the messages by Amazon Route 53 API call type and submit. Delete the messages from the SQS queue after successful API calls
+    Configure an Amazon SQS standard queue and configure the existing CloudWatch Events rule to use this queue as a target. Remove the Lambda target from the CloudWatch Events rule" is also a correct answer
+        Route 53 you are limited (by default) to five requests per second per AWS account. 
+
+A growing e-commerce company uses a legacy CRM system hosted in an on-premises server. The sales team frequently accesses this system for customer data, leading to high server load during peak hours. The company wants to leverage AWS to improve system availability, enhance data processing speed, and manage increasing data volumes with minimal operational overhead.
+    Migrate the CRM system to Amazon EC2 instances.
+    Implement Amazon RDS to host the CRM's database
+        Amazon RDS 
+            provides a managed relational database service that automates time-consuming administrative tasks. This would support the CRM database with scalability, availability, and security.
+
+A company is planning to migrate on-premises resources to AWS. The resources include over 150 virtual machines (VMs) that use around 50 TB of storage. Most VMs can be taken offline outside of business hours, however, a few are mission critical and downtime must be minimized. The company’s internet bandwidth is fully utilized and cannot currently be increased. A Solutions Architect must design a migration strategy that can be completed within the next 3 months.
+    Set up a 1 Gbps AWS Direct Connect connection. Then, provision a private virtual interface, and use AWS Application Migration Service (MGN) to migrate the VMs into Amazon EC2.
+        best way to avoid downtime is to provision an AWS Direct Connect connection and use AWS Application Migration Service (MGN) to migrate the VMs into EC2.
+        offers an agentless replication approach, eliminating the need for additional software installations. Continuous data replication ensures near real-time synchronization between source and target VMs, enabling a smooth transition with minimal downtime. MGN includes automated testing and post-migration validation features, allowing for thorough verification of the migration process.
+        VMs that are exported and transported using Snowball will be offline for several days in this scenario which is not acceptable.
+
+A company runs Docker containers on Amazon ECS. A containerized application uses a custom tool that must be manually updated each time the container code is updated. The updated container image can then be used for new tasks. A Solutions Architect has been tasked with automating this process to eliminate the manual work and ensure a new container image is generated each time the tool code is updated.
+    Create an AWS CodePipeline pipeline that sources the tool code from the AWS CodeCommit repository and initiates an AWS CodeBuild build.
+    Create an Amazon ECR repository for the image. Create an AWS CodeCommit repository containing code for the tool being deployed to the container image in Amazon ECR.
+    Create an AWS CodeBuild project that pulls the latest container image from Amazon ECR, updates the container with code from the source AWS CodeCommit repository, and pushes the updated container image to Amazon ECR.
+
+A company has experienced issues updating an AWS Lambda function that is deployed using an AWS CloudFormation stack. The issues have resulted in outages that affected large numbers of customers. A Solutions Architect must adjust the deployment process to support a canary release strategy. Invocation traffic should be routed based on specified weights.
+    Create an alias for new versions of the Lambda function. Use the AWS CLI update-alias command with the routing-config parameter to distribute the load.
+        With the introduction of alias traffic shifting, it is now possible to trivially implement canary deployments of Lambda functions. By updating additional version weights on an alias, invocation traffic is routed to the new function versions based on the weight specified.
+
+A company runs a traffic sensor related IoT platform on AWS. Applications are hosted on EC2 instances and receive sensor data containing traffic information in real time. Applications are written in Node.js and have an Application Load Balancer in front. The backend includes an Amazon RDS MySQL DB instance that uses a 4 TB General Purpose SSD volume.
+The company want to deploy the application to a much larger number of sensors. During initial testing the API servers were consistently overloaded and RDS metrics showed high write latency.
+Which of the following steps together will resolve the issues permanently and enable growth as new sensors are provisioned, while keeping this platform cost-efficient
+    Re-architect the database tier to use Amazon DynamoDB instead of an RDS MySQL DB instance.
+    Leverage Amazon Kinesis Data Streams and AWS Lambda to ingest and process the raw data.
+        Kinesis Data Streams is ideal for ingesting sensor data from IoT platforms and can use AWS Lambda functions for processing the data.
+
+A company requires federated access to AWS for users of a mobile application. The security team has mandated that the application must use a custom-built solution for authenticating users and use IAM roles for authorization.
+Which of the following actions would enable authentication and authorization and satisfy the requirements?
+    Use a custom-built SAML-compatible solution that uses LDAP for authentication and uses a SAML assertion to perform authorization to the IAM identity provider.
+    Use a custom-built OpenID Connect-compatible solution for authentication and use Amazon Cognito for authorization.
+        AWS SSO cannot be used for mobile applications.
+    
+A finance company needs to implement a solution to share a common network across multiple AWS accounts which are a part of an AWS organization.
+The company's operations team uses a dedicated operations account with a VPC, and this must be used for network management. Individual accounts cannot have the ability to manage their own networks. However, individual accounts must be able to create AWS resources within subnets.
+    Enable resource sharing from the AWS Organizations management account.
+    Create a resource share in AWS Resource Access Manager in the operations account. Select the specific AWS Organizations OU that will use the shared network. Select each subnet to associate with the resource share.
+        To share resources within an organization, you must first use the AWS RAM console or AWS Command Line Interface (AWS CLI) to enable sharing with AWS Organizations.
+        AWS RAM doesn't send invitations to principals. Principals in your organization gain access to shared resources without exchanging invitations.
+
+A Solutions Architect has deployed a REST API using an Amazon API Gateway Regional endpoint. The API will be consumed by a growing number of US-based companies. Each company will use the API twice each day to get the latest data.
+Following the deployment of the API the operations team noticed thousands of requests coming from hundreds of IP addresses around the world. The traffic is believed to be originating from a botnet. The Solutions Architect must secure the API while minimizing cost.
+    Create an AWS WAF web ACL with a rule to allow access from the IP addresses used by the companies. Associate the web ACL with the API. Create a usage plan with a request limit and associate it with the API. Create an API key and add it to the usage plan.
+        The API key associated with the usage plan ensures that only clients who are using the API key in their requests are granted access. This solution requires that the IP addresses of clients are whitelisted and the API key is distributed to clients to use in their requests to the API.
+
+A company runs several IT services in an on-premises data center that is connected to AWS using an AWS Direct Connect (DX) connection. The service data is sensitive and the company uses an IPSec VPN over the DX connection to encrypt data. Security requirements mandate that the data cannot traverse the internet. The company wants to offer the IT services to other companies who use AWS.
+    Create a VPC Endpoint Service that accepts TCP traffic and host it behind a Network Load Balancer. Enable access to the IT services over the DX connection.
+        use VPC endpoint services in a service provider model. In this model a network load balancer must be created in the service provider VPC in front of the application services. Remember that NLBs can use on-premises targets. A VPC endpoint is then created that uses the NLB.
+
+An e-commerce company has developed a newer version of a shopping application with many new features. But before rolling it out to the public, they want to test the new version incrementally using small incremental deployments. The application is deployed using AWS CloudFormation and uses multiple AWS Lambda functions.
+    Enable versioning for the AWS Lambda function and associate an alias for every new version. Use the AWS CLI ‘update-alias’ command with the ‘routing-config’ parameter to distribute the load.
+        Auto Scaling can be configured with the capacity set to 0 and Route 53 failover records can be created in an active-passive configuration.
+
+A healthcare organization is looking to establish a robust disaster recovery (DR) strategy for its patient record management system, currently hosted in their local data center. The system primarily handles two types of data: patient records (text-based) and diagnostic images (large files). Both sets of data are stored on SMB file shares in the data center. The organization requires a backup solution on AWS, ensuring that in case of a disaster, the data can be accessed via SMB from AWS or the data center. The backup data is infrequently accessed but must be retrievable within a short time frame.
+    Deploy an Amazon S3 File Gateway, configuring it to store both patient records and diagnostic images in Amazon S3 Standard-Infrequent Access (S3 Standard-IA), accessible via SMB.
+        Amazon FSx File Gateway with a Multi-AZ FSx for Windows File Server is more suited for scenarios requiring high availability and performance for frequently accessed data, rather than for a DR scenario focusing on infrequent access.
+
+A company is running several development projects. Developers are assigned to a single project but move between projects frequently. Each project team requires access to different AWS resources.
+Currently, there are projects for serverless, analytics, and database development. The resources used within each project can change over time. Developers require full control over the project they are assigned to and no access to the other projects.
+When developers are assigned to a different project or new AWS resources are added, the company wants to minimize policy maintenance.
+    Create a customer managed policy document for each project that requires access to AWS resources. Specify full control of the resources that belong to the project. Attach the project-specific policy document to an IAM group. Change the group membership when developers change projects. Update the policy document when the set of resources changes.
+
+A media publishing company has created an online bookstore which gives users access to books and other reference material. These materials can be downloaded by users and new materials can also be uploaded on the portal. According to company requirements, all data must be encrypted in transit and at rest. A solutions architect is building the solution by using Amazon S3 and Amazon CloudFront.
+    Configure redirection of HTTP requests to HTTPS requests in CloudFront.
+    Turn on the S3 server-side encryption for the S3 bucket in use.
+    Create a bucket policy that denies any unencrypted operations in the S3 bucket that the web application uses.
+
+A Solutions Architect must enable an AWS CloudHSM M of N access control—also named a quorum authentication mechanism—to allow security officers to make administrative changes to a hardware security module (HSM). The new security policy states that at least two of the four security officers must authorize any administrative changes to CloudHSM. This is the first time this configuration has been setup. Which steps must be taken to enable quorum authentication
+    Using the cloudhsm_mgmt_util command line tool, enable encrypted communication, login as a CO, and set the Quorum minimum value to two using the setMValue command.
+    Using the cloudhsm_mgmt_util command line tool, enable encrypted communication, login as a CO, and register a key for signing with the registerMofnPubKey command.
+
+Allow the retrieval of data from multiple data sources.
+Minimize the cost of API calls.
+Reduce latency for user access.
+Provide user authentication and authorization and implement role-based access control.
+Implement a fully serverless solution.
+    Use Amazon CloudFront with Amazon S3 to host the web application. Use AWS AppSync to build the application APIs. Use Amazon Cognito groups for RBAC. Authorize data access by leveraging Cognito groups in AWS AppSync resolvers.
+        AppSync is a better fit than using API Gateway due to the requirement to retrieve data from multiple data sources.
+
+A company is running an application on an on-premises VMware cluster that must be migrated to an Amazon EC2 instance. While migrating, they wish to preserve the software and configuration settings.
+    Use the VMware vSphere client to export the application as an image in Open Virtualization Format (OVF) format. Create an Amazon S3 bucket to store the image in the destination AWS Region. Create and apply an IAM role for VM Import. Use the AWS CLI to run the EC2 import command.
+
+A company has created a fitness tracking mobile app the uses a serverless REST API. The app consists of an Amazon API Gateway API with a Regional endpoint, AWS Lambda functions and an Amazon Aurora MySQL database cluster. The company recently secured a deal with a sports company to promote the new app which resulted in a significant increase in the number of requests received.
+Unfortunately, the increase in traffic resulted in sporadic database memory errors and performance degradation. The traffic included significant numbers of HTTP requests querying the same data in short bursts of traffic during weekends and holidays.
+The company needs to improve its ability to support the additional usage while minimizing the increase in costs associated with the solution.
+    Convert the API Gateway Regional endpoint to an edge-optimized endpoint. Enable caching in the production stage.
+        Edge-optimized API endpoint 
+            is best for geographically distributed clients. API requests are routed to the nearest CloudFront Point of Presence (POP). For mobile clients this is a good use case for this type of endpoint. 
+        The Regional endpoint 
+            is best suited to traffic coming from within the Region only.
+        You can enable API caching in Amazon API Gateway to cache your endpoint's responses. With caching, you can reduce the number of calls made to your endpoint and also improve the latency of requests to your API.
+
+An Amazon RDS database was created with encryption enabled using an AWS managed CMK. The database has been reclassified and no longer requires encryption. How can a Solutions Architect unencrypt the database with the LEAST operational overhead
+    Export the data from the DB instance and import the data into an unencrypted DB instance.
+        The only way to unencrypt an encrypted database is to export the data and import the data into another DB instance. You cannot create unencrypted snapshots of encrypted DB instances and you cannot create unencrypted read replicas of an encrypted DB instance.
+        You also cannot modify the encrypted status of an existing DB instance using the API, CLI, or AWS Management Console.
+
+In a corporation using AWS Organizations, there's a requirement to supervise Amazon EC2 resource utilization across different accounts. The goal is to create a mechanism that sends daily notifications to the company's IT architecture team when the EC2 resource usage exceeds the average of the previous 45 days by more than 15%.
+    Set up a monitoring system in the organization's central account using AWS Budgets. Focus on tracking the hours of EC2 instance operation, setting a monitoring interval to daily. Define a budget limit that is 15% above the 45-day average usage of EC2, as determined by AWS Cost Explorer, and configure alerts for the architecture team when this limit is reached.
+        AWS Cost Anomaly Detection 
+            is more focused on identifying unexpected cost and usage patterns, rather than tracking specific usage metrics against a predetermined threshold.
 
 
-        
+A financial services company is developing a secure web application on AWS. This application will handle sensitive customer data and needs to be accessible only within the company's corporate network. The application is hosted on Amazon EC2 instances within a VPC. The company wants to ensure that this web application is not accessible from the public internet for enhanced security.
+    Create a VPN connection between the company’s corporate network and the VPC. Configure security groups for the EC2 instances to only allow traffic from the VPN connection.
+        Setting up a VPN connection between the company's corporate network and the AWS VPC, and configuring security groups for the EC2 instances to only allow traffic from this VPN connection, ensures that the application is accessible only from within the company’s network.
+
+An application runs across a fleet of Amazon EC2 instances in an Auto Scaling group. Application logs are collected from the EC2 instances using a cron job that is scheduled to run every 30 minutes. The cron job saves the log files to an Amazon S3 bucket. Failures and scaling events have caused some logs to be lost as the instances have been lost before the cron job collected the log files.
+    Use the Amazon CloudWatch Logs agent to stream log messages directly to CloudWatch Logs. Configure the batch_count parameter to 1.
+        batch_count parameter specifies the max number of log events in a batch, up to 10000. Using a value of 1 will result in every log entry being immediately streamed to CloudWatch Logs.
+
+A car rental company operates a serverless REST API, which includes an Amazon API Gateway with a Regional endpoint, AWS Lambda functions, and an Amazon Aurora MySQL Serverless DB cluster. This API, initially serving a mobile app, has been extended to partner mobile apps, leading to a substantial increase in requests and occasional database memory errors. Analysis shows that clients frequently make repeated HTTP GET requests for the same queries in short intervals, especially during business hours and around holidays.
+To enhance the system's capacity to handle this "increased load" without significantly raising costs
+    Integrate an Amazon ElastiCache for Redis layer to cache database query results. Update the Lambda functions to retrieve data from this cache when available.
+        While enabling caching in API Gateway can reduce the number of requests reaching the backend, converting to an edge-optimized endpoint primarily benefits geographically distributed clients and may not address the core issue of database load.
+
+An online shopping portal is running in eu-west-1 region. One of the application components uses AWS Lambda functions and stores inventory data in an Amazon Aurora database. Deployment of the Lambda functions is performed using a deployment package. The company has configured automated backups for Aurora.
+The company wants to move the application to another AWS account within the same AWS organization. The application processes critical data and downtime must be minimized or avoided if possible.
+    Download the Lambda function package from the source account. Use the deployment package and create new Lambda functions in the target account. Share the Aurora DB cluster with the target account by using AWS Resource Access Manager (AWS RAM). Grant the Target account permission to clone the Aurora DB cluster.
+        By using AWS Resource Access Manager (AWS RAM) with Amazon Aurora, you can share Aurora DB clusters and clones that belong to your AWS account with another AWS account or organization. 
+
+A start-up company has been using bastion hosts to connect to EC2 instances which are based on the latest Amazon Linux 2 AMI. They use these bastion hosts to SSH into EC2 instances to view logs and other troubleshooting activities.
+So far, they have configured a VPC with private and public subnets, and a NAT gateway. Also, they have a Site-to-Site VPN for connectivity with the on-premises environment and EC2 security groups with direct SSH access from the on-premises environment
+To increase security control and comply with auditing requirements around access to instances, which strategy should a solutions architect use
+    Create an IAM role with the AmazonSSMManagedInstanceCore managed policy attached. Attach the IAM role to all the EC2 instances. Remove all security group rules attached to the EC2 instances that allow inbound TCP on port 22. Have the engineers install the AWS Systems Manager Session Manager plugin for their devices and remotely access the instances by using the start-session API call from Systems Manager.
+        Security groups should be generic in nature and not dependent on specific hosts. If engineers change within the team, security groups would require a change every time.
